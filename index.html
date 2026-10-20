@@ -1,0 +1,1505 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Odd Disciple</title>
+<meta name="description" content="Bible-based party games for one phone: The Odd Disciple and Bible Mafia. Works offline.">
+<meta name="theme-color" content="#040813">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Odd Disciple">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+:root{--bg:#030610;--cy:#38d5ff;--acr:56,213,255;--hi:#7fe3ff;--red:#ff3b4e;--mu:#8fa6bf;--ln:rgba(120,190,255,.3);
+ --disp:'Cinzel','Trajan Pro','Cormorant SC','Hoefler Text','Palatino','Iowan Old Style',Georgia,serif;
+ --serif:'Cormorant Garamond','Iowan Old Style','Palatino','Hoefler Text',Georgia,serif;
+ --sans:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',system-ui,sans-serif;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);overscroll-behavior:none}
+body{color:#e8f1fa;font:16px/1.45 var(--sans);-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input{-webkit-user-select:text;user-select:text}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--cy);outline-offset:3px}
+h1,h2,h3,h4,p{margin:0}
+#app{position:fixed;inset:0;display:flex;justify-content:center;background:#02040a}
+#stage{position:relative;width:100%;max-width:480px;height:100%;overflow:hidden;background:#040813}
+@media(min-width:520px){#stage{box-shadow:0 0 0 1px #1d4a70,0 0 60px rgba(56,213,255,.12)}}
+.scr{position:absolute;inset:0;display:flex;flex-direction:column;text-align:left;overflow:hidden;
+ padding:calc(env(safe-area-inset-top,0px) + 18px) max(20px,env(safe-area-inset-left,0px)) calc(env(safe-area-inset-bottom,0px) + 18px) max(20px,env(safe-area-inset-right,0px))}
+.scr.mf{--cy:#e8c780;--acr:232,199,128;--hi:#f6dca0;--cyd:#b98a3c;--ln:rgba(232,199,128,.28);
+ background:radial-gradient(120% 55% at 50% 0%,#1a1a3e 0%,#0c1130 45%,#050816 100%)}
+.scr.mf.night{background:radial-gradient(120% 60% at 50% 0%,#14123a 0%,#090c26 50%,#03040f 100%)}
+.scr *{box-sizing:border-box}
+.grow{flex:1;min-height:0}
+.scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;min-height:0}
+.scroll::-webkit-scrollbar{display:none}
+svg.ic{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* ===== The Odd Disciple look ===== */
+.scr{--n0:#040813;--n1:#081428;--n2:#0d2442;--cy:#38d5ff;--cyd:#1b86b8;--gold:#e8c780;--gold2:#b98a3c;--tx:#e8f1fa;--mu:#8fa6bf;--red:#ff3b4e;--ln:rgba(120,190,255,.3);
+ color:var(--tx);font-family:var(--sans);background:radial-gradient(120% 55% at 50% 0%,#0f2a52 0%,#08162c 45%,#040813 100%)}
+.btn{height:52px;border-radius:15px;font:600 17px var(--sans);width:100%;display:flex;align-items:center;justify-content:center;flex:none;transition:transform .14s cubic-bezier(.3,1.2,.5,1),box-shadow .2s,background .2s}
+.btn.pri{border:1.5px solid var(--cy);background:linear-gradient(180deg,rgba(var(--acr),.14),rgba(var(--acr),.04));box-shadow:0 0 0 3px rgba(var(--acr),.1),0 0 24px rgba(var(--acr),.4),inset 0 0 16px rgba(var(--acr),.2)}
+.btn.pri:active{transform:scale(.97);box-shadow:0 0 0 4px rgba(var(--acr),.18),0 0 34px rgba(var(--acr),.6),inset 0 0 20px rgba(var(--acr),.3)}
+.btn.sec{border:1.5px solid rgba(205,222,240,.4);background:rgba(255,255,255,.02)}
+.btn.sec:active{transform:scale(.97);background:rgba(255,255,255,.06)}
+.btn[disabled]{opacity:.4;pointer-events:none;box-shadow:none}
+.ptitle{margin:0;text-align:center;font:500 25px/1.1 var(--disp);letter-spacing:.03em;color:#f1f6fc}
+.orn{height:14px;display:flex;align-items:center;gap:8px;margin:10px auto 14px;width:150px;flex:none}
+.orn::before,.orn::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--cy))}
+.orn::after{background:linear-gradient(270deg,transparent,var(--cy))}
+.orn i{width:6px;height:6px;transform:rotate(45deg);border:1px solid var(--cy);flex:none}
+.hdr{display:grid;grid-template-columns:40px 1fr 40px;align-items:center;margin-bottom:6px;flex:none}
+.hdr h2{margin:0;text-align:center;font:500 22px var(--disp);letter-spacing:.03em}
+.hdr button{width:40px;height:40px;display:grid;place-items:center;color:var(--tx);border-radius:50%}
+.lbl{font:500 14.5px var(--sans);color:#d7e4f1;margin:0}
+.lbl small{color:var(--mu);font-size:14.5px}
+.note{text-align:center;color:var(--mu);font-size:13.5px;margin-top:12px;flex:none;min-height:20px}
+
+/* home */
+.land{position:absolute;left:0;right:0;top:232px;height:350px;width:100%;pointer-events:none}
+.ttl{position:relative;text-align:center;flex:none}
+.the{display:flex;align-items:center;justify-content:center;gap:12px;font:500 21px var(--disp);letter-spacing:.32em;color:#dfe9f5;padding-left:.32em}
+.the i{width:22px;height:1px;background:#dfe9f5;opacity:.8}
+.fitw{width:100%;text-align:center;white-space:nowrap}
+.fitw span{display:inline-block;font-family:var(--disp);font-weight:700;line-height:.95;background:linear-gradient(180deg,#fff0c4 0%,#e6c27a 45%,#a8772e 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 14px rgba(232,170,60,.28))}
+.fitw.odd span{font-size:94px;margin-top:2px}
+.fitw.dis span{font-size:54px;margin-top:-2px}
+.cross{display:inline-block;width:.34em}
+.tag{margin:12px 0 0;font:500 12.5px/1.55 var(--sans);letter-spacing:.24em;color:#c9d8e8;text-transform:uppercase}
+.menu{position:relative;display:flex;flex-direction:column;gap:10px;flex:none}
+.menu .btn{height:48px;font-size:16px}
+.verse{position:relative;margin:16px 0 0;text-align:center;font:italic 500 16px/1.35 var(--serif);color:#dbe6f2;flex:none}
+.verse cite{display:block;margin-top:4px;font-style:normal;font:500 14px var(--sans);color:var(--mu)}
+
+/* setup */
+.stepper{display:flex;align-items:center;gap:14px}
+.stepper button{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--cy);display:grid;place-items:center;background:rgba(var(--acr),.1);box-shadow:0 0 14px rgba(var(--acr),.35);transition:transform .12s}
+.stepper button:active{transform:scale(.92)}
+.stepper button[disabled]{opacity:.35;box-shadow:none}
+.stepper output{font:500 22px var(--sans);min-width:18px;text-align:center}
+.prow{display:flex;justify-content:space-between;align-items:center;margin:10px 0 14px}
+.names{display:flex;flex-direction:column;gap:8px;margin:8px 0 18px}
+.nrow{display:flex;align-items:center;gap:14px;color:#d7e4f1;font-size:14.5px}
+.nrow b{width:12px;font-weight:500;text-align:center}
+.nrow input,select{flex:1;min-width:0;height:36px;border-radius:9px;border:1px solid var(--ln);background:linear-gradient(180deg,rgba(22,52,86,.55),rgba(10,26,48,.7));color:var(--tx);font:500 14.5px var(--sans);padding:0 12px;outline:0}
+.nrow input:focus{border-color:var(--cy);box-shadow:0 0 0 3px rgba(var(--acr),.16)}
+select{width:100%;height:42px;margin:8px 0 16px;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23b9d3ec' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 6l5 5 5-5'/%3E%3C/svg%3E"),linear-gradient(180deg,rgba(22,52,86,.55),rgba(10,26,48,.7));background-repeat:no-repeat;background-position:right 12px center,0 0}
+select option{background:#0a1a30;color:#e8f1fa}
+.foot{padding-top:12px;flex:none}
+
+/* handoff */
+.av{position:relative;width:104px;height:104px;margin:22px auto 10px;border-radius:50%;display:grid;place-items:center;font:600 40px var(--disp);color:#d7f4ff;background:radial-gradient(circle at 50% 35%,#16406a,#07152a 70%);border:2px solid var(--cy);box-shadow:0 0 0 5px rgba(var(--acr),.1),0 0 30px rgba(var(--acr),.45),inset 0 0 22px rgba(var(--acr),.25)}
+.avn{text-align:center;font:500 15px var(--sans);color:#d7e4f1;margin-bottom:22px}
+.big{text-align:center;font:500 19px/1.4 var(--sans);color:#e8f1fa;margin:0 0 26px}
+.pips{display:flex;justify-content:center;gap:8px;margin:0 0 14px;flex:none}
+.pips i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18)}
+.pips i.on{background:var(--cy);box-shadow:0 0 8px var(--cy)}
+
+/* secret: impostor role (neon frame) */
+.frame{position:relative;margin:4px 2px 18px;padding:24px 18px 22px;text-align:center;background:linear-gradient(180deg,rgba(8,22,44,.9),rgba(4,10,22,.95));border:1px solid rgba(var(--acr),.7);box-shadow:0 0 0 1px rgba(var(--acr),.15),0 0 28px rgba(var(--acr),.5),inset 0 0 40px rgba(var(--acr),.14);border-radius:4px;flex:none}
+.frame::before{content:"";position:absolute;inset:6px;border:1px solid rgba(var(--acr),.22);pointer-events:none}
+.frame .sm{font:500 21px var(--disp);letter-spacing:.04em;color:#eef5fc}
+.frame .you{font:500 19px var(--disp);color:#cfeaf6;margin-top:6px}
+.frame .role{font:500 38px/1.1 var(--disp);letter-spacing:.16em;color:var(--hi);text-shadow:0 0 18px rgba(var(--acr),.7);padding-left:.16em}
+.frame .mk{width:74px;height:74px;margin:14px auto 12px;filter:drop-shadow(0 0 12px rgba(var(--acr),.8))}
+.frame p{margin:0;color:#d2e1ef;font-size:15px;line-height:1.45}
+.frame.flare{animation:flare 1.1s ease-out}
+@keyframes flare{0%{box-shadow:0 0 0 1px rgba(var(--acr),.15),0 0 70px rgba(var(--acr),.9),inset 0 0 60px rgba(var(--acr),.45)}100%{}}
+.bolt{position:absolute;pointer-events:none;stroke:rgba(120,225,255,.7);fill:none;stroke-width:1.2;filter:drop-shadow(0 0 4px #38d5ff)}
+
+/* secret: civilian word */
+.wordc{text-align:center;flex:none}
+.wordc .pp{width:46px;height:34px;margin:2px auto 6px;color:var(--cy);filter:drop-shadow(0 0 8px rgba(var(--acr),.7))}
+.wordc .w{font:500 42px/1.05 var(--disp);letter-spacing:.1em;color:var(--hi);text-shadow:0 0 18px rgba(var(--acr),.65);padding-left:.1em;overflow-wrap:anywhere}
+.wordc p{margin:8px 0 14px;color:#d2e1ef;font-size:14.5px;line-height:1.4}
+.scrip{position:relative;border:1px solid var(--ln);background:linear-gradient(180deg,rgba(14,38,68,.55),rgba(6,16,32,.65));padding:14px 18px 16px;text-align:center;margin-bottom:14px;flex:none}
+.scrip h4{margin:0 0 6px;font:600 15px var(--sans);color:#f0f6fc}
+.scrip q{display:block;quotes:none;font:italic 500 16.5px/1.4 var(--serif);color:#dbe8f5}
+.scrip cite{display:block;margin-top:7px;font:500 13.5px var(--sans);font-style:normal;color:#b9cde0}
+
+/* secret: impostor word (parchment) */
+.parch{position:relative;margin:6px 6px 18px;padding:26px 20px 28px;text-align:center;color:#1d140a;flex:none;
+ background-color:#d9c096;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .28 0 0 0 0 .12 .55 0 0 0 -.08'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),radial-gradient(120% 90% at 50% 40%,#e6d2ab,#c9a972);
+ clip-path:polygon(0 3%,6% 0,15% 2%,28% 0,42% 1.5%,57% 0,71% 2%,86% 0,100% 2.5%,99% 18%,100% 34%,98.5% 52%,100% 70%,99% 86%,100% 100%,88% 98.5%,72% 100%,58% 98%,43% 100%,28% 98.5%,14% 100%,5% 98%,0 100%,1.5% 84%,0 66%,1.5% 48%,0 30%,1% 15%);
+ box-shadow:inset 0 0 50px rgba(90,55,15,.45)}
+.parch .mk{width:58px;height:58px;margin:0 auto 8px}
+.parch .y{font:500 20px var(--disp)}
+.parch .y b{display:block;font:700 30px var(--disp);letter-spacing:.08em;margin-top:2px}
+.parch .rule{height:1px;background:rgba(60,35,10,.35);margin:16px 24px 14px}
+.parch .yw{font:500 17px var(--disp)}
+.parch .ww{font:700 29px var(--disp);letter-spacing:.06em;margin-top:2px}
+.pshadow{position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none}
+
+/* discussion + vote */
+.tring{position:relative;width:210px;height:210px;margin:14px auto 22px;flex:none}
+.tring svg{width:210px;height:210px;transform:rotate(-90deg)}
+.tring .tr{stroke:rgba(120,190,255,.18)}
+.tring .tv{stroke:var(--cy);filter:drop-shadow(0 0 7px rgba(var(--acr),.85));transition:stroke-dashoffset 1s linear}
+.tring b{position:absolute;inset:0;display:grid;place-items:center;font:500 52px var(--disp);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.tring.low .tv{stroke:var(--red);filter:drop-shadow(0 0 7px rgba(255,59,78,.85))}
+.tring.low b{color:#ff8b96}
+.opts{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.opt{display:flex;align-items:center;gap:14px;height:46px;padding:0 14px;border:1px solid var(--ln);background:linear-gradient(180deg,rgba(22,52,86,.5),rgba(10,26,48,.65));border-radius:7px;font:500 16px var(--sans);text-align:left;transition:border-color .2s,box-shadow .2s,background .2s}
+.opt .rd{width:22px;height:22px;border-radius:50%;border:1.5px solid #9fc3e4;display:grid;place-items:center;flex:none;transition:border-color .2s}
+.opt .rd::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--cy);box-shadow:0 0 10px var(--cy);transform:scale(0);transition:transform .22s cubic-bezier(.3,1.6,.5,1)}
+.opt[aria-pressed=true]{border-color:var(--cy);box-shadow:0 0 0 2px rgba(var(--acr),.15),0 0 20px rgba(var(--acr),.35);background:linear-gradient(180deg,rgba(24,70,112,.6),rgba(10,32,58,.75))}
+.opt[aria-pressed=true] .rd{border-color:var(--cy)}
+.opt[aria-pressed=true] .rd::after{transform:scale(1)}
+
+/* verdict */
+.scr.fin{background:radial-gradient(100% 50% at 50% 28%,#1a1230 0%,#09101f 50%,#040813 100%)}
+.ringv{position:relative;width:214px;height:214px;margin:6px auto 0;flex:none;display:grid;place-items:center}
+.ringv .halo{position:absolute;inset:-40px;border-radius:50%;background:radial-gradient(circle,rgba(var(--acr),.2),transparent 62%);transition:background 1s}
+.ringv .disc{position:relative;width:176px;height:176px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,#10203a,#050a16 75%);border:3px solid var(--cy);box-shadow:0 0 0 6px rgba(var(--acr),.1),0 0 40px rgba(var(--acr),.55),inset 0 0 30px rgba(var(--acr),.25);transition:border-color .8s,box-shadow .8s}
+.ringv .q,.ringv .mkv{position:absolute;transition:opacity .7s,transform .7s}
+.ringv .q{font:500 74px var(--disp);color:var(--hi);text-shadow:0 0 22px rgba(var(--acr),.8)}
+.ringv .mkv{width:92px;height:92px;opacity:0;transform:scale(.8)}
+.ringv .crown{position:absolute;top:-24px;left:50%;width:62px;margin-left:-31px;opacity:0;transform:translateY(8px);transition:opacity .7s .3s,transform .7s .3s}
+.scr.fin[data-stage="2"] .disc{animation:ignite .9s both}
+@keyframes ignite{0%{box-shadow:0 0 0 6px rgba(var(--acr),.1),0 0 30px rgba(var(--acr),.5)}40%{box-shadow:0 0 0 10px rgba(255,255,255,.25),0 0 90px rgba(255,255,255,.8)}100%{box-shadow:0 0 0 6px rgba(255,59,78,.15),0 0 50px rgba(255,59,78,.7)}}
+.scr.fin[data-stage="3"] .disc{border-color:var(--red);box-shadow:0 0 0 6px rgba(255,59,78,.14),0 0 56px rgba(255,59,78,.75),inset 0 0 36px rgba(255,59,78,.28)}
+.scr.fin[data-stage="3"] .halo{background:radial-gradient(circle,rgba(255,59,78,.34),transparent 62%)}
+.scr.fin[data-stage="3"] .q{opacity:0;transform:scale(1.3)}
+.scr.fin[data-stage="3"] .mkv{opacity:1;transform:none}
+.scr.fin[data-stage="3"] .crown{opacity:1;transform:none}
+.below{position:relative;flex:1;min-height:0;margin-top:22px}
+.pre,.post{position:absolute;inset:0;text-align:center;transition:opacity .5s,transform .5s}
+.pre{font:500 19px var(--disp);color:#cfe3f5;padding-top:16px}
+.pre .dots{display:block;margin-top:14px}
+.dots i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--cy);margin:0 4px;animation:dt 1.1s infinite}
+.dots i:nth-child(2){animation-delay:.18s}.dots i:nth-child(3){animation-delay:.36s}
+@keyframes dt{0%,70%,100%{opacity:.25}35%{opacity:1}}
+.scr.fin[data-stage="3"] .pre{opacity:0;pointer-events:none}
+.post{opacity:0;transform:translateY(14px);pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:6px}
+.scr.fin[data-stage="3"] .post{opacity:1;transform:none;pointer-events:auto;transition-delay:.45s}
+.post .was{font:500 19px var(--disp);color:#f0f6fc}
+.post .nm{font:600 40px/1.05 var(--disp);letter-spacing:.12em;padding-left:.12em;color:#fff;text-shadow:0 0 22px rgba(255,59,78,.55);overflow-wrap:anywhere}
+.post .fool{font:500 15.5px var(--sans);color:#d7e4f1}
+.post .wd{font:500 13.5px var(--sans);color:var(--mu);margin:2px 0 14px}
+.post .btn{margin-top:auto}
+.skip{position:absolute;right:16px;bottom:10px;font-size:13px;color:var(--mu);font-weight:600;padding:8px;z-index:20}
+.scr.fin[data-stage="3"] .skip{display:none}
+
+/* sheets */
+.sheetov{position:absolute;inset:0;z-index:40;display:flex;align-items:flex-end;background:rgba(2,6,14,.7);animation:fadeIn .25s both}
+.sheetov>div{width:100%;animation:riseIn .38s cubic-bezier(.2,.8,.2,1) both}
+.sh{background:linear-gradient(180deg,#0c2038,#071123);border-top:1px solid var(--ln);border-radius:22px 22px 0 0;padding:22px 20px 24px;display:flex;flex-direction:column;gap:14px;max-height:620px}
+.sh h3{margin:0;font:500 22px var(--disp);letter-spacing:.03em}
+.sh ol,.sh ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;overflow-y:auto;scrollbar-width:none}
+.sh li{color:#c5d6e8;font-size:14.5px;line-height:1.4}
+.sh li b{display:block;color:#fff;font-weight:600}
+.sh li q{display:block;quotes:none;font:italic 500 15.5px/1.35 var(--serif);color:#dbe8f5;margin-top:3px}
+.sh li cite{font-style:normal;color:var(--mu);font-size:13px}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes riseIn{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.scr.enter{animation:odIn .5s cubic-bezier(.2,.8,.2,1) both}
+.scr.leave{animation:odOut .28s ease-in both;pointer-events:none}
+@keyframes odIn{from{opacity:0;transform:translateY(16px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+@keyframes odOut{to{opacity:0;transform:scale(.985)}}
+@media(prefers-reduced-motion:reduce){
+ .scr.enter{animation:rmI .15s both}.scr.leave{animation:rmO .15s both}
+ @keyframes rmI{from{opacity:0}to{opacity:1}}@keyframes rmO{to{opacity:0}}
+ .frame.flare,.scr.fin[data-stage="2"] .disc,.dots i{animation:none!important}
+ .ringv *,.post,.tring .tv{transition-duration:.01s!important;transition-delay:0s!important}
+}/* ===== app additions ===== */
+.ptitle:focus{outline:none}
+.hdr{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;margin-bottom:4px;flex:none}
+.hdr button{width:44px;height:44px}
+.btn{min-height:52px;height:auto;padding:0 18px}
+.btn.row{gap:10px}
+.btn.danger{border:1.5px solid rgba(255,59,78,.7);background:linear-gradient(180deg,rgba(255,59,78,.14),rgba(255,59,78,.04));box-shadow:0 0 22px rgba(255,59,78,.3)}
+.btn.sm{min-height:44px;font-size:15px}
+.btns{display:flex;flex-direction:column;gap:10px;flex:none}
+.foot{padding-top:12px;flex:none}
+.note{text-align:center;color:var(--mu);font-size:13.5px;margin-top:12px;flex:none;min-height:20px}
+.err{color:#ff8b96}
+.stack{display:flex;flex-direction:column;gap:10px}
+.mt{margin-top:14px}
+.muted{color:var(--mu)}
+.sub{color:#c5d6e8;font-size:15px;line-height:1.45}
+
+/* home */
+.home{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 14px)}
+.home .hero{height:104px;margin:2px -20px -14px;flex:none;position:relative;-webkit-mask-image:linear-gradient(180deg,transparent,#000 12%,#000 74%,transparent);mask-image:linear-gradient(180deg,transparent,#000 12%,#000 74%,transparent)}
+.home .hero .land{position:absolute;inset:0;width:100%;height:100%}
+@media(max-height:720px){.home .hero{display:none}}
+.home .scroll{position:relative;flex:1}
+.gcards{display:flex;flex-direction:column;gap:12px;position:relative;margin-top:6px}
+.gcard{position:relative;text-align:left;border:1px solid var(--ln);border-radius:16px;padding:14px 16px 14px;background:linear-gradient(180deg,rgba(10,26,50,.86),rgba(5,12,26,.92));backdrop-filter:none;box-shadow:0 0 0 1px rgba(var(--acr),.08),0 8px 26px -12px #000}
+.gcard.g1{--cy:#38d5ff;--acr:56,213,255}
+.gcard.g2{--cy:#e8c780;--acr:232,199,128;--ln:rgba(232,199,128,.32)}
+.gcard h3{font:600 19px/1.15 var(--disp);letter-spacing:.04em;color:#f1f6fc}
+.gcard h3 small{display:block;font:600 11px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--cy);margin-bottom:5px}
+.gcard p{color:#c5d6e8;font-size:14px;line-height:1.4;margin-top:6px}
+.gmeta{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:9px;font-size:12.5px;color:var(--mu)}
+.gmeta b{color:#dbe8f5;font-weight:600}
+.gact{display:flex;gap:10px;margin-top:12px}
+.gact .btn{height:46px;min-height:46px;font-size:15.5px}
+.gact .btn.pri{flex:1.4;border-color:var(--cy)}
+.gact .btn.sec{flex:1}
+.gcard.g2 .btn.pri{background:linear-gradient(180deg,rgba(232,199,128,.16),rgba(232,199,128,.04))}
+.resume{border:1px dashed var(--cy);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:12px;margin-bottom:12px;background:rgba(var(--acr),.06)}
+.resume>div{flex:1;font-size:14px;line-height:1.3}
+.resume b{display:block;font-weight:600}
+.resume .btn{width:auto;height:40px;min-height:40px;font-size:14px;padding:0 14px}
+.links{display:flex;justify-content:center;gap:22px;margin-top:14px;position:relative}
+.links button{color:#c5d6e8;font-size:14px;font-weight:600;text-decoration:underline;text-decoration-color:rgba(255,255,255,.25);text-underline-offset:4px;min-height:44px;padding:0 4px}
+.home .verse{margin-top:4px;font-size:15px}.gcard{padding:12px 16px}.gcard p{margin-top:4px}.gact{margin-top:10px}.links{margin-top:6px}
+.home .ttl{margin-top:2px}
+.fitw.odd span{font-size:78px}.fitw.dis span{font-size:46px}
+@media(max-height:700px){.fitw.odd span{font-size:62px}.fitw.dis span{font-size:38px}.home .tag{display:none}}
+
+/* segmented + toggles */
+.seg{display:flex;background:rgba(10,26,48,.7);border:1px solid var(--ln);border-radius:12px;padding:3px;gap:2px;margin:8px 0 14px}
+.seg button{flex:1;min-height:40px;padding:0 6px;border-radius:9px;color:var(--mu);font-weight:600;font-size:14px}
+.seg button[aria-pressed=true]{background:rgba(var(--acr),.18);color:#fff;box-shadow:inset 0 0 0 1px rgba(var(--acr),.55)}
+.hint{color:var(--mu);font-size:13px;line-height:1.4;margin:-8px 0 14px}
+.names input{font-size:16px}
+.nrow input,select{font-size:16px}
+
+/* role/character cards */
+.rcard{position:relative;margin:4px 0 14px;padding:20px 18px 18px;text-align:center;border:1px solid rgba(var(--acr),.7);border-radius:6px;background:linear-gradient(180deg,rgba(8,22,44,.92),rgba(4,10,22,.96));box-shadow:0 0 0 1px rgba(var(--acr),.15),0 0 26px rgba(var(--acr),.4),inset 0 0 36px rgba(var(--acr),.12);flex:none}
+.rcard::before{content:"";position:absolute;inset:6px;border:1px solid rgba(var(--acr),.22);pointer-events:none;border-radius:3px}
+.rcard.bad{--cy:#ff6b7a;--acr:255,107,122;--hi:#ff9aa5}
+.rcard .fac{display:inline-block;font:700 11px var(--sans);letter-spacing:.2em;text-transform:uppercase;padding:4px 10px;border:1px solid rgba(var(--acr),.6);border-radius:20px;color:var(--hi)}
+.rcard .emb{display:block;width:84px;height:84px;margin:12px auto 8px;color:var(--hi);filter:drop-shadow(0 0 10px rgba(var(--acr),.7))}
+.rcard h3{font:500 28px/1.1 var(--disp);letter-spacing:.06em;color:var(--hi);text-shadow:0 0 16px rgba(var(--acr),.55)}
+.rcard .tt{font:500 15px var(--serif);font-style:italic;color:#dbe8f5;margin-top:4px;font-size:17px}
+.rcard p{color:#d2e1ef;font-size:14.5px;line-height:1.45;margin-top:10px}
+.rcard .ab{margin-top:10px;padding-top:10px;border-top:1px solid rgba(var(--acr),.22);font-size:14px;color:#e8f1fa}
+.rcard .ab b{display:block;font:700 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--hi);margin-bottom:3px}
+.rcard .sc{margin-top:10px;font:italic 500 15.5px/1.35 var(--serif);color:#dbe8f5}
+.rcard .sc cite{display:block;font:500 12.5px var(--sans);font-style:normal;color:var(--mu);margin-top:3px}
+.rcard .allies{margin-top:10px;font-size:14px;color:#ffd0d5}
+.rcard.compact{padding:14px 14px 12px;text-align:left;display:grid;grid-template-columns:64px 1fr;gap:4px 12px;align-items:center;margin:0 0 10px}
+.rcard.compact .emb{width:56px;height:56px;margin:0;grid-row:1/3}
+.rcard.compact h3{font-size:19px}
+.rcard.compact p{margin-top:2px;font-size:13px}
+.tag-p{display:inline-block;font:600 10.5px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--mu);border:1px solid var(--ln);border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:1px}
+.fine{color:var(--mu);font-size:12.5px;line-height:1.4;margin-top:8px}
+
+/* chips and lists */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
+.chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--ln);border-radius:20px;padding:6px 12px;font-size:14px;background:rgba(14,38,68,.5)}
+.chip.dead{opacity:.45;text-decoration:line-through}
+.chip b{font-weight:700;color:var(--hi)}
+.prev{border:1px solid var(--ln);border-radius:12px;background:rgba(10,26,48,.55);padding:12px 14px;margin:6px 0 14px}
+.prev h4{font:700 11px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--hi);margin-bottom:8px}
+.prev .r{display:flex;justify-content:space-between;gap:10px;font-size:14.5px;padding:3px 0}
+.prev .r span:last-child{color:var(--hi);font-weight:700}
+.warn{border:1px solid rgba(255,190,90,.5);background:rgba(255,190,90,.08);border-radius:10px;padding:10px 12px;font-size:13.5px;color:#ffd9a0;margin:0 0 14px}
+.opt .nm{flex:1;min-width:0;overflow-wrap:anywhere}
+.opt{min-height:50px}
+.opt.abst{border-style:dashed;color:var(--mu)}
+.tally{display:flex;flex-direction:column;gap:8px;margin:8px 0 14px}
+.tally .t{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;font-size:15px;align-items:center}
+.tally .bar{grid-column:1/3;height:6px;border-radius:3px;background:rgba(120,190,255,.14);overflow:hidden}
+.tally .bar i{display:block;height:100%;background:var(--cy);border-radius:3px;box-shadow:0 0 8px rgba(var(--acr),.7);transition:width .6s}
+.tally .t.out .bar i{background:var(--red);box-shadow:0 0 8px rgba(255,59,78,.7)}
+.log{display:flex;flex-direction:column;gap:6px;font-size:14px;color:#c5d6e8}
+.log li{list-style:none;padding:8px 10px;border-left:2px solid var(--ln);background:rgba(10,26,48,.4)}
+.log li small{color:var(--mu)}
+.plist{display:flex;flex-direction:column;gap:8px}
+.pr{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;border:1px solid var(--ln);border-radius:12px;padding:10px 12px;background:rgba(10,26,48,.5)}
+.pr .emb{width:38px;height:38px;color:var(--hi)}
+.pr.out{opacity:.6}
+.pr b{font-weight:600;display:block}
+.pr small{color:var(--mu);font-size:12.5px}
+.pr .st{font-size:12px;color:var(--mu);text-align:right}
+.bigname{font:600 34px/1.1 var(--disp);letter-spacing:.08em;text-align:center;overflow-wrap:anywhere;color:#fff}
+.shout{text-align:center;font:500 22px/1.25 var(--disp);letter-spacing:.03em;margin:8px 0}
+.moon{width:120px;height:120px;margin:20px auto;color:var(--hi);filter:drop-shadow(0 0 22px rgba(var(--acr),.55))}
+.wake{width:104px;height:104px;margin:14px auto 6px;color:var(--hi);filter:drop-shadow(0 0 18px rgba(var(--acr),.6))}
+.dots.big i{width:10px;height:10px}
+.verdict{border:1px solid var(--cy);border-radius:10px;padding:18px;text-align:center;background:rgba(var(--acr),.08);box-shadow:0 0 26px rgba(var(--acr),.3);margin:10px 0 16px}
+.verdict.bad{--cy:#ff6b7a;--acr:255,107,122;border-color:#ff6b7a}
+.verdict .big{margin:6px 0 0;font-size:24px;font-family:var(--disp)}
+.sealwrap{width:160px;height:160px;margin:6px auto 0;position:relative}
+.sealwrap svg{width:100%;height:100%}
+
+/* sheets (full overlay inside stage) */
+.sheetov{position:absolute;inset:0;z-index:40;display:flex;align-items:flex-end;background:rgba(2,6,14,.74);animation:fadeIn .25s both}
+.sheetov>.sh{width:100%;animation:riseIn .38s cubic-bezier(.2,.8,.2,1) both;max-height:92%;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 20px)}
+.sh{background:linear-gradient(180deg,#0c2038,#071123);border-top:1px solid var(--ln);border-radius:22px 22px 0 0;padding:22px 20px 24px;display:flex;flex-direction:column;gap:14px}
+.sh .body{overflow-y:auto;min-height:0;-webkit-overflow-scrolling:touch}
+.sh h3{font:500 22px var(--disp);letter-spacing:.03em}
+.sh h5{font:700 12px var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--cy);margin:16px 0 6px}
+.sh h5:first-child{margin-top:0}
+.sh ol,.sh ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+.sh li{color:#c5d6e8;font-size:14.5px;line-height:1.4}
+.sh li b{display:block;color:#fff;font-weight:600}
+.sh li q{display:block;quotes:none;font:italic 500 16px/1.35 var(--serif);color:#dbe8f5;margin-top:3px}
+.sh li cite{font-style:normal;color:var(--mu);font-size:13px}
+.sh p{color:#c5d6e8;font-size:14.5px;line-height:1.5;margin-bottom:8px}
+.sh .seg{margin:0 0 6px;overflow-x:auto;scrollbar-width:none}
+.sh .seg button{flex:none;white-space:nowrap;padding:0 12px}
+.sh .tbl{width:100%;border-collapse:collapse;font-size:13.5px;margin:6px 0 10px}
+.sh .tbl td,.sh .tbl th{padding:5px 6px;border-bottom:1px solid var(--ln);text-align:left;color:#c5d6e8}
+.sh .tbl th{color:var(--cy);font-weight:700}
+.dlg{position:absolute;inset:0;z-index:50;display:grid;place-items:center;padding:24px;background:rgba(2,6,14,.8);animation:fadeIn .2s both}
+.dlg>div{width:100%;max-width:360px;border:1px solid var(--ln);border-radius:18px;padding:20px;background:linear-gradient(180deg,#0c2038,#071123);display:flex;flex-direction:column;gap:12px}
+.dlg h3{font:500 21px var(--disp)}
+.dlg p{color:#c5d6e8;font-size:14.5px}
+
+/* fin verdict adaptions */
+.scr.fin{overflow-y:auto}
+.fin .below{min-height:260px}
+.fin .post .btns{width:100%;margin-top:14px}
+.badge-w{display:inline-block;font:700 11px var(--sans);letter-spacing:.18em;text-transform:uppercase;border:1px solid var(--cy);padding:4px 12px;border-radius:20px;color:var(--hi);margin-bottom:8px}
+@media(max-height:700px){.ringv{transform:scale(.8);margin-top:-14px;margin-bottom:-20px}.tring{transform:scale(.8);margin:0 auto 6px}.moon{width:90px;height:90px;margin:8px auto}}
+.toast{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 90px);transform:translateX(-50%);background:#0c2038;border:1px solid var(--ln);padding:10px 16px;border-radius:12px;font-size:14px;z-index:60;animation:fadeIn .2s both}
+
+</style>
+</head>
+<body>
+<div id="app"><div id="stage" aria-live="off"></div></div>
+<noscript><p style="padding:24px;color:#e8f1fa;font-family:sans-serif">The Odd Disciple needs JavaScript to run.</p></noscript>
+<script>window.ODD_DATA={"packs":{"schemaVersion":1,"id":"sealed-wordpacks","translation":{"id":"KJV","name":"King James Version","license":"Public domain (text as served by bible-api.com)","note":"Quoted excerpts follow this edition’s spelling and punctuation. Other KJV editions differ slightly in punctuation."},"difficultyScale":{"1":"Beginner: widely known, safe for any group","2":"Familiar: known to regular Bible readers","3":"Advanced: less well known"},"verification":{"status":"quotes-checked","checkedOn":"2026-10-20","method":"Each excerpt was tested for an exact word-and-punctuation match against the KJV text of its verse on bible-api.com. Three quotations were corrected after failing the first check. A deliberately altered control quote was correctly rejected.","limits":"This was an assisted exact-match check, not a byte-for-byte diff. Run verify_kjv.py on a machine with network access for a final byte-level confirmation. Whether a verse is a good clue for its word is an editorial judgement and is listed in wordpacks-review.md."},"packs":[{"id":"ot-people","name":"Old Testament people","description":"Patriarchs, kings, prophets and well-known women of the Old Testament.","words":[{"id":"ot-people/noah","word":"Noah","category":"Person · Old Testament","ref":"Genesis 6:8","excerpt":"But Noah found grace in the eyes of the LORD.","excerptType":"quote","difficulty":1,"group":"patriarchs","verified":true},{"id":"ot-people/abraham","word":"Abraham","category":"Person · Old Testament","ref":"Genesis 17:5","excerpt":"Neither shall thy name any more be called Abram, but thy name shall be Abraham","excerptType":"quote","difficulty":1,"group":"patriarchs","verified":true},{"id":"ot-people/isaac","word":"Isaac","category":"Person · Old Testament","ref":"Genesis 21:3","excerpt":"And Abraham called the name of his son that was born unto him, whom Sarah bare to him, Isaac.","excerptType":"quote","difficulty":1,"group":"patriarchs","verified":true},{"id":"ot-people/jacob","word":"Jacob","category":"Person · Old Testament","ref":"Genesis 32:28","excerpt":"Thy name shall be called no more Jacob, but Israel","excerptType":"quote","difficulty":1,"group":"patriarchs","verified":true},{"id":"ot-people/joseph","word":"Joseph","category":"Person · Old Testament","ref":"Genesis 37:3","excerpt":"Now Israel loved Joseph more than all his children, because he was the son of his old age","excerptType":"quote","difficulty":1,"group":"patriarchs","verified":true},{"id":"ot-people/david","word":"David","category":"Person · Old Testament","ref":"1 Samuel 17:50","excerpt":"So David prevailed over the Philistine with a sling and with a stone","excerptType":"quote","difficulty":1,"group":"kings-judges","verified":true},{"id":"ot-people/solomon","word":"Solomon","category":"Person · Old Testament","ref":"1 Kings 4:30","excerpt":"And Solomon’s wisdom excelled the wisdom of all the children of the east country","excerptType":"quote","difficulty":1,"group":"kings-judges","verified":true},{"id":"ot-people/samson","word":"Samson","category":"Person · Old Testament","ref":"Judges 16:30","excerpt":"And Samson said, Let me die with the Philistines.","excerptType":"quote","difficulty":2,"group":"kings-judges","verified":true},{"id":"ot-people/moses","word":"Moses","category":"Person · Old Testament","ref":"Exodus 3:4","excerpt":"God called unto him out of the midst of the bush, and said, Moses, Moses.","excerptType":"quote","difficulty":1,"group":"prophets","verified":true},{"id":"ot-people/samuel","word":"Samuel","category":"Person · Old Testament","ref":"1 Samuel 3:10","excerpt":"And the LORD came, and stood, and called as at other times, Samuel, Samuel.","excerptType":"quote","difficulty":2,"group":"prophets","verified":true},{"id":"ot-people/elijah","word":"Elijah","category":"Person · Old Testament","ref":"2 Kings 2:11","excerpt":"Elijah went up by a whirlwind into heaven","excerptType":"quote","difficulty":1,"group":"prophets","verified":true},{"id":"ot-people/daniel","word":"Daniel","category":"Person · Old Testament","ref":"Daniel 6:16","excerpt":"Then the king commanded, and they brought Daniel, and cast him into the den of lions.","excerptType":"quote","difficulty":1,"group":"prophets","verified":true},{"id":"ot-people/jonah","word":"Jonah","category":"Person · Old Testament","ref":"Jonah 1:17","excerpt":"Now the LORD had prepared a great fish to swallow up Jonah.","excerptType":"quote","difficulty":1,"group":"prophets","verified":true},{"id":"ot-people/ruth","word":"Ruth","category":"Person · Old Testament","ref":"Ruth 1:16","excerpt":"thy people shall be my people, and thy God my God","excerptType":"quote","difficulty":1,"group":"women","verified":true},{"id":"ot-people/esther","word":"Esther","category":"Person · Old Testament","ref":"Esther 2:17","excerpt":"And the king loved Esther above all the women, and she obtained grace and favour in his sight more than all the virgins","excerptType":"quote","difficulty":1,"group":"women","verified":true},{"id":"ot-people/hannah","word":"Hannah","category":"Person · Old Testament","ref":"1 Samuel 1:20","excerpt":"and called his name Samuel, saying, Because I have asked him of the LORD","excerptType":"quote","difficulty":2,"group":"women","verified":true}]},{"id":"ot-places","name":"Old Testament places","description":"Gardens, mountains, rivers and cities from the Old Testament.","words":[{"id":"ot-places/eden","word":"Eden","category":"Place · Old Testament","ref":"Genesis 2:8","excerpt":"And the LORD God planted a garden eastward in Eden","excerptType":"quote","difficulty":1,"group":"beginnings","verified":true},{"id":"ot-places/babel","word":"Babel","category":"Place · Old Testament","ref":"Genesis 11:9","excerpt":"Therefore is the name of it called Babel; because the LORD did there confound the language of all the earth","excerptType":"quote","difficulty":1,"group":"beginnings","verified":true},{"id":"ot-places/sodom","word":"Sodom","category":"Place · Old Testament","ref":"Genesis 19:24","excerpt":"Then the LORD rained upon Sodom and upon Gomorrah brimstone and fire from the LORD out of heaven","excerptType":"quote","difficulty":1,"group":"beginnings","verified":true},{"id":"ot-places/ararat","word":"Mount Ararat","category":"Place · Old Testament","ref":"Genesis 8:4","excerpt":"And the ark rested in the seventh month, on the seventeenth day of the month, upon the mountains of Ararat.","excerptType":"quote","difficulty":2,"group":"mountains-rivers","verified":true},{"id":"ot-places/sinai","word":"Mount Sinai","category":"Place · Old Testament","ref":"Exodus 19:20","excerpt":"And the LORD came down upon mount Sinai, on the top of the mount","excerptType":"quote","difficulty":1,"group":"mountains-rivers","verified":true},{"id":"ot-places/carmel","word":"Mount Carmel","category":"Place · Old Testament","ref":"1 Kings 18:20","excerpt":"So Ahab sent unto all the children of Israel, and gathered the prophets together unto mount Carmel.","excerptType":"quote","difficulty":3,"group":"mountains-rivers","verified":true},{"id":"ot-places/jordan","word":"Jordan River","category":"Place · Old Testament","ref":"2 Kings 5:14","excerpt":"Then went he down, and dipped himself seven times in Jordan, according to the saying of the man of God","excerptType":"quote","difficulty":1,"group":"mountains-rivers","verified":true},{"id":"ot-places/egypt","word":"Egypt","category":"Place · Old Testament","ref":"Genesis 41:41","excerpt":"And Pharaoh said unto Joseph, See, I have set thee over all the land of Egypt.","excerptType":"quote","difficulty":1,"group":"cities-lands","verified":true},{"id":"ot-places/babylon","word":"Babylon","category":"Place · Old Testament","ref":"Daniel 4:30","excerpt":"Is not this great Babylon, that I have built for the house of the kingdom","excerptType":"quote","difficulty":2,"group":"cities-lands","verified":true},{"id":"ot-places/nineveh","word":"Nineveh","category":"Place · Old Testament","ref":"Jonah 1:2","excerpt":"Arise, go to Nineveh, that great city, and cry against it","excerptType":"quote","difficulty":1,"group":"cities-lands","verified":true},{"id":"ot-places/jericho","word":"Jericho","category":"Place · Old Testament","ref":"Joshua 6:1","excerpt":"Now Jericho was straitly shut up because of the children of Israel: none went out, and none came in.","excerptType":"quote","difficulty":1,"group":"cities-lands","verified":true},{"id":"ot-places/jerusalem","word":"Jerusalem","category":"Place · Old Testament","ref":"Psalms 122:2","excerpt":"Our feet shall stand within thy gates, O Jerusalem.","excerptType":"quote","difficulty":1,"group":"cities-lands","verified":true},{"id":"ot-places/bethlehem","word":"Bethlehem","category":"Place · Old Testament","ref":"Micah 5:2","excerpt":"But thou, Bethlehem Ephratah, though thou be little among the thousands of Judah","excerptType":"quote","difficulty":1,"group":"cities-lands","verified":true}]},{"id":"nt-people","name":"New Testament people","description":"Disciples, friends of Jesus and early followers.","words":[{"id":"nt-people/peter","word":"Peter","category":"Person · New Testament","ref":"Matthew 16:18","excerpt":"thou art Peter, and upon this rock I will build my church","excerptType":"quote","difficulty":1,"group":"disciples","verified":true},{"id":"nt-people/james","word":"James","category":"Person · New Testament","ref":"Matthew 4:21","excerpt":"he saw other two brethren, James the son of Zebedee, and John his brother","excerptType":"quote","difficulty":2,"group":"disciples","verified":true},{"id":"nt-people/thomas","word":"Thomas","category":"Person · New Testament","ref":"John 20:28","excerpt":"And Thomas answered and said unto him, My Lord and my God.","excerptType":"quote","difficulty":1,"group":"disciples","verified":true},{"id":"nt-people/matthew","word":"Matthew","category":"Person · New Testament","ref":"Matthew 9:9","excerpt":"he saw a man, named Matthew, sitting at the receipt of custom: and he saith unto him, Follow me.","excerptType":"quote","difficulty":1,"group":"disciples","verified":true},{"id":"nt-people/judas","word":"Judas","category":"Person · New Testament","ref":"Matthew 26:14","excerpt":"Then one of the twelve, called Judas Iscariot, went unto the chief priests","excerptType":"quote","difficulty":1,"group":"disciples","verified":true},{"id":"nt-people/mary","word":"Mary","category":"Person · New Testament","ref":"Luke 1:30","excerpt":"Fear not, Mary: for thou hast found favour with God","excerptType":"quote","difficulty":1,"group":"friends-of-jesus","verified":true},{"id":"nt-people/martha","word":"Martha","category":"Person · New Testament","ref":"Luke 10:41","excerpt":"Martha, Martha, thou art careful and troubled about many things","excerptType":"quote","difficulty":1,"group":"friends-of-jesus","verified":true},{"id":"nt-people/lazarus","word":"Lazarus","category":"Person · New Testament","ref":"John 11:43","excerpt":"he cried with a loud voice, Lazarus, come forth","excerptType":"quote","difficulty":1,"group":"friends-of-jesus","verified":true},{"id":"nt-people/zacchaeus","word":"Zacchaeus","category":"Person · New Testament","ref":"Luke 19:2","excerpt":"there was a man named Zacchaeus, which was the chief among the publicans, and he was rich","excerptType":"quote","difficulty":1,"group":"friends-of-jesus","verified":true},{"id":"nt-people/nicodemus","word":"Nicodemus","category":"Person · New Testament","ref":"John 3:1","excerpt":"There was a man of the Pharisees, named Nicodemus, a ruler of the Jews","excerptType":"quote","difficulty":2,"group":"friends-of-jesus","verified":true},{"id":"nt-people/paul","word":"Paul","category":"Person · New Testament","ref":"Acts 13:9","excerpt":"Then Saul, (who also is called Paul,) filled with the Holy Ghost","excerptType":"quote","difficulty":1,"group":"early-church","verified":true},{"id":"nt-people/lydia","word":"Lydia","category":"Person · New Testament","ref":"Acts 16:14","excerpt":"a certain woman named Lydia, a seller of purple, of the city of Thyatira, which worshipped God","excerptType":"quote","difficulty":2,"group":"early-church","verified":true},{"id":"nt-people/john-the-baptist","word":"John the Baptist","category":"Person · New Testament","ref":"Matthew 3:1","excerpt":"In those days came John the Baptist, preaching in the wilderness of Judaea","excerptType":"quote","difficulty":1,"group":"early-church","verified":true}]},{"id":"nt-places","name":"New Testament places","description":"Towns, hills and cities from the Gospels and Acts.","words":[{"id":"nt-places/nazareth","word":"Nazareth","category":"Place · New Testament","ref":"Luke 2:51","excerpt":"And he went down with them, and came to Nazareth, and was subject unto them","excerptType":"quote","difficulty":1,"group":"jesus-region","verified":true},{"id":"nt-places/galilee","word":"Sea of Galilee","category":"Place · New Testament","ref":"Matthew 4:18","excerpt":"And Jesus, walking by the sea of Galilee, saw two brethren, Simon called Peter, and Andrew his brother","excerptType":"quote","difficulty":1,"group":"jesus-region","verified":true},{"id":"nt-places/capernaum","word":"Capernaum","category":"Place · New Testament","ref":"Matthew 4:13","excerpt":"And leaving Nazareth, he came and dwelt in Capernaum, which is upon the sea coast","excerptType":"quote","difficulty":1,"group":"jesus-region","verified":true},{"id":"nt-places/cana","word":"Cana","category":"Place · New Testament","ref":"John 2:1","excerpt":"And the third day there was a marriage in Cana of Galilee","excerptType":"quote","difficulty":1,"group":"jesus-region","verified":true},{"id":"nt-places/bethany","word":"Bethany","category":"Place · New Testament","ref":"John 11:1","excerpt":"Now a certain man was sick, named Lazarus, of Bethany, the town of Mary and her sister Martha.","excerptType":"quote","difficulty":2,"group":"jesus-region","verified":true},{"id":"nt-places/gethsemane","word":"Gethsemane","category":"Place · New Testament","ref":"Matthew 26:36","excerpt":"Then cometh Jesus with them unto a place called Gethsemane","excerptType":"quote","difficulty":1,"group":"passion-places","verified":true},{"id":"nt-places/golgotha","word":"Golgotha","category":"Place · New Testament","ref":"Matthew 27:33","excerpt":"And when they were come unto a place called Golgotha, that is to say, a place of a skull","excerptType":"quote","difficulty":1,"group":"passion-places","verified":true},{"id":"nt-places/olives","word":"Mount of Olives","category":"Place · New Testament","ref":"Matthew 26:30","excerpt":"And when they had sung an hymn, they went out into the mount of Olives.","excerptType":"quote","difficulty":2,"group":"passion-places","verified":true},{"id":"nt-places/emmaus","word":"Emmaus","category":"Place · New Testament","ref":"Luke 24:13","excerpt":"two of them went that same day to a village called Emmaus","excerptType":"quote","difficulty":2,"group":"passion-places","verified":true},{"id":"nt-places/damascus","word":"Damascus","category":"Place · New Testament","ref":"Acts 9:3","excerpt":"And as he journeyed, he came near Damascus: and suddenly there shined round about him a light from heaven","excerptType":"quote","difficulty":1,"group":"journeys","verified":true},{"id":"nt-places/antioch","word":"Antioch","category":"Place · New Testament","ref":"Acts 11:26","excerpt":"the disciples were called Christians first in Antioch","excerptType":"quote","difficulty":2,"group":"journeys","verified":true},{"id":"nt-places/corinth","word":"Corinth","category":"Place · New Testament","ref":"Acts 18:1","excerpt":"After these things Paul departed from Athens, and came to Corinth","excerptType":"quote","difficulty":2,"group":"journeys","verified":true},{"id":"nt-places/rome","word":"Rome","category":"Place · New Testament","ref":"Acts 28:16","excerpt":"And when we came to Rome, the centurion delivered the prisoners to the captain of the guard","excerptType":"quote","difficulty":1,"group":"journeys","verified":true},{"id":"nt-places/patmos","word":"Patmos","category":"Place · New Testament","ref":"Revelation 1:9","excerpt":"was in the isle that is called Patmos, for the word of God, and for the testimony of Jesus Christ","excerptType":"quote","difficulty":3,"group":"journeys","verified":true}]},{"id":"miracles","name":"Miracles of Jesus","description":"Healings, wonders and acts of power from the Gospels.","words":[{"id":"miracles/water-into-wine","word":"Water into wine","category":"Miracle of Jesus","ref":"John 2:9","excerpt":"When the ruler of the feast had tasted the water that was made wine","excerptType":"quote","difficulty":1,"group":"wonders","verified":true},{"id":"miracles/loaves-and-fishes","word":"Loaves and fishes","category":"Miracle of Jesus","ref":"Matthew 14:17","excerpt":"We have here but five loaves, and two fishes.","excerptType":"quote","difficulty":1,"group":"wonders","verified":true},{"id":"miracles/walking-on-water","word":"Walking on water","category":"Miracle of Jesus","ref":"Matthew 14:25","excerpt":"And in the fourth watch of the night Jesus went unto them, walking on the sea.","excerptType":"quote","difficulty":1,"group":"wonders","verified":true},{"id":"miracles/calming-the-storm","word":"Calming the storm","category":"Miracle of Jesus","ref":"Mark 4:39","excerpt":"And he arose, and rebuked the wind, and said unto the sea, Peace, be still. And the wind ceased, and there was a great calm.","excerptType":"quote","difficulty":1,"group":"wonders","verified":true},{"id":"miracles/great-catch","word":"Great catch of fish","category":"Miracle of Jesus","ref":"Luke 5:6","excerpt":"they inclosed a great multitude of fishes: and their net brake","excerptType":"quote","difficulty":1,"group":"wonders","verified":true},{"id":"miracles/fig-tree","word":"Withered fig tree","category":"Miracle of Jesus","ref":"Matthew 21:19","excerpt":"Let no fruit grow on thee henceforward for ever. And presently the fig tree withered away.","excerptType":"quote","difficulty":3,"group":"wonders","verified":true},{"id":"miracles/raising-lazarus","word":"Raising Lazarus","category":"Miracle of Jesus","ref":"John 11:44","excerpt":"And he that was dead came forth, bound hand and foot with graveclothes","excerptType":"quote","difficulty":1,"group":"healings","verified":true},{"id":"miracles/jairus-daughter","word":"Jairus’ daughter","category":"Miracle of Jesus","ref":"Mark 5:41","excerpt":"Talitha cumi; which is, being interpreted, Damsel, I say unto thee, arise.","excerptType":"quote","difficulty":1,"group":"healings","verified":true},{"id":"miracles/paralytic","word":"The paralytic","category":"Miracle of Jesus","ref":"Mark 2:11","excerpt":"Arise, and take up thy bed, and go thy way into thine house","excerptType":"quote","difficulty":1,"group":"healings","verified":true},{"id":"miracles/ten-lepers","word":"Ten lepers","category":"Miracle of Jesus","ref":"Luke 17:14","excerpt":"Go shew yourselves unto the priests. And it came to pass, that, as they went, they were cleansed.","excerptType":"quote","difficulty":1,"group":"healings","verified":true},{"id":"miracles/bartimaeus","word":"Blind Bartimaeus","category":"Miracle of Jesus","ref":"Mark 10:46","excerpt":"blind Bartimaeus, the son of Timaeus, sat by the highway side begging","excerptType":"quote","difficulty":2,"group":"healings","verified":true},{"id":"miracles/hem-of-garment","word":"Hem of his garment","category":"Miracle of Jesus","ref":"Matthew 9:20","excerpt":"a woman, which was diseased with an issue of blood twelve years, came behind him, and touched the hem of his garment","excerptType":"quote","difficulty":2,"group":"healings","verified":true},{"id":"miracles/siloam","word":"Pool of Siloam","category":"Miracle of Jesus","ref":"John 9:7","excerpt":"Go, wash in the pool of Siloam, (which is by interpretation, Sent.)","excerptType":"quote","difficulty":2,"group":"healings","verified":true},{"id":"miracles/centurion-servant","word":"Centurion’s servant","category":"Miracle of Jesus","ref":"Matthew 8:13","excerpt":"Go thy way; and as thou hast believed, so be it done unto thee. And his servant was healed in the selfsame hour.","excerptType":"quote","difficulty":3,"group":"healings","verified":true}]},{"id":"parables","name":"Parables of Jesus","description":"Stories Jesus told about the kingdom of heaven.","words":[{"id":"parables/good-samaritan","word":"Good Samaritan","category":"Parable of Jesus","ref":"Luke 10:33","excerpt":"But a certain Samaritan, as he journeyed, came where he was: and when he saw him, he had compassion on him","excerptType":"quote","difficulty":1,"group":"lost-and-mercy","verified":true},{"id":"parables/prodigal-son","word":"Prodigal son","category":"Parable of Jesus","ref":"Luke 15:20","excerpt":"his father saw him, and had compassion, and ran, and fell on his neck, and kissed him","excerptType":"quote","difficulty":1,"group":"lost-and-mercy","verified":true},{"id":"parables/lost-sheep","word":"Lost sheep","category":"Parable of Jesus","ref":"Luke 15:4","excerpt":"What man of you, having an hundred sheep, if he lose one of them, doth not leave the ninety and nine in the wilderness","excerptType":"quote","difficulty":1,"group":"lost-and-mercy","verified":true},{"id":"parables/lost-coin","word":"Lost coin","category":"Parable of Jesus","ref":"Luke 15:9","excerpt":"Rejoice with me; for I have found the piece which I had lost.","excerptType":"quote","difficulty":1,"group":"lost-and-mercy","verified":true},{"id":"parables/unforgiving-servant","word":"Unforgiving servant","category":"Parable of Jesus","ref":"Matthew 18:27","excerpt":"Then the lord of that servant was moved with compassion, and loosed him, and forgave him the debt.","excerptType":"quote","difficulty":2,"group":"lost-and-mercy","verified":true},{"id":"parables/sower","word":"The sower","category":"Parable of Jesus","ref":"Matthew 13:3","excerpt":"Behold, a sower went forth to sow","excerptType":"quote","difficulty":1,"group":"kingdom","verified":true},{"id":"parables/mustard-seed","word":"Mustard seed","category":"Parable of Jesus","ref":"Matthew 13:31","excerpt":"The kingdom of heaven is like to a grain of mustard seed, which a man took, and sowed in his field","excerptType":"quote","difficulty":1,"group":"kingdom","verified":true},{"id":"parables/pearl","word":"Pearl of great price","category":"Parable of Jesus","ref":"Matthew 13:46","excerpt":"Who, when he had found one pearl of great price, went and sold all that he had, and bought it.","excerptType":"quote","difficulty":2,"group":"kingdom","verified":true},{"id":"parables/hidden-treasure","word":"Hidden treasure","category":"Parable of Jesus","ref":"Matthew 13:44","excerpt":"the kingdom of heaven is like unto treasure hid in a field","excerptType":"quote","difficulty":2,"group":"kingdom","verified":true},{"id":"parables/wheat-and-tares","word":"Wheat and tares","category":"Parable of Jesus","ref":"Matthew 13:30","excerpt":"Let both grow together until the harvest","excerptType":"quote","difficulty":2,"group":"kingdom","verified":true},{"id":"parables/house-on-rock","word":"House on the rock","category":"Parable of Jesus","ref":"Matthew 7:24","excerpt":"I will liken him unto a wise man, which built his house upon a rock","excerptType":"quote","difficulty":1,"group":"readiness","verified":true},{"id":"parables/talents","word":"The talents","category":"Parable of Jesus","ref":"Matthew 25:15","excerpt":"And unto one he gave five talents, to another two, and to another one","excerptType":"quote","difficulty":1,"group":"readiness","verified":true},{"id":"parables/ten-virgins","word":"Ten virgins","category":"Parable of Jesus","ref":"Matthew 25:1","excerpt":"Then shall the kingdom of heaven be likened unto ten virgins, which took their lamps, and went forth to meet the bridegroom","excerptType":"quote","difficulty":1,"group":"readiness","verified":true},{"id":"parables/rich-fool","word":"Rich fool","category":"Parable of Jesus","ref":"Luke 12:20","excerpt":"Thou fool, this night thy soul shall be required of thee","excerptType":"quote","difficulty":2,"group":"readiness","verified":true}]},{"id":"objects-symbols","name":"Biblical objects and symbols","description":"Things and signs that recur across Scripture.","words":[{"id":"objects-symbols/noahs-ark","word":"Noah’s ark","category":"Object or symbol","ref":"Genesis 6:14","excerpt":"Make thee an ark of gopher wood; rooms shalt thou make in the ark","excerptType":"quote","difficulty":1,"group":"old-testament","verified":true},{"id":"objects-symbols/rainbow","word":"Rainbow","category":"Object or symbol","ref":"Genesis 9:13","excerpt":"I do set my bow in the cloud, and it shall be for a token of a covenant between me and the earth.","excerptType":"quote","difficulty":1,"group":"old-testament","verified":true},{"id":"objects-symbols/ark-of-covenant","word":"Ark of the Covenant","category":"Object or symbol","ref":"Numbers 10:33","excerpt":"the ark of the covenant of the LORD went before them in the three days’ journey","excerptType":"quote","difficulty":1,"group":"old-testament","verified":true},{"id":"objects-symbols/burning-bush","word":"Burning bush","category":"Object or symbol","ref":"Exodus 3:2","excerpt":"the bush burned with fire, and the bush was not consumed","excerptType":"quote","difficulty":1,"group":"old-testament","verified":true},{"id":"objects-symbols/coat-of-colours","word":"Coat of many colours","category":"Object or symbol","ref":"Genesis 37:3","excerpt":"and he made him a coat of many colours","excerptType":"quote","difficulty":1,"group":"old-testament","verified":true},{"id":"objects-symbols/sling-stones","word":"Sling and stones","category":"Object or symbol","ref":"1 Samuel 17:40","excerpt":"chose him five smooth stones out of the brook","excerptType":"quote","difficulty":2,"group":"old-testament","verified":true},{"id":"objects-symbols/tree-of-life","word":"Tree of life","category":"Object or symbol","ref":"Genesis 2:9","excerpt":"the tree of life also in the midst of the garden, and the tree of knowledge of good and evil","excerptType":"quote","difficulty":2,"group":"old-testament","verified":true},{"id":"objects-symbols/crown-of-thorns","word":"Crown of thorns","category":"Object or symbol","ref":"Matthew 27:29","excerpt":"And when they had platted a crown of thorns, they put it upon his head","excerptType":"quote","difficulty":1,"group":"new-testament","verified":true},{"id":"objects-symbols/cross","word":"Cross","category":"Object or symbol","ref":"Matthew 16:24","excerpt":"If any man will come after me, let him deny himself, and take up his cross, and follow me.","excerptType":"quote","difficulty":1,"group":"new-testament","verified":true},{"id":"objects-symbols/lamb-of-god","word":"Lamb of God","category":"Object or symbol","ref":"John 1:29","excerpt":"Behold the Lamb of God, which taketh away the sin of the world.","excerptType":"quote","difficulty":1,"group":"new-testament","verified":true},{"id":"objects-symbols/dove","word":"Dove","category":"Object or symbol","ref":"Matthew 3:16","excerpt":"he saw the Spirit of God descending like a dove, and lighting upon him","excerptType":"quote","difficulty":1,"group":"new-testament","verified":true},{"id":"objects-symbols/bread-of-life","word":"Bread of life","category":"Object or symbol","ref":"John 6:35","excerpt":"I am the bread of life: he that cometh to me shall never hunger","excerptType":"quote","difficulty":1,"group":"new-testament","verified":true},{"id":"objects-symbols/vine","word":"The vine","category":"Object or symbol","ref":"John 15:5","excerpt":"I am the vine, ye are the branches","excerptType":"quote","difficulty":2,"group":"new-testament","verified":true},{"id":"objects-symbols/salt","word":"Salt","category":"Object or symbol","ref":"Matthew 5:13","excerpt":"Ye are the salt of the earth","excerptType":"quote","difficulty":2,"group":"new-testament","verified":true}]},{"id":"life-of-jesus","name":"Events from the life of Jesus","description":"From the manger to the ascension.","words":[{"id":"life-of-jesus/birth","word":"Birth of Jesus","category":"Event · Life of Jesus","ref":"Luke 2:7","excerpt":"And she brought forth her firstborn son, and wrapped him in swaddling clothes, and laid him in a manger","excerptType":"quote","difficulty":1,"group":"beginnings","verified":true},{"id":"life-of-jesus/shepherds","word":"Shepherds and angels","category":"Event · Life of Jesus","ref":"Luke 2:8","excerpt":"there were in the same country shepherds abiding in the field, keeping watch over their flock by night","excerptType":"quote","difficulty":1,"group":"beginnings","verified":true},{"id":"life-of-jesus/wise-men","word":"Wise men","category":"Event · Life of Jesus","ref":"Matthew 2:11","excerpt":"they presented unto him gifts; gold, and frankincense, and myrrh","excerptType":"quote","difficulty":1,"group":"beginnings","verified":true},{"id":"life-of-jesus/baptism","word":"Baptism of Jesus","category":"Event · Life of Jesus","ref":"Matthew 3:17","excerpt":"This is my beloved Son, in whom I am well pleased.","excerptType":"quote","difficulty":1,"group":"beginnings","verified":true},{"id":"life-of-jesus/fishers-of-men","word":"Fishers of men","category":"Event · Life of Jesus","ref":"Matthew 4:19","excerpt":"Follow me, and I will make you fishers of men.","excerptType":"quote","difficulty":1,"group":"beginnings","verified":true},{"id":"life-of-jesus/transfiguration","word":"Transfiguration","category":"Event · Life of Jesus","ref":"Matthew 17:2","excerpt":"And was transfigured before them: and his face did shine as the sun, and his raiment was white as the light.","excerptType":"quote","difficulty":2,"group":"ministry","verified":true},{"id":"life-of-jesus/entering-jerusalem","word":"Entering Jerusalem","category":"Event · Life of Jesus","ref":"Matthew 21:8","excerpt":"And a very great multitude spread their garments in the way","excerptType":"quote","difficulty":1,"group":"ministry","verified":true},{"id":"life-of-jesus/overturning-tables","word":"Overturning the tables","category":"Event · Life of Jesus","ref":"Matthew 21:12","excerpt":"cast out all them that sold and bought in the temple, and overthrew the tables of the moneychangers","excerptType":"quote","difficulty":2,"group":"ministry","verified":true},{"id":"life-of-jesus/last-supper","word":"Last Supper","category":"Event · Life of Jesus","ref":"Luke 22:19","excerpt":"And he took bread, and gave thanks, and brake it, and gave unto them, saying, This is my body which is given for you","excerptType":"quote","difficulty":1,"group":"ministry","verified":true},{"id":"life-of-jesus/washing-feet","word":"Washing the feet","category":"Event · Life of Jesus","ref":"John 13:5","excerpt":"After that he poureth water into a bason, and began to wash the disciples’ feet","excerptType":"quote","difficulty":2,"group":"ministry","verified":true},{"id":"life-of-jesus/kiss-of-judas","word":"Kiss of Judas","category":"Event · Life of Jesus","ref":"Matthew 26:49","excerpt":"And forthwith he came to Jesus, and said, Hail, master; and kissed him.","excerptType":"quote","difficulty":2,"group":"passion-and-after","verified":true},{"id":"life-of-jesus/crucifixion","word":"Crucifixion","category":"Event · Life of Jesus","ref":"Luke 23:33","excerpt":"And when they were come to the place, which is called Calvary, there they crucified him","excerptType":"quote","difficulty":1,"group":"passion-and-after","verified":true},{"id":"life-of-jesus/empty-tomb","word":"Empty tomb","category":"Event · Life of Jesus","ref":"Luke 24:6","excerpt":"He is not here, but is risen","excerptType":"quote","difficulty":1,"group":"passion-and-after","verified":true},{"id":"life-of-jesus/ascension","word":"Ascension","category":"Event · Life of Jesus","ref":"Acts 1:9","excerpt":"while they beheld, he was taken up; and a cloud received him out of their sight","excerptType":"quote","difficulty":1,"group":"passion-and-after","verified":true}]},{"id":"exodus-wilderness","name":"Exodus and wilderness","description":"Escape from Egypt and the years in the wilderness.","words":[{"id":"exodus-wilderness/pharaoh","word":"Pharaoh","category":"Exodus · Wilderness","ref":"Exodus 5:2","excerpt":"And Pharaoh said, Who is the LORD, that I should obey his voice to let Israel go?","excerptType":"quote","difficulty":1,"group":"egypt","verified":true},{"id":"exodus-wilderness/frogs","word":"Plague of frogs","category":"Exodus · Wilderness","ref":"Exodus 8:6","excerpt":"and the frogs came up, and covered the land of Egypt","excerptType":"quote","difficulty":1,"group":"egypt","verified":true},{"id":"exodus-wilderness/passover","word":"Passover","category":"Exodus · Wilderness","ref":"Exodus 12:13","excerpt":"when I see the blood, I will pass over you","excerptType":"quote","difficulty":1,"group":"egypt","verified":true},{"id":"exodus-wilderness/red-sea","word":"Red Sea","category":"Exodus · Wilderness","ref":"Exodus 14:22","excerpt":"And the children of Israel went into the midst of the sea upon the dry ground","excerptType":"quote","difficulty":1,"group":"egypt","verified":true},{"id":"exodus-wilderness/pillar-of-fire","word":"Pillar of fire","category":"Exodus · Wilderness","ref":"Exodus 13:21","excerpt":"by night in a pillar of fire, to give them light","excerptType":"quote","difficulty":1,"group":"journey","verified":true},{"id":"exodus-wilderness/manna","word":"Manna","category":"Exodus · Wilderness","ref":"Exodus 16:15","excerpt":"It is manna: for they wist not what it was.","excerptType":"quote","difficulty":1,"group":"journey","verified":true},{"id":"exodus-wilderness/quail","word":"Quail","category":"Exodus · Wilderness","ref":"Numbers 11:31","excerpt":"there went forth a wind from the LORD, and brought quails from the sea","excerptType":"quote","difficulty":2,"group":"journey","verified":true},{"id":"exodus-wilderness/water-from-rock","word":"Water from the rock","category":"Exodus · Wilderness","ref":"Exodus 17:6","excerpt":"thou shalt smite the rock, and there shall come water out of it, that the people may drink","excerptType":"quote","difficulty":1,"group":"journey","verified":true},{"id":"exodus-wilderness/golden-calf","word":"Golden calf","category":"Exodus · Wilderness","ref":"Exodus 32:4","excerpt":"after he had made it a molten calf: and they said, These be thy gods, O Israel","excerptType":"quote","difficulty":1,"group":"covenant-and-trials","verified":true},{"id":"exodus-wilderness/ten-commandments","word":"Ten Commandments","category":"Exodus · Wilderness","ref":"Exodus 20:3","excerpt":"Thou shalt have no other gods before me.","excerptType":"quote","difficulty":1,"group":"covenant-and-trials","verified":true},{"id":"exodus-wilderness/tabernacle","word":"Tabernacle","category":"Exodus · Wilderness","ref":"Exodus 40:34","excerpt":"Then a cloud covered the tent of the congregation, and the glory of the LORD filled the tabernacle.","excerptType":"quote","difficulty":3,"group":"covenant-and-trials","verified":true},{"id":"exodus-wilderness/bronze-serpent","word":"Bronze serpent","category":"Exodus · Wilderness","ref":"Numbers 21:9","excerpt":"And Moses made a serpent of brass, and put it upon a pole","excerptType":"quote","difficulty":2,"group":"covenant-and-trials","verified":true},{"id":"exodus-wilderness/spies","word":"Spies in Canaan","category":"Exodus · Wilderness","ref":"Numbers 13:2","excerpt":"Send thou men, that they may search the land of Canaan","excerptType":"quote","difficulty":3,"group":"covenant-and-trials","verified":true}]},{"id":"books-passages","name":"Books and well-known passages","description":"Books of the Bible and the passages many people know by heart.","words":[{"id":"books-passages/genesis","word":"Genesis","category":"Book of the Bible","ref":"Genesis 1:1","excerpt":"In the beginning God created the heaven and the earth.","excerptType":"quote","difficulty":1,"group":"books","verified":true},{"id":"books-passages/psalms","word":"Psalms","category":"Book of the Bible","ref":"Psalms 150:6","excerpt":"Let every thing that hath breath praise the LORD. Praise ye the LORD.","excerptType":"quote","difficulty":1,"group":"books","verified":true},{"id":"books-passages/proverbs","word":"Proverbs","category":"Book of the Bible","ref":"Proverbs 1:7","excerpt":"The fear of the LORD is the beginning of knowledge","excerptType":"quote","difficulty":1,"group":"books","verified":true},{"id":"books-passages/revelation","word":"Revelation","category":"Book of the Bible","ref":"Revelation 1:1","excerpt":"The Revelation of Jesus Christ, which God gave unto him, to shew unto his servants things which must shortly come to pass","excerptType":"quote","difficulty":1,"group":"books","verified":true},{"id":"books-passages/acts","word":"Acts","category":"Book of the Bible","ref":"Acts 1:8","excerpt":"ye shall be witnesses unto me both in Jerusalem, and in all Judaea, and in Samaria","excerptType":"quote","difficulty":2,"group":"books","verified":true},{"id":"books-passages/gospel-of-john","word":"Gospel of John","category":"Book of the Bible","ref":"John 1:1","excerpt":"In the beginning was the Word, and the Word was with God, and the Word was God.","excerptType":"quote","difficulty":1,"group":"books","verified":true},{"id":"books-passages/lords-prayer","word":"Lord’s Prayer","category":"Well-known passage","ref":"Matthew 6:9","excerpt":"After this manner therefore pray ye: Our Father which art in heaven, Hallowed be thy name.","excerptType":"quote","difficulty":1,"group":"teaching","verified":true},{"id":"books-passages/beatitudes","word":"Beatitudes","category":"Well-known passage","ref":"Matthew 5:3","excerpt":"Blessed are the poor in spirit: for theirs is the kingdom of heaven.","excerptType":"quote","difficulty":1,"group":"teaching","verified":true},{"id":"books-passages/golden-rule","word":"Golden Rule","category":"Well-known passage","ref":"Matthew 7:12","excerpt":"all things whatsoever ye would that men should do to you, do ye even so to them","excerptType":"quote","difficulty":1,"group":"teaching","verified":true},{"id":"books-passages/great-commission","word":"Great Commission","category":"Well-known passage","ref":"Matthew 28:19","excerpt":"Go ye therefore, and teach all nations, baptizing them in the name of the Father, and of the Son, and of the Holy Ghost","excerptType":"quote","difficulty":1,"group":"teaching","verified":true},{"id":"books-passages/psalm-23","word":"Psalm 23","category":"Well-known passage","ref":"Psalms 23:1","excerpt":"The LORD is my shepherd; I shall not want.","excerptType":"quote","difficulty":1,"group":"favourites","verified":true},{"id":"books-passages/love-chapter","word":"Love chapter","category":"Well-known passage","ref":"1 Corinthians 13:13","excerpt":"And now abideth faith, hope, charity, these three; but the greatest of these is charity.","excerptType":"quote","difficulty":1,"group":"favourites","verified":true},{"id":"books-passages/fruit-of-spirit","word":"Fruit of the Spirit","category":"Well-known passage","ref":"Galatians 5:22","excerpt":"But the fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith","excerptType":"quote","difficulty":1,"group":"favourites","verified":true},{"id":"books-passages/john-3-16","word":"John 3:16","category":"Well-known passage","ref":"John 3:16","excerpt":"For God so loved the world, that he gave his only begotten Son","excerptType":"quote","difficulty":1,"group":"favourites","verified":true},{"id":"books-passages/armour-of-god","word":"Armour of God","category":"Well-known passage","ref":"Ephesians 6:11","excerpt":"Put on the whole armour of God, that ye may be able to stand against the wiles of the devil.","excerptType":"quote","difficulty":2,"group":"favourites","verified":true}]}]},"roles":{"schemaVersion":1,"note":"Canonical = what Scripture says about the person. Gameplay = fictional mechanic invented for the game. Keep the two apart on cards and in the rulebook.","factions":{"town":{"name":"Town","victory":"Eliminate every traitor."},"traitor":{"name":"Traitors","victory":"Reach parity: traitors equal or outnumber everyone else (configurable)."}},"roles":[{"id":"traitor","character":"Judas Iscariot","title":"The Traitor","faction":"traitor","description":"Hidden among the town. Each night the traitors choose one person to eliminate, and by day they blend in.","ability":{"kind":"attack","text":"Each night, choose one non-traitor to eliminate.","nightPriority":30,"usage":"Every night while alive.","activation":"Night phase. With several traitors the group makes one joint choice."},"knowsAllies":true,"maxPerGame":4,"scripture":{"ref":"Matthew 26:14-16","type":"paraphrase","text":"Judas went to the chief priests and agreed to betray Jesus for thirty pieces of silver."},"canonical":"Judas Iscariot, one of the twelve disciples, betrayed Jesus (Matthew 26:14-16).","gameplay":"Night elimination and co-traitor knowledge are fictional game mechanics."},{"id":"protector","character":"Elijah","title":"The Protector","faction":"town","description":"Watches over one person each night. If the traitors strike that person, the attack fails.","ability":{"kind":"protect","text":"Each night, choose one living player to protect from elimination.","nightPriority":10,"usage":"Every night while alive. Self-protection and repeat protection follow the configured rules.","activation":"Night phase."},"knowsAllies":false,"maxPerGame":1,"scripture":{"ref":"1 Kings 19:5-8","type":"paraphrase","text":"An angel cared for Elijah in the wilderness, giving him bread and water."},"canonical":"Elijah the prophet was cared for by an angel in the wilderness (1 Kings 19:5-8).","gameplay":"Protecting other players is a fictional game mechanic."},{"id":"investigator","character":"Pontius Pilate","title":"The Investigator","faction":"town","description":"Examines one person each night and learns privately whether they are Town or Traitor.","ability":{"kind":"investigate","text":"Each night, choose one other living player and privately learn their faction.","nightPriority":20,"usage":"Every night while alive. The result is shown only to the Investigator.","activation":"Night phase."},"knowsAllies":false,"maxPerGame":1,"scripture":{"ref":"John 18:38","type":"paraphrase","text":"Pilate questioned Jesus, asking 'What is truth?', then told the crowd he found no fault in him."},"canonical":"Pontius Pilate, Roman governor of Judea, examined Jesus (John 18:33-38).","gameplay":"The nightly investigation is a fictional game mechanic and makes no claim about a biblical event."},{"id":"townsperson","character":"Disciple","title":"The Townsperson","faction":"town","description":"No special ability. Watch, listen, reason and vote.","ability":null,"knowsAllies":false,"maxPerGame":null,"scripture":null,"canonical":null,"gameplay":"A plain member of the town; the default role that fills remaining seats."}]},"mconf":{"schemaVersion":1,"provisional":true,"note":"Every value here is a provisional default awaiting your approval. Change values here, never in UI code.","players":{"min":5,"max":12,"recommendedMin":6,"smallGroupWarning":"Groups under 6 are swingy: one wrong vote can decide the game."},"estimatedMinutes":{"5-7":"15-20","8-10":"20-30","11-12":"30-40"},"distribution":{"5":{"traitor":1,"protector":1,"investigator":1},"6":{"traitor":1,"protector":1,"investigator":1},"7":{"traitor":2,"protector":1,"investigator":1},"8":{"traitor":2,"protector":1,"investigator":1},"9":{"traitor":2,"protector":1,"investigator":1},"10":{"traitor":3,"protector":1,"investigator":1},"11":{"traitor":3,"protector":1,"investigator":1},"12":{"traitor":3,"protector":1,"investigator":1}},"rules":{"selfProtect":true,"consecutiveProtect":false,"traitorSelection":"huddle","allowTraitorsTargetTraitors":false,"failedAttack":"quiet","revealOnElimination":"faction","tieRule":"runoff-then-none","allowAbstain":true,"allowSelfVote":false,"revealVoteDetails":false,"parity":"equal-or-more","discussionSeconds":null,"paceDeadRoleSteps":true},"options":{"traitorSelection":["huddle","vote"],"failedAttack":["quiet","saved"],"revealOnElimination":["none","faction","role"],"tieRule":["runoff-then-none","none","random"],"parity":["equal-or-more","majority"]}}};</script>
+<script>
+/*! Sealed word-pack engine. UMD: works in browsers (window.WordPacks) and Node (require). No dependencies. */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.WordPacks = factory();
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  // KJV/Protestant canon: book -> chapter count (used to reject impossible references).
+  var BOOKS = {
+    'Genesis':50,'Exodus':40,'Leviticus':27,'Numbers':36,'Deuteronomy':34,'Joshua':24,'Judges':21,'Ruth':4,
+    '1 Samuel':31,'2 Samuel':24,'1 Kings':22,'2 Kings':25,'1 Chronicles':29,'2 Chronicles':36,'Ezra':10,
+    'Nehemiah':13,'Esther':10,'Job':42,'Psalms':150,'Proverbs':31,'Ecclesiastes':12,'Song of Solomon':8,
+    'Isaiah':66,'Jeremiah':52,'Lamentations':5,'Ezekiel':48,'Daniel':12,'Hosea':14,'Joel':3,'Amos':9,
+    'Obadiah':1,'Jonah':4,'Micah':7,'Nahum':3,'Habakkuk':3,'Zephaniah':3,'Haggai':2,'Zechariah':14,'Malachi':4,
+    'Matthew':28,'Mark':16,'Luke':24,'John':21,'Acts':28,'Romans':16,'1 Corinthians':16,'2 Corinthians':13,
+    'Galatians':6,'Ephesians':6,'Philippians':4,'Colossians':4,'1 Thessalonians':5,'2 Thessalonians':3,
+    '1 Timothy':6,'2 Timothy':4,'Titus':3,'Philemon':1,'Hebrews':13,'James':5,'1 Peter':5,'2 Peter':3,
+    '1 John':5,'2 John':1,'3 John':1,'Jude':1,'Revelation':22
+  };
+  var ALIASES = { 'Psalm':'Psalms', 'Song of Songs':'Song of Solomon', 'Revelation of John':'Revelation' };
+  var SINGLE_CHAPTER = { 'Obadiah':1,'Philemon':1,'2 John':1,'3 John':1,'Jude':1 };
+
+  function norm(s) { return String(s).replace(/[‘’]/g, "'"); }
+
+  /** Parse "Book C", "Book C:V" or "Book C:V-V2". Returns null if malformed or impossible. */
+  function parseRef(ref) {
+    var m = /^((?:[1-3] )?[A-Z][A-Za-z]*(?: [a-z]+)?(?: [A-Z][a-z]+)?) (\d+)(?::(\d+)(?:-(\d+))?)?$/.exec(String(ref || '').trim());
+    if (!m) return null;
+    var book = ALIASES[m[1]] || m[1];
+    if (!BOOKS.hasOwnProperty(book)) return null;
+    var ch = +m[2];
+    if (ch < 1 || ch > BOOKS[book]) return null;
+    var v1 = m[3] ? +m[3] : null, v2 = m[4] ? +m[4] : null;
+    if (v1 !== null && v1 < 1) return null;
+    if (v2 !== null && v2 <= v1) return null;
+    return { book: book, chapter: ch, verse: v1, verseEnd: v2 };
+  }
+
+  /** Lowercased, accent-free, punctuation-free form for "is the word in the excerpt" and category-leak tests. */
+  function fold(s) {
+    return norm(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+
+  function validate(data) {
+    var errors = [], warnings = [];
+    var E = function (m) { errors.push(m); }, W = function (m) { warnings.push(m); };
+    if (!data || typeof data !== 'object') return { ok: false, errors: ['data is not an object'], warnings: warnings };
+    if (data.schemaVersion !== 1) E('schemaVersion must be 1');
+    if (!data.translation) E('translation missing');
+    if (!Array.isArray(data.packs) || !data.packs.length) { E('packs missing'); return { ok: false, errors: errors, warnings: warnings }; }
+    var ids = {}, packIds = {};
+    data.packs.forEach(function (p) {
+      if (!p.id || !/^[a-z0-9-]+$/.test(p.id)) E('bad pack id: ' + p.id);
+      if (packIds[p.id]) E('duplicate pack id ' + p.id); packIds[p.id] = 1;
+      if (!p.name) E(p.id + ': name missing');
+      if (!Array.isArray(p.words) || !p.words.length) { E(p.id + ': no words'); return; }
+      var d1 = 0, words = {}, groups = {};
+      p.words.forEach(function (w) {
+        var t = p.id + ' / ' + (w.word || '?') + ': ';
+        ['id','word','category','ref','excerpt','group'].forEach(function (k) { if (!w[k] || typeof w[k] !== 'string') E(t + k + ' missing'); });
+        if (w.id) { if (ids[w.id]) E(t + 'duplicate id'); ids[w.id] = 1; if (w.id.split('/')[0] !== p.id) E(t + 'id prefix must be pack id'); }
+        if (w.word) { var fw = fold(w.word); if (words[fw]) E(t + 'duplicate word in pack'); words[fw] = 1; }
+        if (!parseRef(w.ref)) E(t + 'invalid scripture reference "' + w.ref + '"');
+        if (w.excerptType !== 'quote' && w.excerptType !== 'paraphrase') E(t + 'excerptType must be quote|paraphrase');
+        if (w.excerpt && w.excerpt.length > 140) E(t + 'excerpt over 140 chars');
+        if (w.excerptType === 'paraphrase' && w.verified === true) W(t + 'paraphrase flagged verified; verified applies to quotes only');
+        if ([1, 2, 3].indexOf(w.difficulty) < 0) E(t + 'difficulty must be 1, 2 or 3');
+        if (w.difficulty === 1) d1++;
+        if (w.category && w.word && fold(w.category).split(' ').indexOf(fold(w.word)) >= 0 && fold(w.word).split(' ').length === 1) E(t + 'category leaks the word');
+        if (w.category && w.word && fold(w.category).indexOf(fold(w.word)) >= 0) E(t + 'category leaks the word');
+        (groups[w.group] = groups[w.group] || []).push(w);
+      });
+      if (d1 < 8) E(p.id + ': needs at least 8 difficulty-1 words (has ' + d1 + ')');
+      Object.keys(groups).forEach(function (g) {
+        var m = groups[g];
+        if (m.length < 3) E(p.id + ': group "' + g + '" has fewer than 3 words');
+        m.forEach(function (w) {
+          if (w.difficulty === 1 && !m.some(function (o) { return o !== w && o.difficulty === 1; }))
+            E(p.id + ' / ' + w.word + ': difficulty-1 word has no difficulty-1 decoy in its group');
+        });
+      });
+    });
+    return { ok: !errors.length, errors: errors, warnings: warnings };
+  }
+
+  function listPacks(data) {
+    return data.packs.map(function (p) {
+      var c = { 1: 0, 2: 0, 3: 0 };
+      p.words.forEach(function (w) { c[w.difficulty]++; });
+      return { id: p.id, name: p.name, description: p.description, total: p.words.length, byDifficulty: c };
+    });
+  }
+
+  /** Small seedable PRNG (mulberry32) so rounds are reproducible in tests. */
+  function seeded(seed) {
+    var a = seed >>> 0;
+    return function () {
+      a = (a + 0x6D2B79F5) >>> 0; var t = a;
+      t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function pick(arr, rng) { return arr[Math.floor(rng() * arr.length)]; }
+  function shuffle(arr, rng) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(rng() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+
+  /**
+   * Deal one round.
+   * opts: players (3+), impostors (default 1, must be < players/2), mode 'decoy' | 'noword',
+   *       maxDifficulty (1-3, default 3), rng, exclude (array of word ids already used),
+   *       showCategoryHint (noword mode only; default true).
+   * Returns { packId, wordId, mode, civilianWord, assignments:[{player, role, word, ref, excerpt, excerptType, hint}], startingPlayer }
+   * 'decoy': impostor receives a different word from the same group (and knows they are the impostor).
+   * 'noword': impostor receives no word, only the category hint (if enabled).
+   */
+  function dealRound(data, packId, opts) {
+    opts = opts || {};
+    var rng = opts.rng || Math.random, mode = opts.mode || 'decoy';
+    var players = opts.players, imp = opts.impostors == null ? 1 : opts.impostors;
+    var maxD = opts.maxDifficulty || 3;
+    if (mode !== 'decoy' && mode !== 'noword') throw new Error('mode must be decoy or noword');
+    if (!(players >= 3)) throw new Error('need at least 3 players');
+    if (!(imp >= 1) || imp * 2 >= players) throw new Error('impostors must be at least 1 and fewer than half the players');
+    var pack = data.packs.filter(function (p) { return p.id === packId; })[0];
+    if (!pack) throw new Error('unknown pack ' + packId);
+    var used = {}; (opts.exclude || []).forEach(function (id) { used[id] = 1; });
+    var pool = pack.words.filter(function (w) { return w.difficulty <= maxD; });
+    var fresh = pool.filter(function (w) { return !used[w.id]; });
+    if (!fresh.length) fresh = pool; // all used: recycle rather than fail
+    if (!fresh.length) throw new Error('no words at this difficulty in ' + packId);
+    var chosen = pick(fresh, rng);
+    var decoy = null;
+    if (mode === 'decoy') {
+      var mates = pool.filter(function (w) { return w.group === chosen.group && w.id !== chosen.id && fold(w.word) !== fold(chosen.word); });
+      if (!mates.length) mates = pack.words.filter(function (w) { return w.group === chosen.group && w.id !== chosen.id; });
+      if (!mates.length) throw new Error('no decoy available for ' + chosen.id);
+      decoy = pick(mates, rng);
+    }
+    var order = shuffle(Array.from({ length: players }, function (_, i) { return i; }), rng);
+    var impSet = {}; order.slice(0, imp).forEach(function (i) { impSet[i] = 1; });
+    var assignments = [];
+    for (var i = 0; i < players; i++) {
+      if (!impSet[i]) assignments.push({ player: i, role: 'civilian', word: chosen.word, ref: chosen.ref, excerpt: chosen.excerpt, excerptType: chosen.excerptType, hint: chosen.category });
+      else if (mode === 'decoy') assignments.push({ player: i, role: 'impostor', word: decoy.word, ref: decoy.ref, excerpt: decoy.excerpt, excerptType: decoy.excerptType, hint: decoy.category });
+      else assignments.push({ player: i, role: 'impostor', word: null, ref: null, excerpt: null, excerptType: null, hint: opts.showCategoryHint === false ? null : chosen.category });
+    }
+    return { packId: packId, wordId: chosen.id, mode: mode, civilianWord: chosen.word, assignments: assignments, startingPlayer: Math.floor(rng() * players) };
+  }
+
+  return { BOOKS: BOOKS, parseRef: parseRef, fold: fold, validate: validate, listPacks: listPacks, dealRound: dealRound, seeded: seeded };
+});
+
+</script>
+<script>
+/*! Bible Mafia engine. UMD, dependency-free, deterministic (seeded), UI-independent.
+ *  const M = createEngine(rolesJson, configJson);  let s = M.createGame({names, seed});
+ *  const r = M.dispatch(s, action);  // {ok, state} or {ok:false, error, state(unchanged)}
+ *  M.getView(s)            -> PUBLIC info only (safe to render on a shared screen)
+ *  M.getPrivateView(s)     -> info for whoever currently holds the phone; null while a neutral hand-off screen is showing
+ */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.BibleMafia = factory();
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+  var SCHEMA = 1;
+  var PHASES = ['reveal', 'night_intro', 'night', 'dawn', 'discussion', 'vote', 'vote_result', 'ended'];
+
+  function Reject(m) { this.message = m; }
+  function no(m) { throw new Reject(m); }
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+
+  function createEngine(rolesData, cfg) {
+    var ROLES = {}; rolesData.roles.forEach(function (r) { ROLES[r.id] = r; });
+    var R = cfg.rules;
+
+    // ---------- config / distribution ----------
+    function checkRules(rules) {
+      var errs = [], o = cfg.options;
+      Object.keys(o).forEach(function (k) { if (o[k].indexOf(rules[k]) < 0) errs.push('rules.' + k + ' must be one of ' + o[k].join('|')); });
+      ['selfProtect', 'consecutiveProtect', 'allowTraitorsTargetTraitors', 'allowAbstain', 'allowSelfVote', 'revealVoteDetails', 'paceDeadRoleSteps']
+        .forEach(function (k) { if (typeof rules[k] !== 'boolean') errs.push('rules.' + k + ' must be boolean'); });
+      if (rules.discussionSeconds !== null && !(rules.discussionSeconds > 0)) errs.push('rules.discussionSeconds must be null or > 0');
+      return errs;
+    }
+    function distributionFor(n) {
+      var d = cfg.distribution[String(n)];
+      if (!d) return null;
+      var out = {}, used = 0;
+      Object.keys(d).forEach(function (id) { out[id] = d[id]; used += d[id]; });
+      out.townsperson = n - used;
+      return out;
+    }
+    /** Config sanity: every supported player count must give a valid, winnable game. */
+    function validateConfig() {
+      var errs = checkRules(R);
+      for (var n = cfg.players.min; n <= cfg.players.max; n++) {
+        var d = distributionFor(n), t = 'players=' + n + ': ';
+        if (!d) { errs.push(t + 'no distribution'); continue; }
+        Object.keys(d).forEach(function (id) {
+          if (!ROLES[id]) errs.push(t + 'unknown role ' + id);
+          else {
+            if (d[id] < 0) errs.push(t + 'negative count for ' + id);
+            if (ROLES[id].maxPerGame != null && d[id] > ROLES[id].maxPerGame) errs.push(t + id + ' exceeds maxPerGame');
+          }
+        });
+        var tr = d.traitor || 0;
+        if (tr < 1) errs.push(t + 'needs at least one traitor');
+        if (tr * 2 >= n) errs.push(t + 'traitors must start as a minority (parity would already be reached)');
+        if (d.townsperson < 0) errs.push(t + 'more special roles than players');
+      }
+      return errs;
+    }
+    function describeDistribution(n) {
+      if (n < cfg.players.min || n > cfg.players.max) return { valid: false, error: 'Bible Mafia supports ' + cfg.players.min + '-' + cfg.players.max + ' players.' };
+      var d = distributionFor(n), list = Object.keys(d).filter(function (k) { return d[k] > 0; }).map(function (id) {
+        return { roleId: id, character: ROLES[id].character, title: ROLES[id].title, faction: ROLES[id].faction, count: d[id] };
+      });
+      return { valid: true, players: n, roles: list, traitors: d.traitor,
+        warning: n < cfg.players.recommendedMin ? cfg.players.smallGroupWarning : null };
+    }
+
+    // ---------- rng (state-stored so refresh/restore stays deterministic) ----------
+    function rand(s) {
+      s.rng = (s.rng + 0x6D2B79F5) >>> 0; var t = s.rng;
+      t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    }
+    function shuffle(s, a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(rand(s) * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+    // ---------- helpers ----------
+    function player(s, id) { return s.players.filter(function (p) { return p.id === id; })[0]; }
+    function alive(s) { return s.players.filter(function (p) { return p.alive; }); }
+    function roleOf(s, id) { return s.secret.roles[id]; }
+    function factionOf(s, id) { return ROLES[roleOf(s, id)].faction; }   // always from the real role, never from a display name
+    function pub(s, text, extra) { var e = extra || {}; e.round = s.round; e.text = text; s.log.push(e); }
+    function checkWin(s) {
+      var al = alive(s), tr = al.filter(function (p) { return factionOf(s, p.id) === 'traitor'; }).length, rest = al.length - tr;
+      if (tr === 0) return 'town';
+      if (R.parity === 'majority' ? tr > rest : tr >= rest) return 'traitor';
+      return null;
+    }
+    function kill(s, id, how) {
+      var p = player(s, id); if (!p || !p.alive) no('That player is already out.');
+      p.alive = false; p.outHow = how; p.outRound = s.round;
+      s.secret.history.push({ round: s.round, type: 'out', player: id, how: how });
+    }
+    function revealOf(s, id) {
+      var m = R.revealOnElimination;
+      if (m === 'none') return null;
+      return m === 'role' ? { faction: factionOf(s, id), roleId: roleOf(s, id) } : { faction: factionOf(s, id) };
+    }
+    function names(s, ids) { return ids.map(function (i) { return player(s, i).name; }); }
+
+    // ---------- create ----------
+    function createGame(opts) {
+      var nm = (opts.names || []).map(function (x) { return String(x == null ? '' : x).trim(); });
+      var n = nm.length;
+      if (n < cfg.players.min || n > cfg.players.max) no('Bible Mafia needs ' + cfg.players.min + '-' + cfg.players.max + ' players.');
+      if (nm.some(function (x) { return !x; })) no('Every player needs a name.');
+      var seen = {}; nm.forEach(function (x) { var k = x.toLowerCase(); if (seen[k]) no('Two players share the name "' + x + '". Use different names.'); seen[k] = 1; });
+      var cerr = validateConfig(); if (cerr.length) no('Invalid configuration: ' + cerr[0]);
+      var s = { schemaVersion: SCHEMA, rng: (opts.seed == null ? Math.floor(Math.random() * 4294967296) : opts.seed) >>> 0,
+        config: clone(cfg), phase: 'reveal', round: 1, winner: null,
+        players: nm.map(function (x, i) { return { id: 'p' + (i + 1), name: x, alive: true, outHow: null, outRound: null }; }),
+        secret: { roles: {}, lastProtected: null, result: null, history: [] },
+        turn: { player: null, handoff: true, stage: 'private' }, night: null, dawn: null, vote: null, log: [] };
+      var d = distributionFor(n), bag = [];
+      Object.keys(d).forEach(function (id) { for (var i = 0; i < d[id]; i++) bag.push(id); });
+      bag = shuffle(s, bag);
+      s.players.forEach(function (p, i) { s.secret.roles[p.id] = bag[i]; });
+      s.turn.player = s.players[0].id;
+      return s;
+    }
+
+    // ---------- night ----------
+    function buildSteps(s) {
+      var present = {}; s.players.forEach(function (p) { present[roleOf(s, p.id)] = 1; });
+      var steps = [];
+      Object.keys(ROLES).forEach(function (id) {
+        var r = ROLES[id]; if (!r.ability || !present[id]) return;
+        var actors = alive(s).filter(function (p) { return roleOf(s, p.id) === id; }).map(function (p) { return p.id; });
+        if (!actors.length && !R.paceDeadRoleSteps) return;
+        steps.push({ roleId: id, kind: r.ability.kind, priority: r.ability.nightPriority, dead: !actors.length,
+          ballotsNeeded: id === 'traitor' && R.traitorSelection === 'vote' ? actors.length : 1, targets: [], noTargets: false });
+      });
+      steps.sort(function (a, b) { return a.priority - b.priority; });
+      return steps;
+    }
+    function targetsFor(s, step) {
+      var al = alive(s).map(function (p) { return p.id; }), holder = alive(s).filter(function (p) { return roleOf(s, p.id) === step.roleId; })[0];
+      if (step.kind === 'attack') return al.filter(function (id) { return R.allowTraitorsTargetTraitors || factionOf(s, id) !== 'traitor'; });
+      if (step.kind === 'investigate') return al.filter(function (id) { return holder && id !== holder.id; });
+      if (step.kind === 'protect') return al.filter(function (id) {
+        if (!R.selfProtect && holder && id === holder.id) return false;
+        if (!R.consecutiveProtect && s.secret.lastProtected === id) return false;
+        return true;
+      });
+      return [];
+    }
+    function enterStep(s) {
+      var st = s.night.steps[s.night.stepIndex];
+      if (!st) return resolveNight(s);
+      st.targets = st.dead ? [] : targetsFor(s, st);
+      st.noTargets = !st.dead && !st.targets.length;
+      s.turn = { player: null, handoff: true, stage: 'private' };
+    }
+    function nextStep(s) { s.night.stepIndex++; s.secret.result = null; enterStep(s); }
+    function resolveNight(s) {
+      var n = s.night, protect = n.protect, attack = n.attack, saved = false, died = null;
+      // order: (1) protection is fixed, (2) attack applied, (3) win check
+      if (attack) {
+        if (protect && protect === attack) saved = true;
+        else { kill(s, attack, 'night'); died = attack; }
+      }
+      s.secret.lastProtected = protect;
+      s.secret.history.push({ round: s.round, type: 'night', attack: attack, protect: protect, investigate: n.investigate, saved: saved });
+      s.dawn = died ? { kind: 'death', player: died, reveal: revealOf(s, died) } : { kind: R.failedAttack === 'saved' && saved ? 'saved' : 'quiet' };
+      if (died) pub(s, player(s, died).name + ' was eliminated in the night.', { type: 'death', player: died, reveal: s.dawn.reveal });
+      else if (s.dawn.kind === 'saved') pub(s, 'The traitors struck, but their target survived.', { type: 'saved' });
+      else pub(s, 'The night passed quietly.', { type: 'quiet' });
+      s.winner = checkWin(s);
+      s.night = null; s.phase = 'dawn'; s.turn = { player: null, handoff: false, stage: 'private' };
+    }
+
+    // ---------- vote ----------
+    function startVote(s, candidates, runoff) {
+      s.phase = 'vote';
+      s.vote = { runoff: !!runoff, candidates: candidates, voters: alive(s).map(function (p) { return p.id; }), index: 0, ballots: {}, tally: null, outcome: null };
+      s.turn = { player: s.vote.voters[0], handoff: true, stage: 'private' };
+    }
+    function tallyVote(s) {
+      var v = s.vote, counts = {}, abstain = 0;
+      v.candidates.forEach(function (c) { counts[c] = 0; });
+      Object.keys(v.ballots).forEach(function (voter) { var t = v.ballots[voter]; if (t === null) abstain++; else counts[t]++; });
+      var max = 0; Object.keys(counts).forEach(function (c) { if (counts[c] > max) max = counts[c]; });
+      var top = Object.keys(counts).filter(function (c) { return counts[c] === max && max > 0; });
+      v.tally = { counts: counts, abstain: abstain };
+      var out;
+      if (!top.length) out = { kind: 'none', why: 'no votes' };
+      else if (top.length === 1) out = { kind: 'eliminate', player: top[0] };
+      else if (R.tieRule === 'random') out = { kind: 'eliminate', player: top[Math.floor(rand(s) * top.length)], byChance: true };
+      else if (R.tieRule === 'runoff-then-none' && !v.runoff) out = { kind: 'runoff', candidates: top };
+      else out = { kind: 'none', why: 'tie' };
+      v.outcome = out;
+      if (out.kind === 'eliminate') {
+        kill(s, out.player, 'vote'); out.reveal = revealOf(s, out.player);
+        pub(s, player(s, out.player).name + ' was voted out.', { type: 'vote_out', player: out.player, reveal: out.reveal });
+        s.winner = checkWin(s);
+      } else if (out.kind === 'runoff') pub(s, 'The vote was tied between ' + names(s, top).join(' and ') + '. A runoff follows.', { type: 'tie' });
+      else pub(s, out.why === 'tie' ? 'The vote was tied again. No one is eliminated.' : 'No one received votes. No one is eliminated.', { type: 'no_elimination' });
+      s.phase = 'vote_result'; s.turn = { player: null, handoff: false, stage: 'private' };
+    }
+
+    // ---------- reducer ----------
+    function reduce(s, a) {
+      if (!a || typeof a.type !== 'string') no('Unknown action.');
+      if (s.phase === 'ended') no('The game is over.');
+      var t = a.type, ph = s.phase;
+      if (t === 'HIDE') {   // re-covers a private screen (app backgrounded / page reloaded) without changing any game state
+        if (['reveal', 'night', 'vote'].indexOf(ph) < 0) no('Nothing private is showing.');
+        s.turn.handoff = true; return;
+      }
+      if (t === 'BEGIN_TURN') {
+        if (['reveal', 'night', 'vote'].indexOf(ph) < 0) no('Nothing to begin.');
+        if (!s.turn.handoff) no('This turn has already begun.');
+        if (ph !== 'night' && a.player !== s.turn.player) no('It is not that player’s turn.');
+        if (ph === 'night') { var st = s.night.steps[s.night.stepIndex]; if (st.dead) no('Nothing to do for this step; skip it.'); }
+        s.turn.handoff = false; return;
+      }
+      if (t === 'REVEAL_DONE') {
+        if (ph !== 'reveal' || s.turn.handoff || a.player !== s.turn.player) no('Cannot hide that role now.');
+        var i = s.players.findIndex(function (p) { return p.id === a.player; });
+        if (i === s.players.length - 1) { s.phase = 'night_intro'; s.turn = { player: null, handoff: false, stage: 'private' }; }
+        else s.turn = { player: s.players[i + 1].id, handoff: true, stage: 'private' };
+        return;
+      }
+      if (t === 'NIGHT_BEGIN') {
+        if (ph !== 'night_intro') no('It is not time for night.');
+        s.phase = 'night'; s.night = { steps: buildSteps(s), stepIndex: 0, ballots: [], attack: null, protect: null, investigate: null };
+        enterStep(s); return;
+      }
+      if (ph === 'night') {
+        var step = s.night.steps[s.night.stepIndex];
+        if (t === 'NIGHT_SKIP') {
+          if (!(step.dead || step.noTargets)) no('This step cannot be skipped.');
+          if (!s.turn.handoff && !step.dead) no('Step already begun.');
+          nextStep(s); return;
+        }
+        if (t === 'NIGHT_ACTION') {
+          if (s.turn.handoff || step.dead || s.turn.stage !== 'private') no('No action is expected right now.');
+          if (step.targets.indexOf(a.target) < 0) no('That is not a legal target.');
+          if (step.kind === 'protect') { s.night.protect = a.target; nextStep(s); }
+          else if (step.kind === 'investigate') {
+            s.night.investigate = a.target;
+            s.secret.result = { target: a.target, faction: factionOf(s, a.target) };
+            s.turn.stage = 'result';
+          } else if (step.kind === 'attack') {
+            s.night.ballots.push(a.target);
+            if (s.night.ballots.length >= step.ballotsNeeded) {
+              var cnt = {}; s.night.ballots.forEach(function (b) { cnt[b] = (cnt[b] || 0) + 1; });
+              var mx = Math.max.apply(null, Object.keys(cnt).map(function (k) { return cnt[k]; }));
+              var top = Object.keys(cnt).filter(function (k) { return cnt[k] === mx; });
+              s.night.attack = top[top.length === 1 ? 0 : Math.floor(rand(s) * top.length)];
+              nextStep(s);
+            } else s.turn = { player: null, handoff: true, stage: 'private' };
+          }
+          return;
+        }
+        if (t === 'NIGHT_ACK') {
+          if (s.turn.stage !== 'result' || s.turn.handoff) no('Nothing to acknowledge.');
+          nextStep(s); return;
+        }
+        no('That action is not allowed at night.');
+      }
+      if (t === 'DAWN_CONTINUE') {
+        if (ph !== 'dawn') no('It is not dawn.');
+        if (s.winner) { s.phase = 'ended'; return; }
+        s.phase = 'discussion'; s.dawn = null; return;
+      }
+      if (t === 'PLAYER_LEAVES') {
+        if (ph !== 'discussion') no('A player can only leave between the night and the vote.');
+        var p = player(s, a.player); if (!p || !p.alive) no('That player is not in the game.');
+        kill(s, a.player, 'left'); pub(s, p.name + ' left the game.', { type: 'left', player: a.player });
+        s.winner = checkWin(s); if (s.winner) s.phase = 'ended'; return;
+      }
+      if (t === 'DISCUSSION_DONE') {
+        if (ph !== 'discussion') no('Not in discussion.');
+        startVote(s, alive(s).map(function (p) { return p.id; }), false); return;
+      }
+      if (ph === 'vote') {
+        if (t === 'VOTE') {
+          var v = s.vote;
+          if (s.turn.handoff) no('Hand the phone to the voter first.');
+          if (a.voter !== s.turn.player) no('It is not that player’s turn to vote.');
+          if (Object.prototype.hasOwnProperty.call(v.ballots, a.voter)) no('That player has already voted.');
+          var tgt = a.target === undefined ? null : a.target;
+          if (tgt === null) { if (!R.allowAbstain) no('Abstaining is not allowed.'); }
+          else {
+            if (v.candidates.indexOf(tgt) < 0) no('That player cannot be voted for.');
+            if (!R.allowSelfVote && tgt === a.voter) no('You cannot vote for yourself.');
+            if (!player(s, tgt).alive) no('That player is out.');
+          }
+          v.ballots[a.voter] = tgt; v.index++;
+          if (v.index >= v.voters.length) tallyVote(s);
+          else s.turn = { player: v.voters[v.index], handoff: true, stage: 'private' };
+          return;
+        }
+        no('That action is not allowed during voting.');
+      }
+      if (t === 'VOTE_CONTINUE') {
+        if (ph !== 'vote_result') no('No vote result to continue from.');
+        var out = s.vote.outcome;
+        if (out.kind === 'runoff') { startVote(s, out.candidates, true); return; }
+        if (s.winner) { s.phase = 'ended'; s.vote = null; return; }
+        s.round++; s.vote = null; s.phase = 'night_intro'; s.turn = { player: null, handoff: false, stage: 'private' }; return;
+      }
+      no('That action is not allowed right now.');
+    }
+
+    function dispatch(state, action) {
+      var s = clone(state);
+      try { reduce(s, action); return { ok: true, state: s }; }
+      catch (e) { if (e instanceof Reject) return { ok: false, error: e.message, state: state }; throw e; }
+    }
+
+    // ---------- views ----------
+    function publicPlayers(s) {
+      return s.players.map(function (p) {
+        var rv = null;
+        if (!p.alive && p.outHow !== 'left') rv = revealOf(s, p.id);
+        if (s.phase === 'ended') rv = { faction: factionOf(s, p.id), roleId: roleOf(s, p.id) };
+        return { id: p.id, name: p.name, alive: p.alive, outHow: p.outHow, revealed: rv };
+      });
+    }
+    /** Safe for a shared screen. Never contains roles of living players, targets, protection or investigation results. */
+    function getView(s) {
+      var v = { phase: s.phase, round: s.round, players: publicPlayers(s), log: s.log.slice(), winner: s.phase === 'ended' ? s.winner : null,
+        discussionSeconds: R.discussionSeconds, handoff: s.turn.handoff };
+      if (s.phase === 'reveal' || s.phase === 'vote') { v.turnPlayer = s.turn.player ? player(s, s.turn.player).name : null; v.turnPlayerId = s.turn.player; }
+      if (s.phase === 'night') {
+        var st = s.night.steps[s.night.stepIndex];
+        // Dead-role and live-role steps look identical here so timing cannot leak who is alive.
+        v.night = { stepIndex: s.night.stepIndex, stepCount: s.night.steps.length, wake: ROLES[st.roleId].title, canSkip: st.dead || st.noTargets };
+        if (st.dead) v.night.canSkip = true;
+      }
+      if (s.phase === 'dawn') v.dawn = s.dawn.kind === 'death' ? { kind: 'death', player: player(s, s.dawn.player).name, revealed: s.dawn.reveal } : { kind: s.dawn.kind };
+      if (s.phase === 'vote') v.voteProgress = { done: s.vote.index, total: s.vote.voters.length, runoff: s.vote.runoff, candidates: s.vote.candidates.slice() };
+      if (s.phase === 'vote_result') {
+        var o = s.vote.outcome;
+        v.voteResult = { kind: o.kind, tally: s.vote.tally.counts, abstain: s.vote.tally.abstain, runoff: s.vote.runoff,
+          eliminated: o.kind === 'eliminate' ? player(s, o.player).name : null, reveal: o.reveal || null, tied: o.kind === 'runoff' ? names(s, o.candidates) : null };
+        if (R.revealVoteDetails) v.voteResult.ballots = s.vote.ballots;
+      }
+      return v;
+    }
+    function roleCard(id) {
+      var r = ROLES[id]; return { roleId: id, character: r.character, title: r.title, faction: r.faction, description: r.description,
+        ability: r.ability ? r.ability.text : null, scripture: r.scripture, canonical: r.canonical, gameplay: r.gameplay };
+    }
+    /** Info for the person holding the phone right now; null during neutral hand-off screens and in all non-private phases. */
+    function getPrivateView(s) {
+      if (s.turn.handoff) return null;
+      if (s.phase === 'reveal') {
+        var id = s.turn.player, card = roleCard(roleOf(s, id));
+        card.you = player(s, id).name;
+        if (ROLES[roleOf(s, id)].knowsAllies) card.allies = s.players.filter(function (p) { return p.id !== id && factionOf(s, p.id) === 'traitor'; }).map(function (p) { return p.name; });
+        return { kind: 'role', card: card };
+      }
+      if (s.phase === 'night') {
+        var st = s.night.steps[s.night.stepIndex]; if (st.dead) return null;
+        if (s.turn.stage === 'result') {
+          var res = s.secret.result;
+          return { kind: 'investigation', target: player(s, res.target).name, faction: res.faction, factionName: rolesData.factions[res.faction].name };
+        }
+        var pv = { kind: st.kind, role: roleCard(st.roleId), targets: st.targets.map(function (i) { return { id: i, name: player(s, i).name }; }) };
+        if (st.kind === 'attack') {
+          pv.allies = alive(s).filter(function (p) { return factionOf(s, p.id) === 'traitor'; }).map(function (p) { return p.name; });
+          pv.ballot = s.night.ballots.length + 1; pv.ballotsNeeded = st.ballotsNeeded; pv.mode = R.traitorSelection;
+        }
+        return pv;
+      }
+      if (s.phase === 'vote') {
+        return { kind: 'vote', voter: player(s, s.turn.player).name, voterId: s.turn.player, runoff: s.vote.runoff,
+          options: s.vote.candidates.filter(function (c) { return R.allowSelfVote || c !== s.turn.player; }).map(function (c) { return { id: c, name: player(s, c).name }; }),
+          canAbstain: R.allowAbstain };
+      }
+      return null;
+    }
+    /** Only available once the game has ended. */
+    function getEndSummary(s) {
+      if (s.phase !== 'ended') no('The game is still in progress.');
+      return { winner: s.winner, winnerName: rolesData.factions[s.winner].name, rounds: s.round,
+        players: s.players.map(function (p) { return { name: p.name, alive: p.alive, outHow: p.outHow, outRound: p.outRound, role: roleCard(roleOf(s, p.id)) }; }),
+        publicLog: s.log.slice(),
+        secretLog: s.secret.history.map(function (h) {
+          if (h.type === 'out') return { round: h.round, type: 'out', player: player(s, h.player).name, how: h.how };
+          return { round: h.round, type: 'night', attack: h.attack && player(s, h.attack).name, protect: h.protect && player(s, h.protect).name,
+            investigate: h.investigate && player(s, h.investigate).name, saved: h.saved };
+        }) };
+    }
+
+    // ---------- persistence ----------
+    function serialize(s) { return JSON.stringify(s); }
+    /** Returns {ok, state} or {ok:false, error}. Rejects anything that fails basic invariants rather than loading a corrupt game. */
+    function restore(json) {
+      var s; try { s = JSON.parse(json); } catch (e) { return { ok: false, error: 'Saved game is unreadable.' }; }
+      function bad(m) { return { ok: false, error: 'Saved game is not valid: ' + m }; }
+      if (!s || s.schemaVersion !== SCHEMA) return bad('wrong version');
+      if (PHASES.indexOf(s.phase) < 0) return bad('unknown phase');
+      if (!Array.isArray(s.players) || s.players.length < cfg.players.min || s.players.length > cfg.players.max) return bad('player count');
+      if (!s.secret || !s.secret.roles) return bad('roles missing');
+      var cnt = {}; for (var i = 0; i < s.players.length; i++) {
+        var r = s.secret.roles[s.players[i].id]; if (!ROLES[r]) return bad('unknown role'); cnt[r] = (cnt[r] || 0) + 1;
+      }
+      var d = distributionFor(s.players.length); for (var k in d) if ((cnt[k] || 0) !== d[k]) return bad('role counts');
+      if (!(s.round >= 1)) return bad('round');
+      if (s.phase !== 'ended' && s.winner === null && checkWin(s)) return bad('game should already be over');
+      if (s.phase === 'night' && (!s.night || !s.night.steps[s.night.stepIndex])) return bad('night state');
+      if (s.phase === 'vote' && !s.vote) return bad('vote state');
+      return { ok: true, state: s };
+    }
+
+    return { validateConfig: validateConfig, describeDistribution: describeDistribution, createGame: function (o) {
+        try { return { ok: true, state: createGame(o) }; } catch (e) { if (e instanceof Reject) return { ok: false, error: e.message }; throw e; } },
+      dispatch: dispatch, getView: getView, getPrivateView: getPrivateView, getEndSummary: function (s) {
+        try { return { ok: true, summary: getEndSummary(s) }; } catch (e) { if (e instanceof Reject) return { ok: false, error: e.message }; throw e; } },
+      serialize: serialize, restore: restore, roles: ROLES, config: cfg };
+  }
+  return { createEngine: createEngine };
+});
+
+</script>
+<script>
+(function(){
+'use strict';
+/* ===== core: data, storage, helpers, art, router ===== */
+const D = window.ODD_DATA, WP = window.WordPacks, MF = window.BibleMafia.createEngine(D.roles, D.mconf);
+const $ = (s, r) => (r || document).querySelector(s), $$ = (s, r) => [...(r || document).querySelectorAll(s)];
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const html2el = h => { const t = document.createElement('template'); t.innerHTML = h.trim(); return t.content.firstElementChild; };
+const fmt = s => Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const KEY = 'oddDisciple.v1';
+
+/* ---- storage (private-mode safe) ---- */
+let mem = {};
+const store = {
+  load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return mem; } },
+  save(o) { mem = o; try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) { } }
+};
+const DB = Object.assign({ settings: {}, imp: null, mafia: null, recent: [] }, store.load());
+const persist = () => store.save(DB);
+const DEFAULTS = { count: 5, names: [], packId: 'all', diff: 1, mode: 'decoy', hint: true, timerMin: 3, mfCount: 7, mfNames: [] };
+const ST = Object.assign({}, DEFAULTS, DB.settings); DB.settings = ST;
+const nameFor = (arr, i) => (arr[i] && arr[i].trim()) || 'Player ' + (i + 1);
+
+/* ---- icons / art ---- */
+const IC = { back: '<path d="M15 5l-7 7 7 7"/>', minus: '<path d="M6 12h12"/>', plus: '<path d="M12 6v12M6 12h12"/>', close: '<path d="M6 6l12 12M18 6L6 18"/>' };
+const ic = n => `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${IC[n]}</svg>`;
+let UID = 0;
+function mask(col, fill) {
+  const id = 'm' + (++UID);
+  return `<svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${fill[0]}"/><stop offset="1" stop-color="${fill[1]}"/></linearGradient></defs>
+ <path d="M18 20C18 12 32 8 50 8s32 4 32 12v26c0 24-14 42-32 46-18-4-32-22-32-46Z" fill="url(#${id})" stroke="${col}" stroke-width="2.4" stroke-linejoin="round"/>
+ <path d="M27 40c6-6 14-6 20 2-6 8-14 8-20-2ZM73 40c-6-6-14-6-20 2 6 8 14 8 20-2Z" fill="#04101f" stroke="${col}" stroke-width="1.6"/>
+ <path d="M50 46v14M42 74c5 4 11 4 16 0" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round"/>
+ <path d="M24 26c8-5 18-6 26-6M76 26c-8-5-18-6-26-6" fill="none" stroke="${col}" stroke-width="1.2" opacity=".6"/></svg>`;
+}
+const crown = () => `<svg class="crown" viewBox="0 0 62 34" aria-hidden="true"><path d="M4 30L8 8l14 12L31 4l9 16L54 8l4 22Z" fill="#2a0a12" stroke="#ff3b4e" stroke-width="2" stroke-linejoin="round"/><g fill="#ff3b4e"><circle cx="8" cy="7" r="2.4"/><circle cx="31" cy="3.4" r="2.4"/><circle cx="54" cy="7" r="2.4"/></g></svg>`;
+const people = () => `<svg viewBox="0 0 46 34" fill="currentColor" aria-hidden="true"><circle cx="23" cy="9" r="6"/><path d="M12 30c0-7 5-11 11-11s11 4 11 11Z"/><circle cx="8" cy="13" r="4.4" opacity=".8"/><path d="M0 28c0-5 3-8 8-8 2 0 3.4.4 4.5 1.2-2 2-3.2 4.6-3.5 6.8Z" opacity=".8"/><circle cx="38" cy="13" r="4.4" opacity=".8"/><path d="M46 28c0-5-3-8-8-8-2 0-3.4.4-4.5 1.2 2 2 3.2 4.6 3.5 6.8Z" opacity=".8"/></svg>`;
+function landscape(vb) {
+  const id = 'l' + (++UID); let st = '';
+  [[24, 60], [330, 40], [88, 24], [300, 110], [60, 150], [352, 150], [150, 36], [250, 22], [18, 120], [372, 86], [120, 92], [270, 70]].forEach(([x, y], i) => st += `<circle cx="${x}" cy="${y}" r="${i % 3 ? .8 : 1.2}" fill="#bfe8ff" opacity="${(.35 + (i % 4) * .12).toFixed(2)}"/>`);
+  return `<svg class="land" viewBox="${vb || '0 0 390 350'}" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>
+ <radialGradient id="${id}g" cx="50%" cy="34%" r="52%"><stop offset="0" stop-color="#38d5ff" stop-opacity=".55"/><stop offset=".45" stop-color="#1b6fb8" stop-opacity=".22"/><stop offset="1" stop-color="#0a1c3a" stop-opacity="0"/></radialGradient>
+ <linearGradient id="${id}f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#040813" stop-opacity="0"/><stop offset="1" stop-color="#040813" stop-opacity="1"/></linearGradient>
+ <linearGradient id="${id}r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d2547"/><stop offset="1" stop-color="#050b18"/></linearGradient></defs>
+ ${st}<ellipse cx="195" cy="120" rx="190" ry="130" fill="url(#${id}g)"/>
+ <path d="M195 112L150 250H240Z" fill="#38d5ff" opacity=".07"/>
+ <path d="M0 176L34 160L70 176L112 146L158 138L195 124L236 140L282 150L322 138L356 160L390 150V350H0Z" fill="url(#${id}r)"/>
+ <path d="M0 176L34 160L70 176L112 146L158 138L195 124L236 140L282 150L322 138L356 160L390 150" fill="none" stroke="#38d5ff" stroke-width="1.4" opacity=".7"/>
+ <path d="M0 252L46 226L92 244L146 214L195 206L252 220L304 238L352 218L390 238V350H0Z" fill="#040a15"/>
+ <path d="M0 252L46 226L92 244L146 214L195 206L252 220L304 238L352 218L390 238" fill="none" stroke="#38d5ff" stroke-width="1" opacity=".35"/>
+ <g fill="#02060e"><path d="M190 124V92h10v32Z"/><path d="M180 100h30v9h-30Z"/></g>
+ <g fill="none" stroke="#9fe9ff" stroke-width="1.4" opacity=".95" filter="drop-shadow(0 0 6px #38d5ff)"><path d="M195 82V126M182 98H208"/></g>
+ <rect x="0" y="250" width="390" height="100" fill="url(#${id}f)"/></svg>`;
+}
+/* original line emblems for Bible Mafia roles (placeholders until commissioned art exists) */
+const EMB = {
+  traitor: '<circle cx="38" cy="60" r="22"/><circle cx="62" cy="42" r="22"/><circle cx="62" cy="42" r="14" opacity=".5"/><path d="M62 34v16M55 42h14" opacity=".8"/>',
+  protector: '<path d="M50 6c6 18 28 28 28 52a28 28 0 0 1-56 0c0-14 6-24 16-34 2 10 6 16 12 18-3-14-2-26 0-36Z"/><path d="M50 52c-6 8-10 14-4 22 5 6 13 0 12-8-1-6-5-8-8-14Z" opacity=".7"/>',
+  investigator: '<path d="M12 44h76c0 24-16 42-38 42S12 68 12 44Z"/><path d="M8 44h84"/><path d="M50 8c-7 10-9 15-9 19a9 9 0 0 0 18 0c0-4-2-9-9-19Z"/><path d="M32 94h36" opacity=".6"/>',
+  townsperson: '<path d="M16 62c0-12 14-18 32-18 9 0 15 2 21 6l15-8-3 14c0 14-14 24-35 24S16 76 16 62Z"/><path d="M50 44c-6-9-6-16 0-24 6 8 6 15 0 24Z"/>'
+};
+const emb = (id, cls) => `<svg class="${cls || 'emb'}" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${EMB[id] || EMB.townsperson}</svg>`;
+const MOON = `<svg class="moon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M62 12a38 38 0 1 0 26 66A34 34 0 0 1 62 12Z"/><g stroke-width="1.8" opacity=".8"><path d="M78 26v8M74 30h8"/><path d="M88 52v5M85.500 54.500h5"/></g></svg>`;
+const SUN = `<svg class="moon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle cx="50" cy="56" r="18"/><path d="M8 80h84M50 22v10M20 36l7 7M80 36l-7 7M10 58h10M80 58h10" /></svg>`;
+
+/* ---- screen router ---- */
+const stage = $('#stage');
+let timers = [], tick = null;
+const T = (f, ms) => { const id = setTimeout(f, ms * (RM ? .35 : 1)); timers.push(id); return id; };
+const cur = () => stage.querySelector('.scr:not(.leave)');
+const A = { screen: 'home', sheet: null, dlg: null, U: {} };   // A.U = UI-only scratch (never persisted)
+const SCR = {};
+function fitTitles(root) {
+  $$('[data-fit]', root).forEach(w => {
+    const s = w.firstElementChild; let fs = +w.dataset.fit; s.style.fontSize = fs + 'px';
+    const max = w.clientWidth || 300; let g = 0;
+    while (s.offsetWidth > max && fs > 20 && g++ < 60) { fs -= 2; s.style.fontSize = fs + 'px'; }
+  });
+}
+function overlay() { return (A.sheet ? SHEET(A.sheet) : '') + (A.dlg ? DIALOG(A.dlg) : ''); }
+function view() { const h = SCR[A.screen](); return h.replace(/<\/div>\s*$/, '') + overlay() + '</div>'; }
+function focusHead(el) { const h = $('.ptitle,h2,h1', el); if (h) { h.setAttribute('tabindex', '-1'); try { h.focus({ preventScroll: true }); } catch (e) { } } }
+function mount(anim = true) {
+  timers.forEach(clearTimeout); timers = []; stopTimer();
+  const el = html2el(view()), old = cur();
+  if (old && anim) { el.classList.add('enter'); old.classList.add('leave'); stage.appendChild(el); setTimeout(() => old.remove(), 420); setTimeout(() => el.classList.remove('enter'), 700); }
+  else stage.replaceChildren(el);
+  fitTitles(el); focusHead(el); after(false);
+}
+function patch() {   // re-render in place, no transition (keeps scroll position)
+  const old = cur(), sc = old && $('.scroll', old), top = sc ? sc.scrollTop : 0;
+  const el = html2el(view()); old.replaceWith(el); fitTitles(el);
+  const sc2 = $('.scroll', el); if (sc2) sc2.scrollTop = top; after(true);
+}
+function go(name, extra) { A.screen = name; A.sheet = null; A.dlg = null; Object.assign(A.U, extra || {}); mount(true); }
+function startTimer() {
+  stopTimer(); tick = setInterval(() => { if (typeof onTick === 'function') onTick(); }, 500);
+}
+function stopTimer() { if (tick) { clearInterval(tick); tick = null; } }
+let onTick = null;
+function toast(msg) { const t = html2el(`<div class="toast" role="status">${esc(msg)}</div>`); stage.appendChild(t); setTimeout(() => t.remove(), 2200); }
+const bible = r => (r.paraphrase || r.excerptType === 'paraphrase') ? 'Paraphrase' : 'KJV';
+
+/* ---- privacy: when the app is hidden, cover any secret that is on screen ---- */
+document.addEventListener('visibilitychange', () => { if (document.hidden && typeof coverSecrets === 'function') coverSecrets(); });
+addEventListener('pagehide', () => { if (typeof coverSecrets === 'function') coverSecrets(); });
+/* ---- stop the browser's Back gesture from walking out of (or back through) a game ---- */
+try { history.replaceState({ od: 1 }, ''); history.pushState({ od: 2 }, ''); addEventListener('popstate', () => { history.pushState({ od: 2 }, ''); if (A.screen !== 'home' && !A.dlg) { A.dlg = { kind: 'back' }; patch(); } }); } catch (e) { }
+
+/* ===== Impostor game (The Odd Disciple) ===== */
+const IMP_MIN = 3, IMP_MAX = 10;
+const DIFFS = [[1, 'Beginner'], [2, 'Standard'], [3, 'Hard']];
+const packOptions = () => [['all', 'All packs']].concat(D.packs.packs.map(p => [p.id, p.name]));
+let I = DB.imp;   // {screen, seat, stage, sel, vote, endsAt, left, deal, players, timerMin, mode}
+
+function impNames() { return Array.from({ length: ST.count }, (_, i) => nameFor(ST.names, i)); }
+function impDeal(names) {
+  let pid = ST.packId;
+  const ok = p => p.words.some(w => w.difficulty <= ST.diff);
+  if (pid === 'all' || !D.packs.packs.some(p => p.id === pid)) { const pool = D.packs.packs.filter(ok); pid = pool[Math.floor(Math.random() * pool.length)].id; }
+  const deal = WP.dealRound(D.packs, pid, { players: names.length, impostors: 1, mode: ST.mode, maxDifficulty: ST.diff, exclude: DB.recent, showCategoryHint: ST.hint });
+  DB.recent = DB.recent.concat(deal.wordId).slice(-80);
+  const w = D.packs.packs.find(p => p.id === pid).words.find(x => x.id === deal.wordId);
+  deal.decoyWord = deal.assignments.find(a => a.role === 'impostor').word;
+  deal.packName = D.packs.packs.find(p => p.id === pid).name; deal.category = w.category; deal.ref = w.ref; deal.excerpt = w.excerpt; deal.excerptType = w.excerptType;
+  return deal;
+}
+function impSave() { DB.imp = I; persist(); }
+function impStart() {
+  const names = impNames(); ST.names = names; persist();
+  I = { seat: 0, stage: 'role', sel: -1, vote: -1, endsAt: 0, left: 0, deal: impDeal(names), players: names, timerMin: ST.timerMin, verdictStage: 0 };
+  impSave(); go('imp-pass');
+}
+function impLeft() { return I.endsAt ? Math.max(0, Math.ceil((I.endsAt - Date.now()) / 1000)) : I.left; }
+const impIdx = () => I.deal.assignments.findIndex(a => a.role === 'impostor');
+const refLine = (ref, type) => `– ${esc(ref)} <span class="tag-p">${type === 'paraphrase' ? 'Paraphrase' : 'KJV'}</span>`;
+
+SCR['imp-setup'] = () => {
+  const n = ST.count, curPack = D.packs.packs.find(p => p.id === ST.packId);
+  const avail = ST.packId === 'all' ? D.packs.packs.reduce((a, p) => a + p.words.filter(w => w.difficulty <= ST.diff).length, 0) : (curPack ? curPack.words.filter(w => w.difficulty <= ST.diff).length : 0);
+  return `<div class="scr setup">
+ <div class="hdr"><button data-act="home" aria-label="Back to home">${ic('back')}</button><h2 class="ptitle" style="font-size:22px">New Game</h2><span></span></div>
+ <div class="scroll grow">
+  <div class="prow"><p class="lbl">Players <small>(${IMP_MIN}–${IMP_MAX})</small></p><div class="stepper"><button data-act="ipm" aria-label="Fewer players" ${n <= IMP_MIN ? 'disabled' : ''}>${ic('minus')}</button><output aria-live="polite">${n}</output><button data-act="ipp" aria-label="More players" ${n >= IMP_MAX ? 'disabled' : ''}>${ic('plus')}</button></div></div>
+  <p class="lbl">Player Names</p>
+  <div class="names">${Array.from({ length: n }, (_, i) => `<div class="nrow"><b>${i + 1}</b><input data-name="ist" data-i="${i}" value="${esc(ST.names[i] || '')}" placeholder="Player ${i + 1}" maxlength="14" autocomplete="off" autocapitalize="words" aria-label="Player ${i + 1} name"></div>`).join('')}</div>
+  <label class="lbl" for="pack">Word Pack</label>
+  <select id="pack" data-sel="packId">${packOptions().map(([v, l]) => `<option value="${v}" ${ST.packId === v ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select>
+  <p class="lbl">Difficulty</p>
+  <div class="seg" role="group" aria-label="Difficulty">${DIFFS.map(([v, l]) => `<button data-act="idiff" data-v="${v}" aria-pressed="${ST.diff === v}">${l}</button>`).join('')}</div>
+  <p class="hint">${ST.diff === 1 ? 'Well-known people, places and stories only.' : ST.diff === 2 ? 'Adds moderately familiar words.' : 'Includes harder, less familiar words.'} ${avail} words available.</p>
+  <p class="lbl">The impostor</p>
+  <div class="seg" role="group" aria-label="Impostor mode"><button data-act="imode" data-v="decoy" aria-pressed="${ST.mode === 'decoy'}">Gets a similar word</button><button data-act="imode" data-v="noword" aria-pressed="${ST.mode === 'noword'}">Gets no word</button></div>
+  <p class="hint">${ST.mode === 'decoy' ? 'The impostor knows their role but holds a different word from the same group, so they can bluff.' : 'The impostor sees only a category hint' + (ST.hint ? '.' : ', or nothing.')}</p>
+  ${ST.mode === 'noword' ? `<div class="seg" role="group" aria-label="Category hint"><button data-act="ihint" data-v="1" aria-pressed="${ST.hint}">Show category hint</button><button data-act="ihint" data-v="0" aria-pressed="${!ST.hint}">No hint</button></div>` : ''}
+  <label class="lbl" for="tmr">Discussion Timer</label>
+  <select id="tmr" data-sel="timerMin">${[1, 2, 3, 5].map(m => `<option value="${m}" ${ST.timerMin === m ? 'selected' : ''}>${m} ${m === 1 ? 'minute' : 'minutes'}</option>`).join('')}</select>
+ </div>
+ <div class="foot"><button class="btn pri" data-act="istart" ${avail ? '' : 'disabled'}>Start Game</button></div></div>`;
+};
+SCR['imp-pass'] = () => {
+  const n = I.players[I.seat], tot = I.players.length;
+  return `<div class="scr handoff"><h2 class="ptitle">Pass to ${esc(n)}</h2><div class="orn"><i></i></div>
+ <div class="av" aria-hidden="true">${esc(n.charAt(0).toUpperCase())}</div><div class="avn">${esc(n)}</div>
+ <p class="big">${esc(n)}, it’s your turn<br>to reveal your secret.</p>
+ <button class="btn pri" data-act="ireveal">Reveal my secret</button><div class="grow"></div>
+ <div class="pips" aria-label="Player ${I.seat + 1} of ${tot}">${I.players.map((_, k) => `<i class="${k <= I.seat ? 'on' : ''}"></i>`).join('')}</div>
+ <div class="note" style="margin-top:0">Everyone else, look away.</div></div>`;
+};
+SCR['imp-secret'] = () => {
+  const i = I.seat, a = I.deal.assignments[i], last = i === I.players.length - 1;
+  const go = last ? 'Hide and start discussion' : 'Hide and pass phone', sub = last ? `You have ${I.timerMin}:00 to talk` : 'Keep this secret. Don’t let them know.';
+  const isImp = a.role === 'impostor';
+  if (isImp && I.stage === 'role') return `<div class="scr secret"><h2 class="ptitle">Your Secret</h2><div class="orn"><i></i></div>
+  <div class="frame flare"><div class="you" style="margin-top:0">You are the</div><div class="role">IMPOSTOR</div><div class="mk">${mask('#7fe3ff', ['#12365c', '#07162b'])}</div><p>${ST.mode === 'decoy' && I.deal.mode === 'decoy' ? 'You know a different word<br>than the others.' : 'You have no word.<br>Listen closely and blend in.'}</p></div>
+  <div class="grow"></div><button class="btn pri" data-act="ishow">${I.deal.mode === 'decoy' ? 'Show my word' : 'Show my hint'}</button><div class="note">Keep this secret. Don’t let them know.</div></div>`;
+  if (isImp) return `<div class="scr secret"><h2 class="ptitle">Your Secret</h2><div class="orn"><i></i></div>
+  <div class="parch"><div class="mk">${mask('#1d140a', ['#2e2112', '#1a1209'])}</div><div class="y">You are the<b>IMPOSTOR</b></div><div class="rule"></div>
+  ${a.word ? `<div class="yw">Your word is:</div><div class="ww">${esc(a.word.toUpperCase())}</div>` : `<div class="yw">${a.hint ? 'Your hint:' : 'No word, no hint.'}</div><div class="ww" style="font-size:${a.hint ? 22 : 18}px">${a.hint ? esc(a.hint.toUpperCase()) : 'LISTEN AND BLEND IN'}</div>`}</div>
+  <div class="grow"></div><button class="btn pri" data-act="ipass">${go}</button><div class="note">${sub}</div></div>`;
+  return `<div class="scr secret"><h2 class="ptitle">Your Word</h2><div class="orn"><i></i></div>
+  <div class="scroll grow"><div class="wordc"><div class="pp">${people()}</div><div class="w">${esc(a.word.toUpperCase())}</div><p>This is the word you all share<br>(except the impostor).</p></div>
+  <div class="scrip"><h4>Related Scripture</h4><q>${a.excerptType === 'quote' ? '“' + esc(a.excerpt) + '”' : esc(a.excerpt)}</q><cite>${refLine(a.ref, a.excerptType)}</cite></div></div>
+  <button class="btn pri" data-act="ipass">${go}</button><div class="note">${sub}</div></div>`;
+};
+SCR['imp-disc'] = () => {
+  const C = 2 * Math.PI * 96, tot = I.timerMin * 60, left = impLeft();
+  return `<div class="scr disc"><h2 class="ptitle">Discussion</h2><div class="orn"><i></i></div>
+ <div class="tring ${left <= 10 ? 'low' : ''}" data-ring><svg viewBox="0 0 210 210" aria-hidden="true"><circle class="tr" cx="105" cy="105" r="96" fill="none" stroke-width="5"/><circle class="tv" cx="105" cy="105" r="96" fill="none" stroke-width="5" stroke-linecap="round" stroke-dasharray="${C.toFixed(1)}" style="stroke-dashoffset:${(C * (1 - left / tot)).toFixed(1)}"/></svg><b data-tm>${fmt(left)}</b></div>
+ <p class="big" style="margin-bottom:14px">Describe the word without saying it.<br>Listen for the one who doesn’t fit.</p>
+ <div class="grow"></div><button class="btn pri" data-act="itovote">Go to Voting</button><div class="note" data-tn>${left === 0 ? 'Time is up. Time to vote.' : 'You can vote early if everyone agrees.'}</div></div>`;
+};
+SCR['imp-vote'] = () => `<div class="scr vote"><h2 class="ptitle">Vote</h2><div class="orn"><i></i></div>
+ <p class="lbl" style="margin-bottom:10px">Talk it over, then pick the player the group suspects.</p>
+ <div class="scroll grow"><div class="opts" role="radiogroup" aria-label="Suspect">${I.players.map((p, i) => `<button class="opt" role="radio" data-act="isel" data-i="${i}" aria-checked="${I.sel === i}" aria-pressed="${I.sel === i}"><span class="rd"></span><span class="nm">${esc(p)}</span></button>`).join('')}</div></div>
+ <div class="foot"><button class="btn pri" data-act="isubmit" ${I.sel < 0 ? 'disabled' : ''}>Reveal the Impostor</button></div></div>`;
+SCR['imp-verdict'] = () => {
+  const ii = impIdx(), v = I.vote >= 0 ? I.vote : ii, caught = v === ii, d = I.deal, name = esc(I.players[ii]);
+  return `<div class="scr fin" data-stage="${I.verdictStage}"><h2 class="ptitle">The Verdict</h2><div class="orn"><i></i></div>
+ <div class="ringv"><div class="halo"></div><div class="disc"><span class="q">?</span><div class="mkv">${mask('#ff6b7a', ['#3a0f1a', '#14060b'])}</div></div>${crown()}</div>
+ <div class="below"><div class="pre">The votes are in<span class="dots"><i></i><i></i><i></i></span></div>
+ <div class="post"><div class="was">The Impostor was…</div><div class="nm">${name.toUpperCase()}</div><div class="fool">${caught ? 'The group found them out.' : `The group suspected ${esc(I.players[v])}. The impostor got away.`}</div>
+  <div class="scrip" style="width:100%;margin:10px 0 4px"><h4>The word was ${esc(d.civilianWord)}</h4><q>${d.excerptType === 'quote' ? '“' + esc(d.excerpt) + '”' : esc(d.excerpt)}</q><cite>${refLine(d.ref, d.excerptType)}</cite></div>
+  <div class="wd">${d.mode === 'decoy' ? `The impostor had ${esc(d.decoyWord)}.` : 'The impostor had no word.'}</div>
+  <div class="btns"><button class="btn pri" data-act="iagain">Play Again</button><button class="btn sec" data-act="home">Home</button></div></div></div>
+ <button class="skip" data-act="iskip">Skip</button></div>`;
+};
+
+function impVerdictRun() {
+  I.verdictStage = 0; setStage(0); T(() => setStage(1), 1500); T(() => setStage(2), 2900); T(() => setStage(3), 3800);
+}
+function setStage(k) { if (I) I.verdictStage = k; const e = cur(); if (e && e.dataset.stage !== undefined) e.dataset.stage = k; }
+function impTick() {
+  const e = cur(); if (!e) return; const left = impLeft(), r = $('[data-ring]', e);
+  if (r) { $('[data-tm]', r).textContent = fmt(left); $('.tv', r).style.strokeDashoffset = (2 * Math.PI * 96 * (1 - left / (I.timerMin * 60))).toFixed(1); r.classList.toggle('low', left <= 10); }
+  const t = $('[data-tn]', e); if (t && left === 0) t.textContent = 'Time is up. Time to vote.';
+}
+function impAct(a, b) {
+  const i = +b.dataset.i, n = I && I.players ? I.players.length : 0;
+  switch (a) {
+    case 'ipm': if (ST.count > IMP_MIN) { ST.count--; persist(); } return patch();
+    case 'ipp': if (ST.count < IMP_MAX) { ST.count++; persist(); } return patch();
+    case 'idiff': ST.diff = +b.dataset.v; persist(); return patch();
+    case 'imode': ST.mode = b.dataset.v; persist(); return patch();
+    case 'ihint': ST.hint = b.dataset.v === '1'; persist(); return patch();
+    case 'istart': case 'iagain': return a === 'iagain' ? (I.players = impNames(), impStart()) : impStart();
+    case 'ireveal': I.stage = 'role'; impSave(); return go('imp-secret');
+    case 'ishow': I.stage = 'word'; impSave(); return patch();
+    case 'ipass': if (I.seat < n - 1) { I.seat++; I.stage = 'role'; impSave(); return go('imp-pass'); }
+      I.endsAt = Date.now() + I.timerMin * 60000; impSave(); return go('imp-disc');
+    case 'itovote': I.left = impLeft(); I.endsAt = 0; I.sel = -1; impSave(); return go('imp-vote');
+    case 'isel': I.sel = i; impSave(); $$('.opt', stage).forEach((x, k) => { x.setAttribute('aria-pressed', k === i); x.setAttribute('aria-checked', k === i); }); $('[data-act=isubmit]', stage).disabled = false; return;
+    case 'isubmit': I.vote = I.sel; I.verdictStage = 0; impSave(); return go('imp-verdict');
+    case 'iskip': timers.forEach(clearTimeout); return setStage(3);
+  }
+}
+
+/* ===== Bible Mafia UI (engine-driven) ===== */
+const MFP = D.mconf.players;
+let M = { s: null };                       // M.s = engine state (persisted); A.U holds UI-only scratch
+function mfRestore() {
+  if (!DB.mafia) return;
+  const r = MF.restore(JSON.stringify(DB.mafia));
+  if (r.ok) M.s = r.state; else { DB.mafia = null; persist(); }
+}
+function mfSave() { DB.mafia = M.s; persist(); }
+function mfDo(action) {
+  const r = MF.dispatch(M.s, action);
+  if (!r.ok) { toast(r.error); return false; }
+  M.s = r.state; mfSave(); return true;
+}
+function mfNames() { return Array.from({ length: ST.mfCount }, (_, i) => nameFor(ST.mfNames, i)); }
+function mfNewGame(names) {
+  const r = MF.createGame({ names });
+  if (!r.ok) { A.U.err = r.error; return patch(); }
+  M.s = r.state; A.U = {}; mfSave(); go('mf');
+}
+function mfHdr(title, quit) {
+  return `<div class="hdr"><span></span><h2 class="ptitle" style="font-size:22px">${esc(title)}</h2>${quit ? `<button data-act="mquit" aria-label="Leave game">${ic('close')}</button>` : '<span></span>'}</div>`;
+}
+const facName = f => f === 'traitor' ? 'Traitor' : 'Town';
+function roleCard(c, full) {
+  const bad = c.faction === 'traitor';
+  return `<div class="rcard ${bad ? 'bad' : ''}"><span class="fac">${bad ? 'Traitors' : 'Town'}</span>${emb(c.roleId)}
+ <h3>${esc(c.character.toUpperCase())}</h3><div class="tt">${esc(c.title)}</div><p>${esc(c.description)}</p>
+ ${c.ability ? `<div class="ab"><b>Night ability</b>${esc(c.ability)}</div>` : `<div class="ab"><b>No night ability</b>Watch, listen, reason and vote.</div>`}
+ ${c.allies && c.allies.length ? `<div class="allies"><b>Your fellow traitors:</b> ${c.allies.map(esc).join(', ')}</div>` : (c.allies ? '<div class="allies">You are the only traitor.</div>' : '')}
+ ${c.scripture ? `<div class="sc">${esc(c.scripture.text)}<cite>– ${esc(c.scripture.ref)} <span class="tag-p">${c.scripture.type === 'paraphrase' ? 'Paraphrase' : 'KJV'}</span></cite></div>` : ''}
+ ${full && c.gameplay ? `<div class="fine">${esc(c.gameplay)}</div>` : ''}</div>`;
+}
+function pips(list, done) { return `<div class="pips" aria-hidden="true">${list.map((_, k) => `<i class="${k <= done ? 'on' : ''}"></i>`).join('')}</div>`; }
+function revealBadge(rv) { if (!rv) return ''; return `<div class="badge-w" style="margin-top:8px">${rv.roleId ? esc(D.roles.roles.find(r => r.id === rv.roleId).character) + ' · ' : ''}${facName(rv.faction)}</div>`; }
+
+SCR['mf-setup'] = () => {
+  const n = ST.mfCount, d = MF.describeDistribution(n), U = A.U;
+  return `<div class="scr mf setup">
+ <div class="hdr"><button data-act="home" aria-label="Back to home">${ic('back')}</button><h2 class="ptitle" style="font-size:22px">Bible Mafia</h2><span></span></div>
+ <div class="scroll grow">
+  <div class="prow"><p class="lbl">Players <small>(${MFP.min}–${MFP.max}, ${MFP.recommendedMin}+ recommended)</small></p><div class="stepper"><button data-act="mpm" aria-label="Fewer players" ${n <= MFP.min ? 'disabled' : ''}>${ic('minus')}</button><output aria-live="polite">${n}</output><button data-act="mpp" aria-label="More players" ${n >= MFP.max ? 'disabled' : ''}>${ic('plus')}</button></div></div>
+  ${d.warning ? `<div class="warn">${esc(d.warning)}</div>` : ''}
+  <p class="lbl">Player Names</p>
+  <div class="names">${Array.from({ length: n }, (_, i) => `<div class="nrow"><b>${i + 1}</b><input data-name="mst" data-i="${i}" value="${esc(ST.mfNames[i] || '')}" placeholder="Player ${i + 1}" maxlength="14" autocomplete="off" autocapitalize="words" aria-label="Player ${i + 1} name"></div>`).join('')}</div>
+  <div class="prev"><h4>Roles in this game</h4>${d.roles.map(r => `<div class="r"><span>${esc(r.character)} <span class="muted">· ${esc(r.title.replace('The ', ''))}</span></span><span>×${r.count}</span></div>`).join('')}
+   <p class="fine">Roles are dealt randomly and stay hidden until each player looks at their own.</p></div>
+  <button class="btn sec sm" data-act="sheet" data-v="how-mf">Read the rules</button>
+  ${U.err ? `<p class="note err" role="alert">${esc(U.err)}</p>` : ''}
+ </div>
+ <div class="foot"><button class="btn pri" data-act="mcontinue">Continue</button></div></div>`;
+};
+SCR['mf-confirm'] = () => `<div class="scr mf">
+ <div class="hdr"><button data-act="mback" aria-label="Back">${ic('back')}</button><h2 class="ptitle" style="font-size:22px">Ready?</h2><span></span></div><div class="orn"><i></i></div>
+ <div class="scroll grow"><p class="big" style="margin-bottom:16px">${ST.mfCount} players, one phone.</p>
+ <ul class="log" style="padding:0;margin:0 0 14px">
+  <li>The phone will be passed to each player in turn. Look at your role <b>only</b> when it is yours.</li>
+  <li>Hold the screen so nobody else can see it, then hide it before you pass the phone on.</li>
+  <li>At night everyone closes their eyes. The phone will tell each secret role when to wake.</li>
+  <li>Roles are dealt now and cannot be changed or looked up again.</li></ul>
+ <p class="fine">A shared phone can’t stop someone who deliberately snoops. This protects against accidents, not cheating.</p></div>
+ <div class="btns" style="padding-top:12px"><button class="btn pri" data-act="mdeal">Deal the roles</button></div></div>`;
+
+function mfNeutral(title, bodyHtml, btnHtml, cls) {
+  return `<div class="scr mf ${cls || ''}">${mfHdr(title, true)}<div class="orn"><i></i></div>${bodyHtml}<div class="grow"></div>${btnHtml}</div>`;
+}
+SCR['mf'] = () => {
+  const s = M.s, v = MF.getView(s), U = A.U;
+  if (!s) return SCR.home();
+  if (U.after) return `<div class="scr mf night">${mfHdr('Night ' + s.round, false)}<div class="orn"><i></i></div>${MOON}<p class="big" style="text-align:center">${esc(U.after)}</p><div class="grow"></div><button class="btn pri" data-act="mafter">Continue</button></div>`;
+  switch (s.phase) {
+    case 'reveal': {
+      if (v.handoff) {
+        const n = v.turnPlayer, k = s.players.findIndex(p => p.id === v.turnPlayerId);
+        return `<div class="scr mf handoff">${mfHdr('Pass to ' + n, true)}<div class="orn"><i></i></div>
+ <div class="av" aria-hidden="true">${esc(n.charAt(0).toUpperCase())}</div><div class="avn">${esc(n)}</div>
+ <p class="big">${esc(n)}, it’s your turn<br>to see your role.</p>
+ <button class="btn pri" data-act="mbegin" data-p="${v.turnPlayerId}">Reveal my role</button><div class="grow"></div>${pips(s.players, k)}
+ <div class="note" style="margin-top:0">Everyone else, look away.</div></div>`;
+      }
+      const pv = MF.getPrivateView(s), last = s.players[s.players.length - 1].id === v.turnPlayerId;
+      return `<div class="scr mf secret"><h2 class="ptitle">Your Role</h2><div class="orn"><i></i></div>
+ <div class="scroll grow">${roleCard(pv.card, true)}</div>
+ <button class="btn pri" data-act="mhide" data-p="${v.turnPlayerId}">${last ? 'Hide role and finish' : 'Hide role and pass phone'}</button><div class="note">Keep this secret. Don’t let them know.</div></div>`;
+    }
+    case 'night_intro':
+      return mfNeutral(`Night ${s.round}`, `${MOON}<h3 class="shout">Night falls on the town</h3>
+ <p class="sub" style="text-align:center">Everyone close your eyes or look away.<br>Place the phone in the middle of the table.</p>`,
+        `<button class="btn pri" data-act="mnight">Begin the night</button><div class="note">The phone will call each secret role in turn.</div>`, 'night');
+    case 'night': {
+      const nv = v.night;
+      if (v.handoff) {
+        const role = D.roles.roles.find(r => r.title === nv.wake), skip = nv.canSkip;
+        return `<div class="scr mf night">${mfHdr('Night ' + s.round, !skip)}<div class="orn"><i></i></div>${emb(role.id, 'wake')}
+ <h3 class="shout">${esc(role.title.replace('The ', ''))}, wake up</h3>
+ <p class="sub" style="text-align:center;margin-bottom:6px">${skip ? 'Everyone else keep your eyes closed.' : `If you are the ${esc(role.title.replace('The ', ''))}, quietly take the phone and tap Continue.<br>Everyone else keep your eyes closed.`}</p>
+ ${skip ? '<span class="dots big" style="text-align:center;margin-top:18px" aria-hidden="true"><i></i><i></i><i></i></span>' : ''}
+ <div class="grow"></div>${skip ? '' : '<button class="btn pri" data-act="mbegin">Continue</button>'}<div class="note">Step ${nv.stepIndex + 1} of ${nv.stepCount}</div></div>`;
+      }
+      const pv = MF.getPrivateView(s);
+      if (pv.kind === 'investigation') {
+        const bad = pv.faction === 'traitor';
+        return `<div class="scr mf night secret"><h2 class="ptitle">Your Finding</h2><div class="orn"><i></i></div>
+ <div class="verdict ${bad ? 'bad' : ''}"><div class="muted">${esc(pv.target)} is on the side of</div><div class="big">${bad ? 'THE TRAITORS' : 'THE TOWN'}</div></div>
+ <p class="fine">Only you can see this. Don’t reveal how you know.</p><div class="grow"></div><button class="btn pri" data-act="mack">Hide result</button></div>`;
+      }
+      const sel = U.sel, copy = { protect: ['Choose who to protect', 'If the traitors strike this player tonight, the attack fails.'], investigate: ['Choose who to investigate', 'You will learn privately whether they are Town or Traitor.'], attack: ['Choose tonight’s victim', pv.mode === 'vote' ? `Traitor ${pv.ballot} of ${pv.ballotsNeeded}: pick your target. The most votes wins (ties are settled at random).` : 'Confer silently and agree. One traitor then taps the choice.'] }[pv.kind];
+      return `<div class="scr mf night secret"><h2 class="ptitle">${esc(pv.role.title)}</h2><div class="orn"><i></i></div>
+ <p class="lbl" style="font-weight:600">${copy[0]}</p><p class="hint" style="margin:2px 0 10px">${copy[1]}</p>
+ ${pv.kind === 'attack' && pv.allies.length > 1 ? `<p class="fine" style="margin:0 0 8px">Traitors alive: ${pv.allies.map(esc).join(', ')}</p>` : ''}
+ <div class="scroll grow"><div class="opts" role="radiogroup">${pv.targets.map(t => `<button class="opt" role="radio" data-act="msel" data-id="${t.id}" aria-checked="${sel === t.id}" aria-pressed="${sel === t.id}"><span class="rd"></span><span class="nm">${esc(t.name)}</span></button>`).join('')}</div></div>
+ <div class="foot"><button class="btn pri" data-act="mtarget" ${sel ? '' : 'disabled'}>Confirm</button></div></div>`;
+    }
+    case 'dawn': {
+      const d = v.dawn, end = !!s.winner;
+      let body;
+      if (d.kind === 'death') body = `<div class="verdict bad"><div class="muted">Dawn breaks. In the night…</div><div class="big">${esc(d.player.toUpperCase())}</div><div class="muted">was eliminated.</div>${revealBadge(d.revealed)}</div>`;
+      else if (d.kind === 'saved') body = `${SUN}<h3 class="shout">The traitors struck, but their target survived.</h3>`;
+      else body = `${SUN}<h3 class="shout">The night passed quietly</h3><p class="sub" style="text-align:center">No one was eliminated.</p>`;
+      return mfNeutral('Dawn · Day ' + s.round, body + `<p class="note">${s.players.filter(p => p.alive).length} players remain.</p>`, `<button class="btn pri" data-act="mdawn">${end ? 'See the result' : 'Begin the day'}</button>`);
+    }
+    case 'discussion': {
+      const secs = v.discussionSeconds;
+      return `<div class="scr mf disc">${mfHdr('Day ' + s.round, true)}<div class="orn"><i></i></div>
+ <p class="big" style="margin:0 0 6px;font-size:17px">Discuss. Who is acting like a traitor?</p>
+ <div class="scroll grow"><div class="chips" aria-label="Players">${v.players.map(p => `<span class="chip ${p.alive ? '' : 'dead'}">${esc(p.name)}${p.revealed ? ' <b>' + (p.revealed.roleId ? esc(D.roles.roles.find(r => r.id === p.revealed.roleId).character) : facName(p.revealed.faction)) + '</b>' : ''}${!p.alive && p.outHow === 'left' ? ' <b>left</b>' : ''}</span>`).join('')}</div>
+ ${v.log.length ? `<h4 class="lbl" style="margin:6px 0">So far</h4><ul class="log" style="padding:0;margin:0">${v.log.slice(-6).reverse().map(l => `<li><small>Round ${l.round}</small><br>${esc(l.text)}</li>`).join('')}</ul>` : ''}</div>
+ ${secs ? `<div class="note" data-tn>Suggested discussion time: ${fmt(secs)}</div>` : ''}
+ <div class="btns" style="padding-top:12px"><button class="btn pri" data-act="mvote">Go to voting</button><button class="btn sec sm" data-act="mleave">A player has to leave</button></div></div>`;
+    }
+    case 'vote': {
+      const pr = v.voteProgress;
+      if (v.handoff) return `<div class="scr mf handoff">${mfHdr('Vote' + (pr.runoff ? ' · Runoff' : ''), true)}<div class="orn"><i></i></div>
+ <div class="av" aria-hidden="true">${esc(v.turnPlayer.charAt(0).toUpperCase())}</div><div class="avn">${esc(v.turnPlayer)}</div>
+ <p class="big">${esc(v.turnPlayer)}, cast your vote<br>in secret.</p>
+ <button class="btn pri" data-act="mbegin" data-p="${v.turnPlayerId}">Cast my vote</button><div class="grow"></div>
+ <div class="pips" aria-hidden="true">${Array.from({ length: pr.total }, (_, k) => `<i class="${k <= pr.done ? 'on' : ''}"></i>`).join('')}</div><div class="note" style="margin-top:0">${pr.done} of ${pr.total} votes cast</div></div>`;
+      const pv = MF.getPrivateView(s), sel = U.sel;
+      return `<div class="scr mf vote secret"><h2 class="ptitle">Your Vote</h2><div class="orn"><i></i></div>
+ <p class="lbl" style="margin-bottom:10px">${pv.runoff ? 'Runoff: choose one of the tied players.' : 'Who do you think is a traitor?'}</p>
+ <div class="scroll grow"><div class="opts" role="radiogroup">${pv.options.map(o => `<button class="opt" role="radio" data-act="msel" data-id="${o.id}" aria-checked="${sel === o.id}" aria-pressed="${sel === o.id}"><span class="rd"></span><span class="nm">${esc(o.name)}</span></button>`).join('')}
+ ${pv.canAbstain ? `<button class="opt abst" role="radio" data-act="msel" data-id="__abstain" aria-checked="${sel === '__abstain'}" aria-pressed="${sel === '__abstain'}"><span class="rd"></span><span class="nm">Abstain</span></button>` : ''}</div></div>
+ <div class="foot"><button class="btn pri" data-act="mcast" ${sel ? '' : 'disabled'}>Cast vote</button></div><div class="note">Your vote stays private.</div></div>`;
+    }
+    case 'vote_result': {
+      const r = v.voteResult, max = Math.max(1, ...Object.values(r.tally));
+      const rows = Object.keys(r.tally).map(id => { const p = v.players.find(x => x.id === id); return `<div class="t ${r.eliminated === p.name ? 'out' : ''}"><span>${esc(p.name)}</span><b>${r.tally[id]}</b><div class="bar"><i style="width:${Math.round(r.tally[id] / max * 100)}%"></i></div></div>`; }).join('');
+      let head;
+      if (r.kind === 'eliminate') head = `<div class="verdict bad"><div class="muted">The town has voted out</div><div class="big">${esc(r.eliminated.toUpperCase())}</div>${revealBadge(r.reveal)}</div>`;
+      else if (r.kind === 'runoff') head = `<div class="verdict"><div class="muted">A tie</div><div class="big" style="font-size:20px">${r.tied.map(esc).join(' and ')}</div><div class="muted">go to a runoff vote.</div></div>`;
+      else head = `<div class="verdict"><div class="big">No one is eliminated</div><div class="muted">${r.tally && Object.values(r.tally).every(x => x === 0) ? 'No votes were cast for anyone.' : 'The vote ended in a tie.'}</div></div>`;
+      return mfNeutral(r.runoff ? 'Runoff Result' : 'Vote Result', `<div class="scroll grow">${head}<div class="tally" aria-label="Votes">${rows}</div>${r.abstain ? `<p class="fine">${r.abstain} abstained.</p>` : ''}</div>`,
+        `<button class="btn pri" data-act="mvc">${r.kind === 'runoff' ? 'Hold the runoff' : (s.winner ? 'See the result' : 'Night falls')}</button>`);
+    }
+    case 'ended': {
+      const sum = MF.getEndSummary(s).summary, town = sum.winner === 'town';
+      return `<div class="scr mf fin-mf ${town ? '' : 'badw'}"><h2 class="ptitle">${town ? 'The Town Prevails' : 'The Traitors Win'}</h2><div class="orn"><i></i></div>
+ <div class="scroll grow"><div class="verdict ${town ? '' : 'bad'}"><span class="badge-w">${esc(sum.winnerName)} win</span><div class="big" style="font-size:19px">${town ? 'Every traitor has been found.' : 'The traitors now equal or outnumber the town.'}</div><div class="muted" style="margin-top:6px">After ${sum.rounds} round${sum.rounds > 1 ? 's' : ''}</div></div>
+ <h4 class="lbl" style="margin:4px 0 8px">Final roles</h4><div class="plist">${sum.players.map(p => `<div class="pr ${p.alive ? '' : 'out'}">${emb(p.role.roleId, 'emb')}<div><b>${esc(p.name)}</b><small>${esc(p.role.character)} · ${esc(p.role.title.replace('The ', ''))}</small></div><div class="st">${p.alive ? 'Survived' : p.outHow === 'night' ? 'Night ' + p.outRound : p.outHow === 'vote' ? 'Voted out · R' + p.outRound : 'Left'}</div></div>`).join('')}</div>
+ <h4 class="lbl" style="margin:16px 0 8px">What happened</h4><ul class="log" style="padding:0;margin:0 0 12px">${sum.secretLog.filter(h => h.type === 'night').map(h => `<li><small>Night ${h.round}</small><br>Traitors targeted ${esc(h.attack || 'no one')}${h.protect ? '; ' + esc(h.protect) + ' was protected' : ''}${h.investigate ? '; ' + esc(h.investigate) + ' was investigated' : ''}${h.saved ? ' (attack foiled)' : ''}.</li>`).concat(sum.publicLog.filter(l => l.type === 'vote_out' || l.type === 'left' || l.type === 'no_elimination' || l.type === 'tie').map(l => `<li><small>Day ${l.round}</small><br>${esc(l.text)}</li>`)).join('')}</ul></div>
+ <div class="btns" style="padding-top:12px"><button class="btn pri" data-act="magain">Play Again</button><button class="btn sec" data-act="mhome">Game Selection</button></div></div>`;
+    }
+  }
+  return SCR.home();
+};
+
+function mfAct(a, b) {
+  const s = M.s, U = A.U;
+  switch (a) {
+    case 'mpm': if (ST.mfCount > MFP.min) { ST.mfCount--; persist(); } return patch();
+    case 'mpp': if (ST.mfCount < MFP.max) { ST.mfCount++; persist(); } return patch();
+    case 'mcontinue': {
+      const names = mfNames(), seen = {}; ST.mfNames = names; persist();
+      for (const x of names) { const k = x.toLowerCase(); if (seen[k]) { U.err = 'Two players share the name “' + x + '”. Please use different names.'; return patch(); } seen[k] = 1; }
+      U.err = null; return go('mf-confirm');
+    }
+    case 'mback': return go('mf-setup');
+    case 'mdeal': return mfNewGame(mfNames());
+    case 'mbegin': if (mfDo({ type: 'BEGIN_TURN', player: b.dataset.p })) { U.sel = null; patch(); } return;
+    case 'mhide': if (mfDo({ type: 'REVEAL_DONE', player: b.dataset.p })) { U.sel = null; mount(true); } return;
+    case 'mnight': if (mfDo({ type: 'NIGHT_BEGIN' })) mount(true); return;
+    case 'msel': U.sel = b.dataset.id; $$('.opt', stage).forEach(x => { const on = x === b; x.setAttribute('aria-pressed', on); x.setAttribute('aria-checked', on); }); $('[data-act=mtarget],[data-act=mcast]', stage).disabled = false; return;
+    case 'mtarget': {
+      const before = MF.getView(s).night; const kind = MF.getPrivateView(s).kind;
+      if (!mfDo({ type: 'NIGHT_ACTION', target: U.sel })) return;
+      U.sel = null;
+      if (kind === 'investigate') return patch();      // result screen is the private view in the engine
+      const same = M.s.phase === 'night' && MF.getView(M.s).night.stepIndex === before.stepIndex;
+      U.after = same ? 'Choice recorded. Pass the phone silently to the next traitor, then close your eyes.' : 'Choice recorded. Place the phone back in the middle of the table and close your eyes.';
+      return patch();
+    }
+    case 'mack': if (mfDo({ type: 'NIGHT_ACK' })) { U.after = 'Place the phone back in the middle of the table and close your eyes.'; patch(); } return;
+    case 'mafter': U.after = null; return patch();
+    case 'mdawn': if (mfDo({ type: 'DAWN_CONTINUE' })) mount(true); return;
+    case 'mvote': if (mfDo({ type: 'DISCUSSION_DONE' })) mount(true); return;
+    case 'mcast': {
+      const who = s.turn.player; if (!mfDo({ type: 'VOTE', voter: who, target: U.sel === '__abstain' ? null : U.sel })) return; U.sel = null; return mount(true);
+    }
+    case 'mvc': if (mfDo({ type: 'VOTE_CONTINUE' })) mount(true); return;
+    case 'mleave': A.dlg = { kind: 'leave' }; return patch();
+    case 'mleavego': { const id = b.dataset.id; A.dlg = null; if (mfDo({ type: 'PLAYER_LEAVES', player: id })) { toast('Player removed.'); mount(true); } else patch(); return; }
+    case 'mquit': A.dlg = { kind: 'quit' }; return patch();
+    case 'magain': { const names = s.players.map(p => p.name); return mfNewGame(names); }
+    case 'mhome': DB.mafia = null; M.s = null; persist(); return go('home');
+  }
+}
+
+/* ===== sheets (How to Play, Bible Connections) and dialogs ===== */
+const HOW_IMP = [['Pass the phone', 'Everyone gets a turn alone with the phone. Tap Reveal my secret, read it, then hide it.'], ['Spot the odd one', 'All but one player share a Bible word with a Scripture verse. The impostor holds either a similar word (they know they are the impostor) or no word at all, depending on your setting.'], ['Discuss', 'Talk about the word without saying it. Listen for the answer that doesn’t fit.'], ['Vote', 'Agree on the player you suspect. Then the verdict is revealed along with the word and its Scripture.']];
+function howMafia() {
+  const d = D.mconf.distribution, r = D.mconf.rules;
+  const rows = Object.keys(d).map(n => `<tr><td>${n}</td><td>${d[n].traitor}</td><td>${n - Object.values(d[n]).reduce((a, b) => a + b, 0) + 0}</td></tr>`).join('');
+  return `<h5>Goal</h5><p><b>Town</b> wins by finding every traitor. The <b>Traitors</b> win when they equal or outnumber everyone else.</p>
+<h5>Roles</h5><ul>${D.roles.roles.map(x => `<li><b>${esc(x.character)} · ${esc(x.title)}</b>${esc(x.ability ? x.ability.text : x.description)}</li>`).join('')}</ul>
+<h5>Each round</h5><ol><li><b>Night.</b> Everyone closes their eyes. The phone calls each secret role to wake, take the phone, and choose. Dead roles are still “called” so nobody can tell who is gone.</li>
+<li><b>Dawn.</b> The result is announced. ${r.failedAttack === 'quiet' ? 'A foiled attack is not announced, so a save stays secret.' : 'A foiled attack is announced.'}</li>
+<li><b>Day.</b> Talk it out. Nothing is forced; take as long as you like.</li>
+<li><b>Vote.</b> The phone goes to each living player, who votes privately${r.allowAbstain ? ' (or abstains)' : ''}. Only counts are shown afterwards.</li>
+<li><b>Ties.</b> ${r.tieRule === 'runoff-then-none' ? 'The tied players go to a runoff vote. A second tie eliminates no one.' : r.tieRule === 'none' ? 'A tie eliminates no one.' : 'A tie is settled at random.'}</li>
+<li><b>Reveals.</b> ${r.revealOnElimination === 'faction' ? 'An eliminated player’s side (Town or Traitor) is revealed, not their exact role.' : r.revealOnElimination === 'role' ? 'An eliminated player’s role is revealed.' : 'Nothing is revealed.'}</li></ol>
+<h5>Protector &amp; Investigator rules</h5><p>${r.selfProtect ? 'The Protector may protect themselves' : 'The Protector may not protect themselves'}${r.consecutiveProtect ? '' : ', and may not protect the same player two nights in a row'}. The Investigator learns only Town or Traitor.</p>
+<h5>Role counts (provisional)</h5><table class="tbl"><tr><th>Players</th><th>Traitors</th><th>Townspeople</th></tr>${rows}</table><p class="fine">Plus one Protector and one Investigator. These numbers are untested starting points.</p>
+<h5>If something goes wrong</h5><p>The game saves after every step. If the app closes or reloads, it resumes at the same place and covers any secret that was on screen. If a player has to leave, use “A player has to leave” during the day; they are removed without revealing their role. To start again, leave the game from the ✕ button.</p>
+<p class="fine">A shared phone can’t stop someone who deliberately snoops; it prevents accidental peeks. Gameplay abilities are fictional and not claims about biblical events.</p>`;
+}
+function SHEET(kind) {
+  let title, body;
+  if (kind === 'how-imp') { title = 'How to Play'; body = `<ol>${HOW_IMP.map(r => `<li><b>${r[0]}</b>${r[1]}</li>`).join('')}</ol>`; }
+  else if (kind === 'how-mf') { title = 'Bible Mafia · Rules'; body = howMafia(); }
+  else if (kind === 'how') { title = 'How to Play'; body = `<div class="seg"><button data-act="sheet" data-v="how-imp">Impostor</button><button data-act="sheet" data-v="how-mf">Bible Mafia</button></div>`; }
+  else {
+    const tab = A.U.btab || 'chars', packs = D.packs.packs;
+    title = 'Bible Connections';
+    const tabs = `<div class="seg" role="tablist">${[['chars', 'Characters']].concat(packs.map(p => [p.id, p.name])).map(([id, n]) => `<button role="tab" data-act="btab" data-v="${id}" aria-pressed="${tab === id}">${esc(n)}</button>`).join('')}</div>`;
+    if (tab === 'chars') body = tabs + `<p>Bible Mafia’s characters. What Scripture says about them is kept separate from what they do in the game.</p><ul>${D.roles.roles.map(x => `<li><b>${esc(x.character)} · ${esc(x.title)}</b>${x.canonical ? esc(x.canonical) : 'A member of the town.'}<br><cite>Game: ${esc(x.gameplay)}</cite>${x.scripture ? `<br><cite>${esc(x.scripture.ref)} (paraphrase)</cite>` : ''}</li>`).join('')}</ul>`;
+    else { const pk = packs.find(p => p.id === tab); body = tabs + `<p>${esc(pk.description || '')} Scripture: ${esc(D.packs.translation)}.</p><ul>${pk.words.map(w => `<li><b>${esc(w.word)}</b><q>${w.excerptType === 'quote' ? '“' + esc(w.excerpt) + '”' : esc(w.excerpt)}</q><cite>${esc(w.ref)} · ${w.excerptType === 'quote' ? 'KJV' : 'Paraphrase'}</cite></li>`).join('')}</ul>`; }
+  }
+  return `<div class="sheetov" data-act="closeSheet"><div class="sh" data-act="none" role="dialog" aria-modal="true" aria-label="${esc(title)}"><h3>${esc(title)}</h3><div class="body">${body}</div><button class="btn sec" data-act="closeSheet">Close</button></div></div>`;
+}
+function DIALOG(d) {
+  if (d.kind === 'quit' || d.kind === 'back') return `<div class="dlg"><div role="alertdialog" aria-modal="true" aria-label="Leave game"><h3>Leave this game?</h3><p>Progress will be lost. Roles can’t be looked up again.</p><button class="btn pri" data-act="dlgclose">Keep playing</button><button class="btn danger" data-act="quitgo">Leave game</button></div></div>`;
+  if (d.kind === 'leave') { const s = M.s; return `<div class="dlg"><div role="dialog" aria-modal="true" aria-label="Player leaves"><h3>Who has to leave?</h3><p>They are removed without revealing their role. This can’t be undone.</p><div class="stack" style="max-height:40vh;overflow:auto">${s.players.filter(p => p.alive).map(p => `<button class="btn sec sm" data-act="mleavego" data-id="${p.id}">${esc(p.name)}</button>`).join('')}</div><button class="btn pri" data-act="dlgclose">Cancel</button></div></div>`; }
+  if (d.kind === 'discard') return `<div class="dlg"><div role="alertdialog" aria-modal="true"><h3>Discard saved game?</h3><p>This can’t be undone.</p><button class="btn pri" data-act="dlgclose">Keep it</button><button class="btn danger" data-act="discardgo" data-g="${d.game}">Discard</button></div></div>`;
+  return '';
+}
+
+/* ===== home, wiring, startup ===== */
+const hasImp = () => I && I.deal && !(I.screen === 'imp-verdict' && I.verdictStage >= 3);
+const hasMf = () => M.s && M.s.phase !== 'ended';
+SCR.home = () => {
+  const res = [];
+  if (hasMf()) res.push(`<div class="resume" style="--cy:#e8c780;--acr:232,199,128"><div><b>Bible Mafia in progress</b>Round ${M.s.round} · ${M.s.players.filter(p => p.alive).length} players left</div><button class="btn pri" data-act="resume" data-g="mf">Resume</button><button class="btn sec" style="width:44px;padding:0" data-act="discard" data-g="mf" aria-label="Discard saved Bible Mafia game">${ic('close')}</button></div>`);
+  if (hasImp()) res.push(`<div class="resume"><div><b>Impostor game in progress</b>${I.players.length} players</div><button class="btn pri" data-act="resume" data-g="imp">Resume</button><button class="btn sec" style="width:44px;padding:0" data-act="discard" data-g="imp" aria-label="Discard saved impostor game">${ic('close')}</button></div>`);
+  return `<div class="scr home">
+ <div class="ttl"><div class="the"><i></i>THE<i></i></div><div class="fitw odd" data-fit="78"><span>ODD</span></div><div class="fitw dis" data-fit="46"><span>DISCIPLE</span></div>
+ <div class="tag">Bible-based party games</div></div>
+ <div class="hero">${landscape('0 46 390 170')}</div>
+ <div class="scroll grow"><div class="gcards">${res.join('')}
+  <article class="gcard g1"><h3><small>Social deduction · Classic</small>The Odd Disciple</h3><p>Everyone shares a Bible word except the impostor. Talk around it, spot who doesn’t fit.</p>
+   <div class="gmeta"><span><b>${IMP_MIN}–${IMP_MAX}</b> players</span><span>~<b>10</b> min</span><span>Offline</span></div>
+   <div class="gact"><button class="btn pri" data-act="new">Play</button><button class="btn sec" data-act="sheet" data-v="how-imp">How to play</button></div></article>
+  <article class="gcard g2"><h3><small>Social deduction · Mafia-style</small>Bible Mafia <span class="tag-p">Proposed name</span></h3><p>Traitors strike by night; the town hunts them by day. Secret roles, deduction and persuasion.</p>
+   <div class="gmeta"><span><b>${MFP.min}–${MFP.max}</b> players (${MFP.recommendedMin}+ best)</span><span>~<b>20–30</b> min <span class="muted">(est.)</span></span></div>
+   <div class="gact"><button class="btn pri" data-act="newmf">Play</button><button class="btn sec" data-act="sheet" data-v="how-mf">Rules</button></div></article></div>
+  <div class="links"><button data-act="sheet" data-v="bible">Bible Connections</button></div>
+  <blockquote class="verse">“The light shineth in darkness; and the darkness comprehended it not.”<cite>– John 1:5 · KJV</cite></blockquote></div></div>`;
+};
+function coverSecrets() {
+  if (M.s && ['reveal', 'night', 'vote'].indexOf(M.s.phase) >= 0 && A.screen === 'mf' && !M.s.turn.handoff) { if (mfDo({ type: 'HIDE' })) { A.U.sel = null; mount(false); } }
+  if (A.screen === 'imp-secret') { I.stage = 'role'; impSave(); A.screen = 'imp-pass'; mount(false); }
+}
+function after(p) {
+  onTick = null;
+  if (A.screen === 'imp-disc') { onTick = impTick; startTimer(); }
+  if (A.screen === 'imp-verdict' && !p) impVerdictRun();
+  if (A.screen === 'mf' && M.s && M.s.phase === 'night' && M.s.turn.handoff && !A.U.after) {   // dead-role steps pause for a random time so timing leaks nothing
+    const v = MF.getView(M.s); if (v.night.canSkip) T(() => { if (A.screen === 'mf' && MF.getView(M.s).phase === 'night' && mfDo({ type: 'NIGHT_SKIP' })) mount(true); }, 4200 + Math.random() * 3600);
+  }
+}
+function act(a, b) {
+  switch (a) {
+    case 'none': return;
+    case 'home': return go('home');
+    case 'new': return go('imp-setup');
+    case 'newmf': return go('mf-setup');
+    case 'sheet': A.sheet = b.dataset.v; A.U.btab = A.U.btab || 'chars'; return patch();
+    case 'btab': A.U.btab = b.dataset.v; return patch();
+    case 'closeSheet': A.sheet = null; return patch();
+    case 'dlgclose': A.dlg = null; return patch();
+    case 'quitgo': A.dlg = null; if (A.screen.indexOf('imp-') === 0) { I = DB.imp = null; } else { M.s = DB.mafia = null; } persist(); return go('home');
+    case 'discard': A.dlg = { kind: 'discard', game: b.dataset.g }; return patch();
+    case 'discardgo': A.dlg = null; if (b.dataset.g === 'mf') { M.s = DB.mafia = null; } else { I = DB.imp = null; } persist(); return patch();
+    case 'resume': return b.dataset.g === 'mf' ? (A.U = {}, go('mf')) : (I.screen === 'imp-secret' ? go('imp-pass') : go(I.screen));
+  }
+  if (a[0] === 'i') return impAct(a, b);
+  if (a[0] === 'm') return mfAct(a, b);
+}
+stage.addEventListener('click', e => { const b = e.target.closest('[data-act]'); if (b && !b.disabled) act(b.dataset.act, b); });
+stage.addEventListener('input', e => {
+  const k = e.target.dataset.name, i = +e.target.dataset.i;
+  if (k === 'ist') { ST.names[i] = e.target.value; persist(); } else if (k === 'mst') { ST.mfNames[i] = e.target.value; persist(); }
+});
+stage.addEventListener('change', e => {
+  const k = e.target.dataset.sel; if (!k) return;
+  ST[k] = k === 'timerMin' ? +e.target.value : e.target.value; persist(); if (k === 'packId') patch();
+});
+/* remember the current impostor screen so a reload resumes in the right place */
+const _go = go;
+go = function (name, extra) { if (name.indexOf('imp-') === 0 && I && name !== 'imp-setup') { I.screen = name; impSave(); } return _go(name, extra); };
+
+/* ---- startup ---- */
+mfRestore();
+if (M.s && ['reveal', 'night', 'vote'].indexOf(M.s.phase) >= 0 && !M.s.turn.handoff) { const r = MF.dispatch(M.s, { type: 'HIDE' }); if (r.ok) { M.s = r.state; mfSave(); } }   // a reload must never reopen a secret
+if (I && !I.deal) I = DB.imp = null;
+if (I && I.screen === 'imp-disc' && I.endsAt === 0) I.endsAt = Date.now() + I.left * 1000;
+A.screen = 'home';
+mount(false);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fitTitles(stage));
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => { }));
+}
+try { if ('wakeLock' in navigator) document.addEventListener('visibilitychange', () => { }); } catch (e) { }
+if (location.hash === '#test') window.__odd = { get state() { return { A, I, M, ST }; }, go: n => go(n) };   // test hook only
+
+})();
+</script>
+</body>
+</html>
