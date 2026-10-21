@@ -160,13 +160,13 @@ select option{background:#0a1a30;color:#e8f1fa}
 .ringv .q{font:500 74px var(--disp);color:var(--hi);text-shadow:0 0 22px rgba(var(--acr),.8)}
 .ringv .mkv{width:92px;height:92px;opacity:0;transform:scale(.8)}
 .ringv .crown{position:absolute;top:-24px;left:50%;width:62px;margin-left:-31px;opacity:0;transform:translateY(8px);transition:opacity .7s .3s,transform .7s .3s}
-.scr.fin[data-stage="2"] .disc{animation:ignite .9s both}
+:is(.scr.fin,.jfin)[data-stage="2"] .disc{animation:ignite .9s both}
 @keyframes ignite{0%{box-shadow:0 0 0 6px rgba(var(--acr),.1),0 0 30px rgba(var(--acr),.5)}40%{box-shadow:0 0 0 10px rgba(255,255,255,.25),0 0 90px rgba(255,255,255,.8)}100%{box-shadow:0 0 0 6px rgba(255,59,78,.15),0 0 50px rgba(255,59,78,.7)}}
-.scr.fin[data-stage="3"] .disc{border-color:var(--red);box-shadow:0 0 0 6px rgba(255,59,78,.14),0 0 56px rgba(255,59,78,.75),inset 0 0 36px rgba(255,59,78,.28)}
-.scr.fin[data-stage="3"] .halo{background:radial-gradient(circle,rgba(255,59,78,.34),transparent 62%)}
-.scr.fin[data-stage="3"] .q{opacity:0;transform:scale(1.3)}
-.scr.fin[data-stage="3"] .mkv{opacity:1;transform:none}
-.scr.fin[data-stage="3"] .crown{opacity:1;transform:none}
+:is(.scr.fin,.jfin)[data-stage="3"] .disc{border-color:var(--red);box-shadow:0 0 0 6px rgba(255,59,78,.14),0 0 56px rgba(255,59,78,.75),inset 0 0 36px rgba(255,59,78,.28)}
+:is(.scr.fin,.jfin)[data-stage="3"] .halo{background:radial-gradient(circle,rgba(255,59,78,.34),transparent 62%)}
+:is(.scr.fin,.jfin)[data-stage="3"] .q{opacity:0;transform:scale(1.3)}
+:is(.scr.fin,.jfin)[data-stage="3"] .mkv{opacity:1;transform:none}
+:is(.scr.fin,.jfin)[data-stage="3"] .crown{opacity:1;transform:none}
 .below{position:relative;flex:1;min-height:0;margin-top:22px}
 .pre,.post{position:absolute;inset:0;text-align:center;transition:opacity .5s,transform .5s}
 .pre{font:500 19px var(--disp);color:#cfe3f5;padding-top:16px}
@@ -174,16 +174,16 @@ select option{background:#0a1a30;color:#e8f1fa}
 .dots i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--cy);margin:0 4px;animation:dt 1.1s infinite}
 .dots i:nth-child(2){animation-delay:.18s}.dots i:nth-child(3){animation-delay:.36s}
 @keyframes dt{0%,70%,100%{opacity:.25}35%{opacity:1}}
-.scr.fin[data-stage="3"] .pre{opacity:0;pointer-events:none}
+:is(.scr.fin,.jfin)[data-stage="3"] .pre{opacity:0;pointer-events:none}
 .post{opacity:0;transform:translateY(14px);pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:6px}
-.scr.fin[data-stage="3"] .post{opacity:1;transform:none;pointer-events:auto;transition-delay:.45s}
+:is(.scr.fin,.jfin)[data-stage="3"] .post{opacity:1;transform:none;pointer-events:auto;transition-delay:.45s}
 .post .was{font:500 19px var(--disp);color:#f0f6fc}
 .post .nm{font:600 40px/1.05 var(--disp);letter-spacing:.12em;padding-left:.12em;color:#fff;text-shadow:0 0 22px rgba(255,59,78,.55);overflow-wrap:anywhere}
 .post .fool{font:500 15.5px var(--sans);color:#d7e4f1}
 .post .wd{font:500 13.5px var(--sans);color:var(--mu);margin:2px 0 14px}
 .post .btn{margin-top:auto}
 .skip{position:absolute;right:16px;bottom:10px;font-size:13px;color:var(--mu);font-weight:600;padding:8px;z-index:20}
-.scr.fin[data-stage="3"] .skip{display:none}
+:is(.scr.fin,.jfin)[data-stage="3"] .skip{display:none}
 
 /* sheets */
 .sheetov{position:absolute;inset:0;z-index:40;display:flex;align-items:flex-end;background:rgba(2,6,14,.7);animation:fadeIn .25s both}
@@ -204,7 +204,7 @@ select option{background:#0a1a30;color:#e8f1fa}
 @media(prefers-reduced-motion:reduce){
  .scr.enter{animation:rmI .15s both}.scr.leave{animation:rmO .15s both}
  @keyframes rmI{from{opacity:0}to{opacity:1}}@keyframes rmO{to{opacity:0}}
- .frame.flare,.scr.fin[data-stage="2"] .disc,.dots i{animation:none!important}
+ .frame.flare,:is(.scr.fin,.jfin)[data-stage="2"] .disc,.dots i{animation:none!important}
  .ringv *,.post,.tring .tv{transition-duration:.01s!important;transition-delay:0s!important}
 }/* ===== app additions ===== */
 .ptitle:focus{outline:none}
@@ -513,6 +513,111 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
 .scr.md .foot{flex:none}
 
 .aboutlk{background:none;border:0;color:inherit;opacity:.6;font:inherit;font-size:12px;padding:10px;margin:2px auto 0;display:block;text-decoration:underline;text-underline-offset:3px}
+.gcard.g3{--cy:#ff8a98;--acr:255,138,152;--ln:rgba(255,138,152,.32)}.gcard.g3 .btn.pri{background:linear-gradient(180deg,rgba(255,138,152,.16),rgba(255,138,152,.04))}
+
+/* ===== Judas (online) ===== */
+.scr.jo{--cy:#ff8a98;--acr:255,138,152;--hi:#ffb3bd;--ln:rgba(255,138,152,.28);display:flex;flex-direction:column}
+.scr.jo[data-ph=lobby],.scr.jo[data-ph=answer],.scr.jo[data-ph=vote],.scr.jo[data-ph=discuss]{--cy:#38d5ff;--acr:56,213,255;--hi:#7fe3ff;--ln:rgba(120,190,255,.3)}
+.scr.jo[data-ph=read]{--cy:#e8c780;--acr:232,199,128;--hi:#f6dca0;--ln:rgba(232,199,128,.32)}
+.scr.jo .jbody{flex:1;min-height:0;display:flex;flex-direction:column}
+.scr.jo .jbody>.scroll{flex:1;min-height:0}
+.jbar{font:600 14px var(--sans);color:var(--hi);text-align:right;font-variant-numeric:tabular-nums}
+.jcenter{display:flex;flex-direction:column;justify-content:center;align-items:stretch}
+.jjudas{margin:2px 0 10px;padding:10px 14px;border:1px solid rgba(255,59,78,.55);border-radius:14px;background:linear-gradient(180deg,rgba(255,59,78,.18),rgba(255,59,78,.05));text-align:center;color:#ffd5da;font-size:14px;line-height:1.35;animation:jpulse 2.6s ease-in-out infinite}
+.jjudas b{display:block;font:700 18px var(--disp);letter-spacing:.14em;color:#ff6b7a;margin-bottom:2px}
+.jhonest{margin:2px 0 10px;text-align:center;color:#c5d6e8;font-size:14px}
+@keyframes jpulse{50%{box-shadow:0 0 22px -4px rgba(255,59,78,.55)}}
+.parch.jq{margin:4px 4px 12px;padding:20px 18px 22px}.parch.jq .ww{font:600 21px/1.3 var(--serif);letter-spacing:.01em;text-transform:none;color:#1d140a;margin-top:2px}
+.parch.jq .rule{margin:10px 24px}
+.stamp{display:grid;place-items:center;margin:8px 0 2px}.stamp span{font:700 22px var(--disp);letter-spacing:.2em;color:#7fe3ff;border:3px solid #7fe3ff;border-radius:10px;padding:6px 16px;transform:rotate(-6deg);animation:stampIn .5s cubic-bezier(.2,1.6,.4,1) both;box-shadow:0 0 22px -4px rgba(56,213,255,.6),inset 0 0 12px rgba(56,213,255,.2)}
+@keyframes stampIn{from{transform:rotate(-14deg) scale(2.2);opacity:0}to{transform:rotate(-6deg) scale(1);opacity:1}}
+.jchips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.jchip{display:flex;flex-direction:column;align-items:center;gap:3px;width:56px;position:relative;opacity:.62;transition:opacity .3s,transform .3s}
+.jchip small{font-size:11px;max-width:56px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#c5d6e8}
+.jchip .av2{width:36px;height:36px;transition:box-shadow .3s,border-color .3s}
+.jchip.on{opacity:1}.jchip.on .av2{border-color:#7fe3ff;box-shadow:0 0 14px rgba(56,213,255,.7)}
+.jchip i{position:absolute;top:-4px;right:6px;width:16px;height:16px;border-radius:50%;background:#38d5ff;color:#04101c;font:700 10px/16px var(--sans);text-align:center;font-style:normal}
+.jchip.off{filter:grayscale(1)}
+.av2.big{width:92px;height:92px;font-size:38px;position:relative;z-index:2}
+/* read-aloud card */
+.readcard{position:relative;margin:4px 6px;padding:34px 22px 30px;text-align:center;border-radius:20px;background:radial-gradient(120% 90% at 50% 0%,#3a2a12,#1b1307 70%);border:2px solid #e8c780;box-shadow:0 0 0 4px rgba(232,199,128,.12),0 0 40px -6px rgba(232,199,128,.55),inset 0 0 40px rgba(232,199,128,.12);animation:torch 3s ease-in-out infinite}
+.readcard .rib{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:linear-gradient(180deg,#f6dca0,#c99a3e);color:#2a1a04;font:700 12px var(--sans);letter-spacing:.22em;padding:6px 16px;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,.5);white-space:nowrap}
+.readcard .rq{font:600 25px/1.3 var(--serif);color:#fbf1d8;text-shadow:0 0 18px rgba(232,199,128,.35)}
+.readcard .torch{position:absolute;bottom:-8px;width:14px;height:34px;border-radius:50% 50% 40% 40%;background:radial-gradient(circle at 50% 70%,#fff3c4,#ffb347 45%,transparent 70%);filter:blur(1.5px);animation:flick .9s ease-in-out infinite alternate}
+.readcard .torch.l{left:18px}.readcard .torch.r{right:18px;animation-delay:.3s}
+@keyframes torch{50%{box-shadow:0 0 0 4px rgba(232,199,128,.18),0 0 58px -4px rgba(232,199,128,.75),inset 0 0 46px rgba(232,199,128,.18)}}
+@keyframes flick{from{transform:scale(1,.85);opacity:.7}to{transform:scale(1.1,1.15);opacity:1}}
+.waves{position:relative;height:150px;display:grid;place-items:center}
+.waves i{position:absolute;width:92px;height:92px;border-radius:50%;border:2px solid var(--cy);opacity:0;animation:wave 3s ease-out infinite}
+.waves i:nth-child(2){animation-delay:1s}.waves i:nth-child(3){animation-delay:2s}
+@keyframes wave{from{transform:scale(1);opacity:.7}to{transform:scale(2.6);opacity:0}}
+/* the slate */
+.jshow{flex:1;min-height:0;display:flex;flex-direction:column}
+.jq2{margin:0 0 8px;text-align:center;color:#d6e3f1;font:600 15px/1.3 var(--serif)}.jq2 small{display:block;font:600 10px var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--cy);margin-bottom:2px}
+.slatewrap{flex:1;min-height:0;perspective:1400px;display:flex;align-items:center;padding:4px 0}
+.slate{position:relative;width:100%;height:100%;max-height:520px;min-height:260px;transform-style:preserve-3d;transition:transform .95s cubic-bezier(.2,.8,.2,1);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.slate.flip{transform:rotateY(180deg)}
+.sf{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:20px;overflow:hidden}
+.sf.back{background:repeating-linear-gradient(90deg,rgba(0,0,0,.14) 0 2px,transparent 2px 26px),linear-gradient(135deg,#5a3a1a,#3a2410 55%,#4d3016);border:2px solid #7a5427;box-shadow:inset 0 0 40px rgba(0,0,0,.55),0 14px 40px -12px #000,0 0 0 1px rgba(232,199,128,.2);display:grid;place-items:center}
+.sf.back .bk{text-align:center;color:#e8c780}.sf.back .bk svg{width:92px;height:92px;opacity:.85;animation:glowf 3.2s ease-in-out infinite}
+@keyframes glowf{50%{filter:drop-shadow(0 0 10px rgba(232,199,128,.7))}}.sf.back .bk b{display:block;font:600 18px var(--disp);letter-spacing:.06em;margin-top:6px}.sf.back .bk span{display:block;font-size:13px;opacity:.8;margin-top:4px}
+.sf.front{transform:rotateY(180deg);padding:14px;background:linear-gradient(135deg,#a2692f,#6b3f18 38%,#8d5a28 68%,#583514);box-shadow:0 18px 50px -14px #000,0 0 36px -8px rgba(232,199,128,.5),inset 0 0 0 2px rgba(255,220,160,.25)}
+.sf.front .sl{position:relative;height:100%;border-radius:10px;background:radial-gradient(120% 90% at 30% 20%,#34403f,#202a2a 55%,#161d1d);box-shadow:inset 0 0 34px rgba(0,0,0,.75),inset 0 0 0 2px rgba(0,0,0,.35);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px 14px 30px;color:#f6f3e8;font-family:'Bradley Hand','Segoe Print','Marker Felt','Chalkboard SE','Comic Sans MS','Kalam',cursive;overflow:hidden}
+.sf.front .sl::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 40% at 70% 30%,rgba(255,255,255,.07),transparent),radial-gradient(40% 30% at 20% 75%,rgba(255,255,255,.05),transparent),repeating-linear-gradient(115deg,transparent 0 9px,rgba(255,255,255,.012) 9px 10px);pointer-events:none}
+.sl .who{font-size:20px;opacity:.78;letter-spacing:.04em}.sl .who::before,.sl .who::after{content:"~";margin:0 8px;opacity:.6}
+.sl .ch{width:62%;height:3px;margin:10px 0 18px;border-radius:3px;background:rgba(255,255,255,.55);filter:blur(.4px);opacity:.7}
+.sl .ans{line-height:1.12;overflow-wrap:anywhere;hyphens:auto;max-width:100%;text-shadow:0 0 1px rgba(255,255,255,.7),0 0 9px rgba(255,255,255,.16);transform:rotate(-1.2deg);animation:chalk 1.1s ease-out .55s both}
+.sl .tray{position:absolute;left:0;right:0;bottom:0;height:16px;background:linear-gradient(180deg,#6b4a22,#3d2810);box-shadow:0 -2px 8px rgba(0,0,0,.5)}
+.sl .tray::after{content:"";position:absolute;left:18%;top:-5px;width:34px;height:7px;border-radius:3px;background:#f2efe4;transform:rotate(-4deg);box-shadow:0 0 6px rgba(255,255,255,.4)}
+@keyframes chalk{from{opacity:0;filter:blur(6px);letter-spacing:.2em}to{opacity:1;filter:none;letter-spacing:normal}}
+.slate.flip~*{}
+.jj{color:#ff9aa5;font-size:13px;margin:0}
+/* discussion, vote, tally */
+.tring{margin:0 auto 6px}.jans{margin-bottom:10px}
+.jtally{display:flex;flex-direction:column;gap:6px;margin:10px 0 4px;width:100%}
+.jtally>div{position:relative;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 12px;border:1px solid var(--ln);border-radius:10px;overflow:hidden;font-size:14px;text-align:left}
+.jtally>div i{position:absolute;left:0;top:0;bottom:0;width:var(--w);background:linear-gradient(90deg,rgba(56,213,255,.25),rgba(56,213,255,.06));z-index:0}
+.jtally>div.jd{border-color:rgba(255,59,78,.6)}.jtally>div.jd i{background:linear-gradient(90deg,rgba(255,59,78,.35),rgba(255,59,78,.08))}
+.jtally span,.jtally b{position:relative;z-index:1}
+/* the reveal */
+.jfin{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;overflow-y:auto;overflow-x:hidden;background:radial-gradient(100% 50% at 50% 28%,#1a1230 0%,#09101f 50%,#040813 100%);border-radius:18px;margin:0 -4px;padding:40px 8px 16px}
+.jfin .spot{position:absolute;left:50%;top:6%;width:340px;height:340px;margin-left:-170px;border-radius:50%;background:conic-gradient(from 0deg,transparent 0 12%,rgba(255,59,78,.22) 18%,transparent 26% 62%,rgba(255,59,78,.18) 70%,transparent 78%);opacity:0;filter:blur(8px);animation:spin 7s linear infinite;pointer-events:none}
+.jfin[data-stage="3"] .spot{opacity:1;transition:opacity 1s}
+@keyframes spin{to{transform:rotate(360deg)}}
+.jfin .ringv,.jfin .below{position:relative;z-index:1}
+.jfin .below{min-height:140px;width:100%;flex:none}.jfin .post{position:relative;inset:auto;display:flex}.jfin .pre{position:absolute;left:0;right:0;top:0}.jfin:not([data-stage="3"]) .post{position:absolute;left:0;right:0;top:0}
+.jfin[data-stage="3"] .post .btn{margin-top:12px}
+/* the ending */
+.jend{position:relative;overflow-x:hidden}
+.jwin{text-align:center;margin:6px 0 10px;padding:16px 14px;border-radius:16px;border:1px solid;animation:riseUp .7s cubic-bezier(.2,.8,.2,1) both}
+.jwin small{display:block;font:700 12px var(--sans);letter-spacing:.24em;text-transform:uppercase}.jwin b{display:block;font:600 20px/1.25 var(--serif);margin-top:6px}
+.jwin.g{border-color:rgba(56,213,255,.6);background:linear-gradient(180deg,rgba(56,213,255,.18),rgba(56,213,255,.04));color:#e6f8ff}.jwin.g small{color:#7fe3ff}
+.jwin.j{border-color:rgba(255,59,78,.6);background:linear-gradient(180deg,rgba(255,59,78,.2),rgba(255,59,78,.04));color:#ffe3e6}.jwin.j small{color:#ff6b7a}
+.jwho{text-align:center;margin:8px 0 6px;font-size:16px;color:#c5d6e8}.jwho b{font:700 24px var(--disp);letter-spacing:.06em;color:#fff;display:block}
+.jqs{width:100%;margin:6px 0}
+.conf{position:fixed;left:0;right:0;top:0;height:100%;pointer-events:none;overflow:hidden;z-index:0}.jend>*:not(.conf){position:relative;z-index:1}
+.conf i{position:absolute;top:-20px;left:var(--x);width:var(--w);height:calc(var(--w)*1.6);background:var(--c);border-radius:2px;opacity:.9;transform:rotate(var(--r));animation:fall var(--t) linear var(--d) both}
+.conf.ember i{border-radius:50%;height:var(--w);filter:blur(.6px);animation-name:rise;top:auto;bottom:-20px}
+@keyframes fall{to{transform:translateY(105vh) rotate(calc(var(--r) + 540deg));opacity:.2}}
+@keyframes rise{to{transform:translateY(-105vh) scale(.4);opacity:0}}
+@media(prefers-reduced-motion:reduce){.slate{transition-duration:.01s}.sl .ans,.readcard,.torch,.waves i,.jjudas,.sf.back .bk svg,.conf i,.jfin .spot,.stamp span{animation:none!important}.conf{display:none}}
+
+/* ---- play without internet (QR pairing) ---- */
+.rtc .qrwrap{display:flex;justify-content:center;margin:10px 0 14px}
+.rtc .qrwrap canvas{width:min(78vw,300px);height:auto;aspect-ratio:1;background:#fff;border-radius:14px;padding:0;image-rendering:pixelated;box-shadow:0 0 0 1px rgba(95,200,255,.35),0 10px 30px rgba(0,0,0,.45)}
+.camwrap{position:relative;width:100%;max-width:340px;aspect-ratio:1;margin:8px auto 10px;border-radius:18px;overflow:hidden;background:#05101f;box-shadow:0 0 0 1px rgba(95,200,255,.35)}
+.camwrap video{width:100%;height:100%;object-fit:cover;display:block}
+.camwrap .reticle{position:absolute;inset:14%;border:2px solid rgba(95,200,255,.9);border-radius:16px;box-shadow:0 0 0 999px rgba(4,8,19,.35);pointer-events:none}
+.rtwait{display:flex;flex-direction:column;align-items:center;gap:8px;margin:12px 0}
+.rtwait .spin{width:26px;height:26px;border-radius:50%;border:3px solid rgba(95,200,255,.25);border-top-color:#5fc8ff;animation:rtspin 1s linear infinite}
+@keyframes rtspin{to{transform:rotate(360deg)}}
+.rtctxt{margin:14px 0 0;border:1px solid rgba(95,200,255,.2);border-radius:12px;padding:10px 12px}
+.rtctxt summary{cursor:pointer;color:#9fc3e4;font-size:14px}
+.rtctxt textarea{width:100%;box-sizing:border-box;margin:6px 0;background:#07142a;color:#e8f1fa;border:1px solid rgba(95,200,255,.25);border-radius:10px;padding:8px;font:12px/1.3 ui-monospace,monospace;word-break:break-all}
+.rtok{color:#5fe0a0;font-weight:700}
+.rtcbar{position:absolute;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:60;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#3a1420;border:1px solid #ff7b8c;color:#ffd9de;border-radius:12px;padding:8px 10px 8px 14px;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+.rtcbar button{background:#ff7b8c;color:#2a0a12;border:0;border-radius:9px;padding:8px 12px;font-weight:700;font-size:14px}
+@media (prefers-reduced-motion:reduce){.rtwait .spin{animation:none}}
 
 </style>
 </head>
@@ -1054,6 +1159,481 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
 
 </script>
 <script>
+/* Judas: online question game engine (one phone per player). Host-authoritative, deterministic reducer, same shape as The Night Watch engine.
+   Everyone answers a question at the same time; one player (Judas) secretly got a different one. UMD: window.JudasEngine / module.exports. */
+(function (root, factory) { if (typeof module === 'object' && module.exports) module.exports = factory(); else root.JudasEngine = factory(); })(this, function () {
+  'use strict';
+  const MIN = 4, MAX = 12, TIMES = { ansSec: 60, discSec: 180, voteSec: 60, revealSec: 14, guessSec: 30 };
+  /* [type, the group's question, Judas's question]. 'bible' = type a short answer; 'player' = pick a player. All opinion questions: there is no right answer to check. */
+  const JQ = [
+  ['bible', 'Who would you have sent out to fight Goliath instead of David?', 'Which disciple do you think was physically the strongest?'],
+  ['bible', 'Which Bible character would be the best roommate?', 'Which Bible character would be the worst roommate?'],
+  ['bible', 'Which animal in the Bible would make the best pet?', 'Which animal in the Bible would you least want to meet?'],
+  ['bible', 'Which Bible character would win a talent show?', 'Which Bible character would win a singing contest?'],
+  ['bible', 'Which Bible character would you ask for life advice?', 'Which Bible character would you ask for directions?'],
+  ['bible', 'Which Bible character would be the best cook?', 'Which Bible character would be the best host at a party?'],
+  ['bible', 'Which Bible character would win a long-distance race?', 'Which Bible character would win a game of hide and seek?'],
+  ['bible', 'Which miracle would you most like to see in person?', 'Which miracle would be the scariest to see in person?'],
+  ['bible', 'Whose name in the Bible is the coolest?', 'Whose name in the Bible is the hardest to pronounce?'],
+  ['bible', 'Which place in the Bible would you most like to visit?', 'Which place in the Bible would you never want to visit?'],
+  ['bible', 'Which disciple would be your fishing partner?', 'Which disciple would you want on your team in a quiz show?'],
+  ['bible', 'Which Bible character would make the best youth leader?', 'Which Bible character would make the best worship leader?'],
+  ['bible', 'Which Bible character would make the best detective?', 'Which Bible character would make the best lawyer?'],
+  ['bible', 'Which food in the Bible would you eat every day?', 'Which food in the Bible would you refuse to eat?'],
+  ['bible', 'Who would you want to sit next to on a long journey?', 'Who would you want next to you on a boat in a storm?'],
+  ['bible', 'Which woman in the Bible do you admire most?', 'Which woman in the Bible was the bravest?'],
+  ['bible', 'Which king in the Bible would you most want ruling your country?', 'Which king in the Bible would you least want ruling your country?'],
+  ['bible', 'Who in the Bible would make the best ship captain?', 'Who in the Bible would be the best passenger on a ship?'],
+  ['bible', 'Which Bible character would be the biggest star on social media?', 'Which Bible character would have the most followers?'],
+  ['bible', 'Which Bible character would you take with you to a desert island?', 'Which Bible character would you take with you to a job interview?'],
+  ['bible', 'Which disciple would be best at keeping a secret?', 'Which disciple would be worst at keeping a secret?'],
+  ['bible', 'Which Bible character would be the best sports coach?', 'Which Bible character would be the best referee?'],
+  ['bible', 'Which Bible story would make the best action movie?', 'Which Bible story would make the best cartoon?'],
+  ['bible', 'Which Bible character would you invite to dinner?', 'Which Bible character would you invite to a sleepover?'],
+  ['bible', 'Who was the wisest person in the Bible?', 'Who was the most patient person in the Bible?'],
+  ['bible', 'Which of the ten plagues of Egypt would be the worst to live through?', 'Which of the ten plagues of Egypt would be the most annoying?'],
+  ['bible', 'Which Bible character had the hardest job?', 'Which Bible character had the scariest job?'],
+  ['bible', 'Who in the Bible would you want guarding your house?', 'Who in the Bible would you want guarding your snacks?'],
+  ['bible', 'Which Bible character would be the best at hiding?', 'Which Bible character would be the worst at hiding?'],
+  ['bible', 'Which Bible character would be the best bodyguard?', 'Which Bible character would be the best messenger?'],
+  ['bible', 'Which Bible character would be the funniest to have as a classmate?', 'Which Bible character would be the smartest to have as a classmate?'],
+  ['bible', 'If you could ask one Bible character one question, who would you ask?', 'If you could swap places with one Bible character for a day, who would you pick?'],
+  ['bible', 'Which Bible journey would you most like to go on?', 'Which Bible journey would you least like to go on?'],
+  ['bible', 'Which Bible character has the best story?', 'Which Bible character has the saddest story?'],
+  ['bible', 'Which Bible character would be the best at a cooking competition?', 'Which Bible character would be the best at a farming competition?'],
+  ['bible', 'Which Bible character do you think laughed the most?', 'Which Bible character do you think worried the most?'],
+  ['player', 'Who here is most like Ananias, always ready with a story?', 'Who here do you like the most?'],
+  ['player', 'Who here would stay awake the longest during a very long sermon?', 'Who here would fall asleep first during a very long sermon?'],
+  ['player', 'Who here would be the first to run from a lion?', 'Who here would be the first to walk up to a lion?'],
+  ['player', 'Who here is most like Jonah, the most likely to dodge a job?', 'Who here is the fastest runner?'],
+  ['player', 'Who here would win a strength contest, like Samson?', 'Who here has the best hair?'],
+  ['player', 'Who here would make the best prophet?', 'Who here would make the best king or queen?'],
+  ['player', 'Who here would build an ark the fastest?', 'Who here would take care of the animals best?'],
+  ['player', 'Who here is most like Peter, speaking before thinking?', 'Who here is the most generous?'],
+  ['player', 'Who here is most like Martha, always busy serving?', 'Who here is most like Mary, always sitting and listening?'],
+  ['player', 'Who here prays the best?', 'Who here prays the longest?'],
+  ['player', 'Who here would climb a tree just to see someone famous, like Zacchaeus?', 'Who here would climb the tallest tree?'],
+  ['player', 'Who here would you trust to look after the money bag?', 'Who here would you trust to look after the snacks?'],
+  ['player', 'Who here would make the best shepherd?', 'Who here would be best at herding cats?'],
+  ['player', 'Who here would you want next to you on a boat in a storm?', 'Who here would sleep right through a storm?'],
+  ['player', 'Who here is most like Thomas, always asking for proof?', 'Who here asks the most questions?'],
+  ['player', 'Who here would give the longest sermon?', 'Who here would give the funniest sermon?'],
+  ['player', 'Who here would be best at hide and seek?', 'Who here would be worst at hide and seek?'],
+  ['player', 'Who here is brave enough to face a giant?', 'Who here is brave enough to eat a locust?'],
+  ['player', 'Who here would step out of the boat and walk on water first?', 'Who here would sink first?'],
+  ['player', 'Who here would stretch a potluck the furthest, like loaves and fishes?', 'Who here eats the most at a potluck?'],
+  ['player', 'Who here would swap anything for a bowl of stew, like Esau?', 'Who here loves food the most?'],
+  ['player', 'Who here is the most patient, like Noah building the ark?', 'Who here is the most stubborn?'],
+  ['player', 'Who here would be the first to say “Here am I, send me”?', 'Who here would be the last to volunteer?'],
+  ['player', 'Who here is most like Esther, brave when it really matters?', 'Who here is most like Deborah, a born leader?'],
+  ['player', 'Who here would you choose as your lawyer?', 'Who here would you choose as your bodyguard?'],
+  ['player', 'Who here is most like Elijah, the most dramatic?', 'Who here is the funniest?'],
+  ['player', 'Who here would give away their coat to someone in need?', 'Who here would give away their last slice of pizza?'],
+  ['player', 'Who here would be best at keeping a secret?', 'Who here would be worst at keeping a secret?'],
+  ['player', 'Who here would be first to build a tower to reach the sky?', 'Who here has the biggest dreams?'],
+  ['player', 'Who here is most like Nicodemus, the type to visit by night?', 'Who here is the biggest night owl?'],
+  ['player', 'Who here would be the best at leading worship?', 'Who here would be the best at a drum solo?'],
+  ['player', 'Who here would be the most likely to pretend they were somebody else?', 'Who here is the best actor?'],
+  ['player', 'Who here would make the best captain of a ship?', 'Who here would be the first to get seasick?'],
+  ['player', 'Who here would take the longest to pack for a long journey, like the Israelites?', 'Who here is the most organised?'],
+  ['player', 'Who here is most likely to wake everyone up with singing, like Paul and Silas in prison?', 'Who here has the loudest laugh?'],
+  ['player', 'Who here would make the best cook at a wedding like the one in Cana?', 'Who here would be the best at serving the guests?'],
+  ['player', 'Who here would be best at marching around a city seven times, like at Jericho?', 'Who here has the loudest shout?']
+];
+  const clone = o => JSON.parse(JSON.stringify(o));
+  function rnd(s) { s.rs = (s.rs + 0x6D2B79F5) >>> 0; let t = s.rs; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }
+  const pick = (s, a) => a[Math.floor(rnd(s) * a.length)];
+  function shuffle(s, a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd(s) * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  const CODE_CH = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+  function makeCode(seed) { const s = { rs: seed >>> 0 }; let c = ''; for (let i = 0; i < 4; i++) c += CODE_CH[Math.floor(rnd(s) * CODE_CH.length)]; return c; }
+  const cleanName = n => String(n || '').replace(/[\u0000-\u001f<>]/g, '').trim().slice(0, 14);
+  const cleanText = n => String(n || '').replace(/[\u0000-\u001f<>]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 60);
+  const byId = (s, id) => s.players.find(p => p.id === id);
+  const active = s => s.players.filter(p => !p.left);
+  const setDeadline = (s, sec, now) => { s.deadline = sec > 0 ? now + sec * 1000 : 0; };
+  const normalizeCfg = (s, p) => {
+    p = p || {}; const c = s.cfg;
+    if (p.style && ['mix', 'bible', 'player'].indexOf(p.style) >= 0) c.style = p.style;
+    if (p.ansSec != null && [0, 30, 45, 60, 90, 120].indexOf(+p.ansSec) >= 0) c.ansSec = +p.ansSec;
+    if (p.discSec != null && [60, 120, 180, 300, 0].indexOf(+p.discSec) >= 0) c.discSec = +p.discSec;
+    if (p.voteSec != null && [30, 45, 60, 90].indexOf(+p.voteSec) >= 0) c.voteSec = +p.voteSec;
+    if (p.guess != null) c.guess = !!p.guess;
+  };
+  function createRoom(o) {
+    const seed = (o.seed != null ? o.seed : Math.floor(Math.random() * 4294967295)) >>> 0;
+    const s = { v: 1, game: 'jd', code: o.code || makeCode(seed), hostId: o.hostId, modId: o.hostId, rs: seed, phase: 'lobby', round: 0, deadline: 0, cfg: Object.assign({ style: 'mix', guess: true }, TIMES),
+      players: [], deal: null, answers: {}, votes: {}, result: null, guessPick: null, guessOpts: [], winner: null, winnerText: '', recent: [] };
+    s.players.push({ id: o.hostId, name: cleanName(o.hostName) || 'Host', bot: false, connected: true, left: false });
+    return s;
+  }
+  function validate(s) { const e = []; if (active(s).length < MIN) e.push('You need at least ' + MIN + ' players. Add friends or practice bots.'); return e; }
+  function startRound(s, now) {
+    const pool = JQ.map((q, i) => i).filter(i => s.cfg.style === 'mix' || JQ[i][0] === s.cfg.style); let fresh = pool.filter(i => s.recent.indexOf(i) < 0); if (!fresh.length) fresh = pool;
+    const id = pick(s, fresh), q = JQ[id]; s.recent = s.recent.concat(id).slice(-40);
+    const act = active(s); if (!byId(s, s.modId) || byId(s, s.modId).left) s.modId = s.hostId;
+    const others = shuffle(s, JQ.map((x, i) => i).filter(i => i !== id && JQ[i][0] === q[0])).slice(0, 3);
+    s.deal = { id, type: q[0], q: q[1], jq: q[2], judas: pick(s, act).id }; s.guessOpts = shuffle(s, [id].concat(others)); s.answers = {}; s.votes = {}; s.result = null; s.guessPick = null; s.winner = null; s.winnerText = '';
+    s.round++; s.phase = 'answer'; setDeadline(s, s.cfg.ansSec, now);
+  }
+  function toRead(s) { act(s).forEach(p => { if (s.answers[p.id] == null) s.answers[p.id] = '—'; }); s.phase = 'read'; s.deadline = 0; }
+  function act(s) { return active(s); }
+  function toVote(s, now) { s.phase = 'vote'; setDeadline(s, s.cfg.voteSec, now); }
+  function resolveVote(s, now) {
+    const tally = {}; act(s).forEach(p => { const t = s.votes[p.id]; if (t) tally[t] = (tally[t] || 0) + 1; });
+    const ids = Object.keys(tally).sort((a, b) => tally[b] - tally[a]); let accused = null, tie = false;
+    if (ids.length) { const best = tally[ids[0]], tops = ids.filter(k => tally[k] === best); if (tops.length === 1) accused = tops[0]; else tie = true; }
+    s.result = { tally, accused, tie, caught: accused === s.deal.judas }; s.phase = 'reveal'; setDeadline(s, s.cfg.revealSec, now);
+  }
+  function afterReveal(s, now) {
+    if (s.result.caught && s.cfg.guess && !(byId(s, s.deal.judas) || {}).left) { s.phase = 'guess'; setDeadline(s, s.cfg.guessSec, now); } else finalize(s);
+  }
+  function finalize(s) {
+    const caught = s.result && s.result.caught, right = s.guessPick === s.deal.id;
+    s.winner = caught && !right ? 'group' : 'judas'; s.phase = 'ended'; s.deadline = 0;
+    s.winnerText = s.winner === 'group' ? (s.guessPick != null ? 'The group wins! Judas guessed the wrong question.' : 'The group wins! Judas was found out.')
+      : caught ? 'Judas wins! Found out, but guessed the real question.' : 'Judas wins! The group looked the wrong way.';
+  }
+  function abandon(s, why) { s.phase = 'ended'; s.winner = 'abandoned'; s.winnerText = why || 'The round was ended.'; s.deadline = 0; }
+  function advance(s, now) {   // the moderator's (or host's) "next" button, and the host's way to unstick a round
+    switch (s.phase) {
+      case 'answer': toRead(s); return true;
+      case 'read': s.phase = 'show'; s.deadline = 0; return true;
+      case 'show': s.phase = 'discuss'; setDeadline(s, s.cfg.discSec, now); return true;
+      case 'discuss': toVote(s, now); return true;
+      case 'vote': resolveVote(s, now); return true;
+      case 'reveal': afterReveal(s, now); return true;
+      case 'guess': finalize(s); return true;
+    }
+    return false;
+  }
+  function dispatch(state, a, now) {
+    const s = clone(state); now = now || 0; const by = a.by, me = byId(s, by);
+    const err = m => ({ ok: false, error: m }), ok = () => ({ ok: true, state: s });
+    const host = by === s.hostId, mod = by === s.modId || host;
+    switch (a.type) {
+      case 'JOIN': {
+        const ex = byId(s, a.id); if (ex) { ex.connected = true; return ok(); }
+        if (s.phase !== 'lobby') return err('This game has already started.');
+        if (s.players.length >= MAX) return err('The room is full (' + MAX + ' players).');
+        const nm = cleanName(a.name) || 'Player'; let n = nm, k = 2; while (s.players.some(p => p.name.toLowerCase() === n.toLowerCase())) n = nm.slice(0, 11) + ' ' + (k++);
+        s.players.push({ id: a.id, name: n, bot: !!a.bot, connected: true, left: false }); return ok();
+      }
+      case 'CONNECTION': { const p = byId(s, a.id); if (p) p.connected = !!a.connected; return ok(); }
+      case 'ADD_BOT': { if (!host) return err('Only the host can add practice bots.'); if (s.phase !== 'lobby') return err('Too late.'); if (s.players.length >= MAX) return err('The room is full.');
+        return dispatch(s, { type: 'JOIN', id: 'bot' + s.players.length + Math.floor(rnd(s) * 1e4), name: a.name || pick(s, ['Ruth', 'Boaz', 'Esther', 'Caleb', 'Silas', 'Lydia', 'Gideon', 'Naomi', 'Titus', 'Hannah', 'Amos', 'Levi', 'Dinah', 'Asher']), bot: true, by }, now); }
+      case 'KICK': { if (!host) return err('Only the host can remove players.'); if (s.phase !== 'lobby') return err('Not now.'); if (a.id === s.hostId) return err('The host can’t be removed.'); s.players = s.players.filter(p => p.id !== a.id); return ok(); }
+      case 'CONFIG': { if (!host) return err('Only the host can change settings.'); if (s.phase !== 'lobby') return err('Settings are locked once the game starts.'); normalizeCfg(s, a.patch); return ok(); }
+      case 'START': { if (!host) return err('Only the host can start.'); if (s.phase !== 'lobby') return err('Already started.'); const e = validate(s); if (e.length) return err(e[0]); startRound(s, now); return ok(); }
+      case 'ANSWER': {
+        if (s.phase !== 'answer' || !me || me.left) return err('You can’t answer now.'); if (s.answers[by] != null) return err('Your answer is already locked in.');
+        let text;
+        if (s.deal.type === 'player') { const t = byId(s, a.target); if (!t || t.left) return err('Pick one of the players.'); text = t.name; }
+        else { text = cleanText(a.text); if (!text) return err('Type an answer first.'); }
+        s.answers[by] = text; if (act(s).every(p => s.answers[p.id] != null)) toRead(s); return ok();
+      }
+      case 'ADVANCE': {
+        if (!mod) return err('Only the moderator can do that.'); if (['read', 'show', 'discuss', 'reveal'].indexOf(s.phase) < 0) return err('Not now.');
+        advance(s, now); return ok();
+      }
+      case 'VOTE': {
+        if (s.phase !== 'vote' || !me || me.left) return err('You can’t vote now.'); const t = byId(s, a.target); if (!t || t.left || t.id === by) return err('Pick another player.');
+        s.votes[by] = a.target; if (act(s).every(p => s.votes[p.id])) resolveVote(s, now); return ok();
+      }
+      case 'GUESS': {
+        if (s.phase !== 'guess' || by !== s.deal.judas) return err('Not now.'); if (s.guessOpts.indexOf(+a.id) < 0) return err('Pick one of the questions.');
+        s.guessPick = +a.id; finalize(s); return ok();
+      }
+      case 'TICK': {
+        if (!s.deadline || now < s.deadline) return ok(); advance(s, now); return ok();
+      }
+      case 'FORCE': { if (!host) return err('Only the host can do that.'); if (s.phase === 'lobby' || s.phase === 'ended') return err('Not now.'); advance(s, now); return ok(); }
+      case 'LEAVE': {
+        if (!me) return ok();
+        if (s.phase === 'lobby') { s.players = s.players.filter(p => p.id !== by); return ok(); }
+        me.left = true; me.connected = false; if (s.modId === by) s.modId = act(s).filter(p => !p.bot)[0] ? act(s).filter(p => !p.bot)[0].id : s.hostId;
+        if (s.phase !== 'ended') {
+          if (act(s).length < 3 || by === s.deal.judas) abandon(s, by === s.deal.judas ? 'Judas left the room, so the round was ended.' : 'Too few players are left, so the round was ended.');
+          else if (s.phase === 'answer' && act(s).every(p => s.answers[p.id] != null)) toRead(s);
+          else if (s.phase === 'vote' && act(s).every(p => s.votes[p.id])) resolveVote(s, now);
+        }
+        return ok();
+      }
+      case 'AGAIN': {   // another round with the same players; the moderator job moves on
+        if (!host || s.phase !== 'ended') return err('Not now.'); s.players = s.players.filter(p => !p.left || p.id === s.hostId);
+        if (active(s).length < MIN) { s.phase = 'lobby'; s.deal = null; s.answers = {}; s.votes = {}; s.result = null; s.winner = null; s.deadline = 0; return ok(); }
+        const list = active(s).filter(p => !p.bot), i = list.findIndex(p => p.id === s.modId); s.modId = list.length ? list[(i + 1) % list.length].id : s.hostId; startRound(s, now); return ok();
+      }
+    }
+    return err('Unknown action.');
+  }
+  const typeName = t => t === 'player' ? 'player' : 'bible';
+  function getView(s, pid) {
+    const p = byId(s, pid); if (!p) return { error: 'You are not in this room.', code: s.code };
+    const ph = s.phase, d = s.deal, over = ph === 'ended', isMod = pid === s.modId, isJ = !!d && d.judas === pid, mp = byId(s, s.modId);
+    const v = { game: 'jd', code: s.code, phase: ph, round: s.round, deadline: s.deadline, isHost: pid === s.hostId, hostId: s.hostId, modId: s.modId, modName: mp ? mp.name : '', cfg: s.cfg, min: MIN, max: MAX,
+      errors: ph === 'lobby' ? validate(s) : [], winner: s.winner, winnerText: s.winnerText,
+      players: s.players.map(x => ({ id: x.id, name: x.name, bot: x.bot, connected: x.connected, left: x.left, host: x.id === s.hostId, mod: x.id === s.modId, me: x.id === pid,
+        locked: ph === 'answer' && s.answers[x.id] != null, voted: ph === 'vote' && !!s.votes[x.id] })),
+      me: { id: pid, name: p.name, isMod, left: p.left } };
+    if (d && ph !== 'lobby') {
+      v.type = d.type; v.me.isJudas = isJ; v.me.locked = s.answers[pid] != null; v.me.answer = s.answers[pid] != null ? s.answers[pid] : null;
+      if (ph === 'answer') { v.me.q = isJ ? d.jq : d.q; v.done = act(s).filter(x => s.answers[x.id] != null).length; v.total = act(s).length; }
+      if (ph === 'read' && isMod) v.q = d.q;
+      if (['show', 'discuss', 'vote', 'reveal', 'guess', 'ended'].indexOf(ph) >= 0) v.q = d.q;
+      if (['discuss', 'vote', 'reveal', 'guess', 'ended'].indexOf(ph) >= 0) v.answers = act(s).map(x => ({ id: x.id, name: x.name, text: s.answers[x.id] }));
+      if (ph === 'vote') { v.me.vote = s.votes[pid] || null; v.done = act(s).filter(x => s.votes[x.id]).length; v.total = act(s).length; }
+      if (['reveal', 'guess', 'ended'].indexOf(ph) >= 0) {
+        const r = s.result || {}; v.judasId = d.judas; v.judasName = (byId(s, d.judas) || {}).name; v.caught = !!r.caught; v.tie = !!r.tie; v.accusedName = r.accused ? (byId(s, r.accused) || {}).name : null;
+        v.tally = act(s).map(x => ({ id: x.id, name: x.name, n: (r.tally || {})[x.id] || 0, voters: act(s).filter(y => s.votes[y.id] === x.id).map(y => y.name) })).sort((a, b) => b.n - a.n);
+      }
+      if (ph === 'guess' && isJ) v.guessOpts = s.guessOpts.map(id => ({ id, text: JQ[id][1] }));
+      if (over) { v.jq = d.jq; v.guessText = s.guessPick != null ? JQ[s.guessPick][1] : null; v.guessRight = s.guessPick === d.id; }
+    }
+    return v;
+  }
+  /* practice bots */
+  const BOT_ANS = ['Peter', 'David', 'Moses', 'Ruth', 'Daniel', 'Paul', 'Esther', 'Noah', 'Samson', 'Mary', 'Joshua', 'Elijah', 'Lydia', 'Gideon'];
+  function botActions(s, rng) {
+    rng = rng || Math.random; const out = [], r = a => a[Math.floor(rng() * a.length)], bots = act(s).filter(p => p.bot);
+    if (s.phase === 'answer') bots.forEach(b => { if (s.answers[b.id] == null) out.push(s.deal.type === 'player' ? { type: 'ANSWER', by: b.id, target: r(act(s)).id } : { type: 'ANSWER', by: b.id, text: r(BOT_ANS) }); });
+    if (s.phase === 'vote') bots.forEach(b => { if (!s.votes[b.id]) { const o = act(s).filter(x => x.id !== b.id); out.push({ type: 'VOTE', by: b.id, target: r(o).id }); } });
+    if (s.phase === 'guess') bots.forEach(b => { if (b.id === s.deal.judas) out.push({ type: 'GUESS', by: b.id, id: r(s.guessOpts) }); });
+    if (['read', 'show', 'discuss', 'reveal'].indexOf(s.phase) >= 0 && byId(s, s.modId) && byId(s, s.modId).bot) out.push({ type: 'ADVANCE', by: s.modId });
+    return out;
+  }
+  return { game: 'jd', MIN, MAX, TIMES, JQ, createRoom, dispatch, getView, validate, botActions, botPhases: ['answer', 'vote', 'guess', 'read', 'show', 'discuss', 'reveal'] };
+});
+
+</script>
+<script>
+/* A small QR code encoder and camera-image decoder, written for this app so it works with no internet and no external library.
+   Byte mode, error correction level M, versions 1 to 14 (up to 331 bytes). UMD: window.QRX / module.exports.
+   encode(bytes) -> { size, get(x, y) }   decode(gray, width, height) -> Uint8Array | null   (gray is one 0-255 value per pixel) */
+(function (root, factory) { if (typeof module === 'object' && module.exports) module.exports = factory(); else root.QRX = factory(); })(this, function () {
+  'use strict';
+  /* ---- Galois field 256 (x^8 + x^4 + x^3 + x^2 + 1) ---- */
+  const EXP = new Uint8Array(512), LOG = new Uint8Array(256);
+  for (let i = 0, x = 1; i < 255; i++) { EXP[i] = x; LOG[x] = i; x <<= 1; if (x & 256) x ^= 0x11d; }
+  for (let i = 255; i < 512; i++) EXP[i] = EXP[i - 255];
+  const gmul = (a, b) => (a && b) ? EXP[LOG[a] + LOG[b]] : 0;
+  const gdiv = (a, b) => a ? EXP[(LOG[a] + 255 - LOG[b]) % 255] : 0;
+  function genPoly(n) { let g = [1]; for (let i = 0; i < n; i++) { const ng = new Array(g.length + 1).fill(0); for (let j = 0; j < g.length; j++) { ng[j] ^= g[j]; ng[j + 1] ^= gmul(g[j], EXP[i]); } g = ng; } return g; }
+  function rsEncode(data, n) { const g = genPoly(n), res = new Array(n).fill(0); for (let i = 0; i < data.length; i++) { const f = data[i] ^ res[0]; res.shift(); res.push(0); if (f) for (let j = 0; j < n; j++) res[j] ^= gmul(g[j + 1], f); } return res; }
+
+  /* ---- tables (level M): [ecc codewords per block, blocks in group 1, data codewords each, blocks in group 2, data codewords each] ---- */
+  const BLK = [null, [10, 1, 16, 0, 0], [16, 1, 28, 0, 0], [26, 1, 44, 0, 0], [18, 2, 32, 0, 0], [24, 2, 43, 0, 0], [16, 4, 27, 0, 0], [18, 4, 31, 0, 0], [22, 2, 38, 2, 39], [22, 3, 36, 2, 37], [26, 4, 43, 1, 44], [30, 1, 50, 4, 51], [22, 6, 36, 2, 37], [22, 8, 37, 1, 38], [24, 4, 40, 5, 41]];
+  const ALIGN = [null, [], [6, 18], [6, 22], [6, 26], [6, 30], [6, 34], [6, 22, 38], [6, 24, 42], [6, 26, 46], [6, 28, 50], [6, 30, 54], [6, 32, 58], [6, 34, 62], [6, 26, 46, 66]];
+  const MAXV = 14, dataCw = v => { const b = BLK[v]; return b[1] * b[2] + b[3] * b[4]; };
+  const bch = (v, poly, bits) => { let d = v << bits; const hb = n => 31 - Math.clz32(n); while (hb(d) >= hb(poly)) d ^= poly << (hb(d) - hb(poly)); return (v << bits) | d; };
+  const FORMAT_M = mask => bch((0 << 3) | mask, 0x537, 10) ^ 0x5412;   // level M = 00
+  const VERSION_INFO = v => bch(v, 0x1f25, 12);
+  const fmtPos = n => { const A = [], B = []; for (let i = 0; i < 15; i++) { A.push(i < 6 ? [8, i] : i === 6 ? [8, 7] : i === 7 ? [8, 8] : i === 8 ? [7, 8] : [14 - i, 8]); B.push(i < 8 ? [n - 1 - i, 8] : [8, n - 15 + i]); } return [A, B]; };
+  const maskFn = [(r, c) => (r + c) % 2 === 0, (r, c) => r % 2 === 0, (r, c) => c % 3 === 0, (r, c) => (r + c) % 3 === 0, (r, c) => (Math.floor(r / 2) + Math.floor(c / 3)) % 2 === 0, (r, c) => (r * c) % 2 + (r * c) % 3 === 0, (r, c) => ((r * c) % 2 + (r * c) % 3) % 2 === 0, (r, c) => ((r + c) % 2 + (r * c) % 3) % 2 === 0];
+
+  /* ---- function-pattern layout shared by encoder and decoder ---- */
+  function layout(v) {
+    const n = 17 + 4 * v, fn = new Uint8Array(n * n), base = new Uint8Array(n * n);   // fn: reserved (not data); base: dark bits of the function patterns
+    const setF = (x, y, dark) => { if (x < 0 || y < 0 || x >= n || y >= n) return; fn[y * n + x] = 1; base[y * n + x] = dark ? 1 : 0; };
+    const finder = (cx, cy) => { for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++) { const d = Math.max(Math.abs(dx), Math.abs(dy)); setF(cx + dx, cy + dy, d !== 4 && d !== 2); } };
+    finder(3, 3); finder(n - 4, 3); finder(3, n - 4);
+    for (let i = 8; i < n - 8; i++) { setF(i, 6, i % 2 === 0); setF(6, i, i % 2 === 0); }
+    const ap = ALIGN[v]; for (const cy of ap) for (const cx of ap) { if ((cx === 6 && cy === 6) || (cx === 6 && cy === ap[ap.length - 1]) || (cx === ap[ap.length - 1] && cy === 6)) continue; for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) setF(cx + dx, cy + dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1); }
+    for (let i = 0; i < 9; i++) { setF(8, i, 0); setF(i, 8, 0); } fn[8 * n + 8] = 1;
+    for (let i = 0; i < 8; i++) { setF(n - 1 - i, 8, 0); setF(8, n - 1 - i, 0); } setF(8, n - 8, 1);
+    if (v >= 7) for (let i = 0; i < 6; i++) for (let j = 0; j < 3; j++) { fn[i * n + n - 11 + j] = 1; fn[(n - 11 + j) * n + i] = 1; }
+    return { n, fn, base };
+  }
+  /* order of data module positions: up/down column pairs from the right, skipping the timing column */
+  function dataOrder(L) { const { n, fn } = L, out = []; let up = true; for (let x = n - 1; x > 0; x -= 2) { if (x === 6) x = 5; for (let k = 0; k < n; k++) { const y = up ? n - 1 - k : k; for (let dx = 0; dx < 2; dx++) { const cx = x - dx; if (!fn[y * n + cx]) out.push(y * n + cx); } } up = !up; } return out; }
+
+  /* ---- encoder ---- */
+  function encode(bytes) {
+    let v = 1; for (; v <= MAXV; v++) if (bytes.length <= dataCw(v) - (v < 10 ? 2 : 3)) break; if (v > MAXV) throw new Error('too much data for a QR code');
+    const bits = []; const put = (val, len) => { for (let i = len - 1; i >= 0; i--) bits.push((val >>> i) & 1); };
+    put(4, 4); put(bytes.length, v < 10 ? 8 : 16); bytes.forEach(b => put(b, 8));
+    const cap = dataCw(v) * 8; put(0, Math.min(4, cap - bits.length)); while (bits.length % 8) bits.push(0);
+    const cw = []; for (let i = 0; i < bits.length; i += 8) { let b = 0; for (let j = 0; j < 8; j++) b = (b << 1) | bits[i + j]; cw.push(b); }
+    for (let pad = 0xec; cw.length < dataCw(v); pad ^= 0xec ^ 0x11) cw.push(pad);
+    const [ecn, g1, d1, g2, d2] = BLK[v], blocks = [], ecs = []; let p = 0;
+    for (let b = 0; b < g1 + g2; b++) { const len = b < g1 ? d1 : d2, blk = cw.slice(p, p + len); p += len; blocks.push(blk); ecs.push(rsEncode(blk, ecn)); }
+    const all = []; for (let i = 0; i < d2 || i < d1; i++) blocks.forEach(b => { if (i < b.length) all.push(b[i]); }); for (let i = 0; i < ecn; i++) ecs.forEach(e => all.push(e[i]));
+    const L = layout(v), n = L.n, order = dataOrder(L), best = { score: 1e9 };
+    for (let m = 0; m < 8; m++) {
+      const mod = Uint8Array.from(L.base);
+      order.forEach((pos, i) => { const bit = i < all.length * 8 ? (all[i >> 3] >> (7 - (i & 7))) & 1 : 0; const y = (pos / n) | 0, x = pos % n; mod[pos] = bit ^ (maskFn[m](y, x) ? 1 : 0); });
+      const f = FORMAT_M(m), FP = fmtPos(n); for (let i = 0; i < 15; i++) { const bit = (f >> i) & 1; mod[FP[0][i][1] * n + FP[0][i][0]] = bit; mod[FP[1][i][1] * n + FP[1][i][0]] = bit; }
+      mod[(n - 8) * n + 8] = 1;
+      if (v >= 7) { const vi = VERSION_INFO(v); for (let i = 0; i < 18; i++) { const bit = (vi >> i) & 1, a = (i / 3) | 0, b = i % 3 + n - 11; mod[a * n + b] = bit; mod[b * n + a] = bit; } }
+      const sc = penalty(mod, n); if (sc < best.score) { best.score = sc; best.mod = mod; }
+    }
+    return { size: n, version: v, get: (x, y) => best.mod[y * n + x] };
+  }
+  function penalty(m, n) {
+    let s = 0; const g = (x, y) => m[y * n + x];
+    for (let pass = 0; pass < 2; pass++) for (let a = 0; a < n; a++) { let run = 1, prev = pass ? g(a, 0) : g(0, a); for (let b = 1; b < n; b++) { const c = pass ? g(a, b) : g(b, a); if (c === prev) { run++; if (run === 5) s += 3; else if (run > 5) s++; } else { run = 1; prev = c; } } }
+    for (let y = 0; y < n - 1; y++) for (let x = 0; x < n - 1; x++) { const c = g(x, y); if (c === g(x + 1, y) && c === g(x, y + 1) && c === g(x + 1, y + 1)) s += 3; }
+    const pat = [1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0], pat2 = pat.slice().reverse();
+    for (let pass = 0; pass < 2; pass++) for (let a = 0; a < n; a++) for (let b = 0; b <= n - 11; b++) { let m1 = true, m2 = true; for (let k = 0; k < 11; k++) { const c = pass ? g(a, b + k) : g(b + k, a); if (c !== pat[k]) m1 = false; if (c !== pat2[k]) m2 = false; } if (m1) s += 40; if (m2) s += 40; }
+    let dark = 0; for (let i = 0; i < n * n; i++) dark += m[i]; s += Math.floor(Math.abs(dark * 20 - n * n * 10) / (n * n)) * 10;
+    return s;
+  }
+
+  /* ---- Reed-Solomon error correction (so a few misread modules do not matter) ---- */
+  const pEval = (p, x) => { let r = 0; for (let i = 0; i < p.length; i++) r = gmul(r, x) ^ p[i]; return r; };   // p: highest degree first
+  function rsDecode(cw, ecn) {   // cw: data + ecc, corrected in place; returns false if unrecoverable
+    const syn = []; let bad = false; for (let i = 0; i < ecn; i++) { const s = pEval(cw, EXP[i]); syn.push(s); if (s) bad = true; } if (!bad) return true;
+    // Berlekamp-Massey
+    let C = [1], B = [1], Lc = 0, m = 1, b = 1;
+    for (let n = 0; n < ecn; n++) {
+      let d = syn[n]; for (let i = 1; i <= Lc; i++) d ^= gmul(C[i] || 0, syn[n - i]);
+      if (d === 0) { m++; continue; }
+      const T = C.slice(), coef = gdiv(d, b); while (C.length < B.length + m) C.push(0); for (let i = 0; i < B.length; i++) C[i + m] ^= gmul(coef, B[i]);
+      if (2 * Lc <= n) { Lc = n + 1 - Lc; B = T; b = d; m = 1; } else m++;
+    }
+    if (Lc * 2 > ecn) return false;
+    const N = cw.length, errs = []; for (let i = 0; i < N; i++) { // position i from the start has degree N-1-i
+      const xinv = EXP[(255 - (N - 1 - i)) % 255]; let sum = 0; for (let j = 0; j <= Lc; j++) sum ^= gmul(C[j] || 0, j === 0 ? 1 : EXP[(LOG[xinv] * j) % 255]); if (sum === 0) errs.push(i); }
+    if (errs.length !== Lc) return false;
+    // error evaluator Omega = S(x) * C(x) mod x^ecn (low degree first)
+    const om = new Array(ecn).fill(0); for (let i = 0; i < ecn; i++) for (let j = 0; j <= i && j <= Lc; j++) om[i] ^= gmul(C[j] || 0, syn[i - j]);
+    errs.forEach(pos => {
+      const X = EXP[(N - 1 - pos) % 255], Xinv = gdiv(1, X); let num = 0; for (let i = 0; i < ecn; i++) num ^= gmul(om[i], EXP[(LOG[Xinv] * i) % 255] || (i === 0 ? 1 : 0));
+      let den = 0; for (let j = 1; j <= Lc; j += 2) den ^= gmul(C[j] || 0, EXP[(LOG[Xinv] * (j - 1)) % 255] || (j - 1 === 0 ? 1 : 0));   // derivative (odd terms)
+      if (!den) return; cw[pos] ^= gmul(X, gdiv(num, den));
+    });
+    for (let i = 0; i < ecn; i++) if (pEval(cw, EXP[i])) return false;
+    return true;
+  }
+
+  /* ---- decoder ---- */
+  const FORMATS = []; for (let m = 0; m < 8; m++) FORMATS.push({ bits: FORMAT_M(m), mask: m });
+  const ham = (a, b) => { let x = a ^ b, c = 0; while (x) { c += x & 1; x >>>= 1; } return c; };
+  function binarize(gray, w, h, k, div) {
+    const s = Math.max(15, (Math.min(w, h) / (div || 8)) | 0) | 1, half = s >> 1, I = new Float64Array((w + 1) * (h + 1));
+    for (let y = 0; y < h; y++) { let row = 0; for (let x = 0; x < w; x++) { row += gray[y * w + x]; I[(y + 1) * (w + 1) + x + 1] = I[y * (w + 1) + x + 1] + row; } }
+    const bin = new Uint8Array(w * h);
+    for (let y = 0; y < h; y++) { const y0 = Math.max(0, y - half), y1 = Math.min(h, y + half + 1); for (let x = 0; x < w; x++) { const x0 = Math.max(0, x - half), x1 = Math.min(w, x + half + 1); const area = (x1 - x0) * (y1 - y0), sum = I[y1 * (w + 1) + x1] - I[y0 * (w + 1) + x1] - I[y1 * (w + 1) + x0] + I[y0 * (w + 1) + x0]; bin[y * w + x] = gray[y * w + x] * area < sum * (k || 0.92) - 3 * area ? 1 : 0; } }
+    return bin;
+  }
+  function ratioOK(r, unit) { if (r.length !== 5) return false; const tot = r[0] + r[1] + r[2] + r[3] + r[4]; if (tot < 7) return false; const u = tot / 7, tol = u * 0.62; return Math.abs(r[0] - u) < tol && Math.abs(r[1] - u) < tol && Math.abs(r[2] - 3 * u) < 3 * tol && Math.abs(r[3] - u) < tol && Math.abs(r[4] - u) < tol; }
+  function runsAlong(bin, w, h, x0, y0, dx, dy, max) {   // run lengths through the centre point, in both directions; returns [runs, indexOfCentreRun, centreOffset]
+    const get = (x, y) => bin[y * w + x];
+    const walk = (sx, sy, sgn, first) => { const out = []; let x = sx, y = sy, cur = get(x0, y0), len = 0, k = 0; while (x >= 0 && y >= 0 && x < w && y < h && k < max) { if (get(x, y) === cur) len++; else { out.push(len); cur = get(x, y); len = 1; if (out.length >= 3) break; } x += sgn * dx; y += sgn * dy; k++; } if (out.length < 3 && len) out.push(len); return out; };
+    const back = walk(x0, y0, -1), fwd = walk(x0 + dx, y0 + dy, 1); return { back, fwd };
+  }
+  function checkCross(bin, w, h, x, y, dx, dy, maxLen) {   // centre must be dark; returns {total, centre} of the 1:1:3:1:1 pattern or null
+    const get = (a, b) => bin[b * w + a]; if (!get(x, y)) return null;
+    const rs = [0, 0, 0, 0, 0]; let px = x, py = y, state = 2;
+    // centre run (index 2), going negative
+    while (px >= 0 && py >= 0 && px < w && py < h && get(px, py)) { rs[2]++; px -= dx; py -= dy; }
+    state = 1; while (px >= 0 && py >= 0 && px < w && py < h && !get(px, py)) { rs[1]++; px -= dx; py -= dy; } if (rs[1] === 0) return null;
+    state = 0; while (px >= 0 && py >= 0 && px < w && py < h && get(px, py)) { rs[0]++; px -= dx; py -= dy; } if (rs[0] === 0) return null;
+    px = x + dx; py = y + dy;
+    while (px >= 0 && py >= 0 && px < w && py < h && get(px, py)) { rs[2]++; px += dx; py += dy; }
+    while (px >= 0 && py >= 0 && px < w && py < h && !get(px, py)) { rs[3]++; px += dx; py += dy; } if (rs[3] === 0) return null;
+    while (px >= 0 && py >= 0 && px < w && py < h && get(px, py)) { rs[4]++; px += dx; py += dy; } if (rs[4] === 0) return null;
+    if (!ratioOK(rs)) return null;
+    const tot = rs[0] + rs[1] + rs[2] + rs[3] + rs[4]; const startOff = rs[0] + rs[1] + 0; return { total: tot, centre: -(rs[2] >> 1) + 0, unit: tot / 7, rs };
+  }
+  function findFinders(bin, w, h) {
+    const cands = [], step = Math.max(1, (h / 240) | 0);
+    for (let y = 0; y < h; y += step) {
+      let x = 0; const runs = [], starts = []; let cur = bin[y * w], len = 0, st = 0;
+      for (x = 0; x < w; x++) { const b = bin[y * w + x]; if (b === cur) len++; else { runs.push(len); starts.push(st); cur = b; st = x; len = 1; } } runs.push(len); starts.push(st);
+      const firstBlack = bin[y * w] ? 0 : 1;   // runs[i] is black when (i % 2) === (firstBlack ? ... )
+      for (let i = 0; i + 4 < runs.length; i++) {
+        const isBlack = (bin[y * w + starts[i]] === 1); if (!isBlack) continue;
+        const r = runs.slice(i, i + 5); if (!ratioOK(r)) continue;
+        const cx = starts[i] + r[0] + r[1] + r[2] / 2, tot = r[0] + r[1] + r[2] + r[3] + r[4];
+        const v = checkCross(bin, w, h, Math.round(cx), y, 0, 1); if (!v) continue;   // vertical
+        // centre y: walk up/down from the (cx, y) to find the centre of the dark core
+        let up = y, dn = y; while (up > 0 && bin[(up - 1) * w + Math.round(cx)]) up--; while (dn < h - 1 && bin[(dn + 1) * w + Math.round(cx)]) dn++;
+        const cy = (up + dn) / 2;
+        const hh = checkCross(bin, w, h, Math.round(cx), Math.round(cy), 1, 0); if (!hh) continue;
+        let l = Math.round(cx), rr = Math.round(cx); while (l > 0 && bin[Math.round(cy) * w + l - 1]) l--; while (rr < w - 1 && bin[Math.round(cy) * w + rr + 1]) rr++;
+        const cx2 = (l + rr) / 2, unit = (tot + v.total) / 14;
+        const m = cands.find(c => Math.abs(c.x - cx2) < unit * 2 && Math.abs(c.y - cy) < unit * 2 && Math.abs(c.unit - unit) < unit * 0.6);
+        if (m) { m.x = (m.x * m.n + cx2) / (m.n + 1); m.y = (m.y * m.n + cy) / (m.n + 1); m.unit = (m.unit * m.n + unit) / (m.n + 1); m.n++; } else cands.push({ x: cx2, y: cy, unit, n: 1 });
+      }
+    }
+    return cands.filter(c => c.n >= 2).sort((a, b) => b.n - a.n).slice(0, 8);
+  }
+  function solveHomography(src, dst) {   // maps src (module coords) to dst (image coords): 8 unknowns
+    const A = [], bv = []; for (let i = 0; i < 4; i++) { const [x, y] = src[i], [u, v] = dst[i]; A.push([x, y, 1, 0, 0, 0, -u * x, -u * y]); bv.push(u); A.push([0, 0, 0, x, y, 1, -v * x, -v * y]); bv.push(v); }
+    const n = 8; for (let i = 0; i < n; i++) { let p = i; for (let r = i + 1; r < n; r++) if (Math.abs(A[r][i]) > Math.abs(A[p][i])) p = r; if (Math.abs(A[p][i]) < 1e-12) return null; [A[i], A[p]] = [A[p], A[i]]; [bv[i], bv[p]] = [bv[p], bv[i]];
+      for (let r = i + 1; r < n; r++) { const f = A[r][i] / A[i][i]; for (let c = i; c < n; c++) A[r][c] -= f * A[i][c]; bv[r] -= f * bv[i]; } }
+    const hx = new Array(n); for (let i = n - 1; i >= 0; i--) { let s = bv[i]; for (let c = i + 1; c < n; c++) s -= A[i][c] * hx[c]; hx[i] = s / A[i][i]; } return hx;
+  }
+  const applyH = (h, x, y) => { const d = h[6] * x + h[7] * y + 1; return [(h[0] * x + h[1] * y + h[2]) / d, (h[3] * x + h[4] * y + h[5]) / d]; };
+  function findAlign(bin, w, h, px, py, unit) {   // look for the 1:1:1 dark-light-dark centre of the alignment pattern near (px, py)
+    const R = Math.round(unit * 4), cx = Math.round(px), cy = Math.round(py); let best = null, bs = 1e9;
+    for (let y = cy - R; y <= cy + R; y++) for (let x = cx - R; x <= cx + R; x++) {
+      if (x < 3 || y < 3 || x >= w - 3 || y >= h - 3 || !bin[y * w + x]) continue;
+      const u = Math.max(1, Math.round(unit)), ring = (dx, dy) => bin[Math.min(h - 1, Math.max(0, y + dy)) * w + Math.min(w - 1, Math.max(0, x + dx))];
+      if (ring(u, 0) || ring(-u, 0) || ring(0, u) || ring(0, -u)) continue; if (!ring(2 * u, 0) || !ring(-2 * u, 0) || !ring(0, 2 * u) || !ring(0, -2 * u)) continue;
+      const sc = (x - px) * (x - px) + (y - py) * (y - py); if (sc < bs) { bs = sc; best = [x, y]; }
+    }
+    if (!best) return null;   // refine to the centre of mass of the dark core
+    let sx = 0, sy = 0, cnt = 0; const u = Math.max(1, Math.round(unit / 2)); for (let y = best[1] - u; y <= best[1] + u; y++) for (let x = best[0] - u; x <= best[0] + u; x++) if (bin[y * w + x]) { sx += x; sy += y; cnt++; }
+    return cnt ? [sx / cnt, sy / cnt] : best;
+  }
+  function sample(bin, gray, w, h, H, n, unit) {
+    const m = new Uint8Array(n * n), o = 0.22;
+    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) { let vote = 0; const pts = [[0, 0], [o, 0], [-o, 0], [0, o], [0, -o]]; for (const [dx, dy] of pts) { const [u, v] = applyH(H, x + 0.5 + dx, y + 0.5 + dy); const iu = Math.round(u), iv = Math.round(v); if (iu < 0 || iv < 0 || iu >= w || iv >= h) { vote += 0; continue; } vote += bin[iv * w + iu] ? 1 : 0; } m[y * n + x] = vote >= 3 ? 1 : 0; }
+    return m;
+  }
+  function readModules(mod, n, transpose) {   // returns decoded bytes or null
+    const get = (x, y) => transpose ? mod[x * n + y] : mod[y * n + x];
+    const v = (n - 17) / 4; if (v < 1 || v > MAXV || (n - 17) % 4) return null;
+    let f1 = 0, f2 = 0; const FP = fmtPos(n); for (let i = 0; i < 15; i++) { f1 |= get(FP[0][i][0], FP[0][i][1]) << i; f2 |= get(FP[1][i][0], FP[1][i][1]) << i; }
+    let best = null, bd = 99; FORMATS.forEach(f => { const d = Math.min(ham(f.bits, f1), ham(f.bits, f2)); if (d < bd) { bd = d; best = f; } }); if (bd > 3 || !best) return null;
+    const L = layout(v), order = dataOrder(L), total = order.length >> 3, bits = []; 
+    order.forEach(pos => { const y = (pos / n) | 0, x = pos % n; bits.push(get(x, y) ^ (maskFn[best.mask](y, x) ? 1 : 0)); });
+    const cw = []; for (let i = 0; i < total * 8; i += 8) { let b = 0; for (let j = 0; j < 8; j++) b = (b << 1) | bits[i + j]; cw.push(b); }
+    const [ecn, g1, d1, g2, d2] = BLK[v], nb = g1 + g2, blocks = []; for (let b = 0; b < nb; b++) blocks.push({ data: [], ec: [] });
+    let p = 0; for (let i = 0; i < Math.max(d1, d2); i++) for (let b = 0; b < nb; b++) { const len = b < g1 ? d1 : d2; if (i < len) blocks[b].data.push(cw[p++]); }
+    for (let i = 0; i < ecn; i++) for (let b = 0; b < nb; b++) blocks[b].ec.push(cw[p++]);
+    const out = []; for (const b of blocks) { const all = b.data.concat(b.ec); if (!rsDecode(all, ecn)) return null; for (let i = 0; i < b.data.length; i++) out.push(all[i]); }
+    const bs = []; out.forEach(c => { for (let j = 7; j >= 0; j--) bs.push((c >> j) & 1); });
+    let q = 0; const take = k => { let r = 0; for (let i = 0; i < k; i++) r = (r << 1) | (bs[q++] || 0); return r; };
+    if (take(4) !== 4) return null; const len = take(v < 10 ? 8 : 16); if (len * 8 > bs.length - q) return null; const res = new Uint8Array(len); for (let i = 0; i < len; i++) res[i] = take(8); return res;
+  }
+  function decode(gray, w, h) {
+    for (const [k, div] of [[0.92, 8], [0.85, 12], [0.97, 6]]) { const r = decodeWith(gray, w, h, k, div); if (r) return r; } return null;
+  }
+  function decodeWith(gray, w, h, k, div) {
+    const bin = binarize(gray, w, h, k, div), f = findFinders(bin, w, h); if (f.length < 3) return null;
+    const tries = []; for (let i = 0; i < f.length; i++) for (let j = i + 1; j < f.length; j++) for (let k = j + 1; k < f.length; k++) tries.push([f[i], f[j], f[k]]);
+    const d = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+    const scored = tries.map(t => {   // the top-left corner is the one opposite the longest side
+      const ds = [d(t[1], t[2]), d(t[0], t[2]), d(t[0], t[1])], idx = ds.indexOf(Math.max(...ds)), tl = t[idx], others = t.filter(x => x !== tl);
+      const a = d(tl, others[0]), b = d(tl, others[1]), hyp = ds[idx];
+      const sym = Math.abs(a - b) / Math.max(a, b), right = Math.abs(hyp - Math.hypot(a, b)) / hyp, un = t.map(x => x.unit), units = Math.max(...un) / Math.min(...un) - 1;
+      const modules = (a + b) / 2 / (un[0] + un[1] + un[2]) * 3;
+      return { tl, others, score: sym + right + units, unit: (un[0] + un[1] + un[2]) / 3, modules };
+    }).filter(s => s.score < 0.5 && s.modules >= 14).sort((a, b) => a.score - b.score).slice(0, 4);
+    for (const s of scored) {
+      let [tr, bl] = s.others; const cross = (tr.x - s.tl.x) * (bl.y - s.tl.y) - (tr.y - s.tl.y) * (bl.x - s.tl.x); if (cross < 0) { const t = tr; tr = bl; bl = t; }
+      const dist = Math.hypot(tr.x - s.tl.x, tr.y - s.tl.y), dist2 = Math.hypot(bl.x - s.tl.x, bl.y - s.tl.y), unit = s.unit;
+      const dim0 = (dist + dist2) / 2 / unit + 7;
+      for (const v of [Math.round((dim0 - 17) / 4), Math.round((dim0 - 17) / 4) + 1, Math.round((dim0 - 17) / 4) - 1]) {
+        if (v < 1 || v > MAXV) continue; const n = 17 + 4 * v;
+        const brx = tr.x + bl.x - s.tl.x, bry = tr.y + bl.y - s.tl.y;   // parallelogram guess for the far corner
+        let src = [[3.5, 3.5], [n - 3.5, 3.5], [3.5, n - 3.5]], dst = [[s.tl.x, s.tl.y], [tr.x, tr.y], [bl.x, bl.y]];
+        let H0 = solveHomography(src.concat([[n - 3.5, n - 3.5]]), dst.concat([[brx, bry]])); if (!H0) continue;
+        let H = H0;
+        if (v >= 2) { const a = n - 6.5, [px, py] = applyH(H0, a, a), found = findAlign(bin, w, h, px, py, unit); if (found) { const H1 = solveHomography(src.concat([[a, a]]), dst.concat([found])); if (H1) H = H1; } }
+        const mod = sample(bin, gray, w, h, H, n, unit);
+        for (const tr2 of [false, true]) { const res = readModules(mod, n, tr2); if (res) return res; }
+      }
+    }
+    return null;
+  }
+  return { _dbg: { binarize, findFinders, readModules, sample, solveHomography, applyH, findAlign }, encode, decode, rsEncode, rsDecode, layout, dataOrder, MAXV };
+});
+
+</script>
+<script>
 (function(){
 'use strict';
 /* ===== core: data, storage, helpers, art, router ===== */
@@ -1071,10 +1651,10 @@ const store = {
   load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return mem; } },
   save(o) { mem = o; try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) { } }
 };
-const DB = Object.assign({ settings: {}, imp: null, mafia: null, recent: [] }, store.load());
+const DB = Object.assign({ settings: {}, imp: null, jud: null, mafia: null, recent: [] }, store.load());
 const persist = () => store.save(DB);
 const MFN = 'The Night Watch';   // display name of the Mafia-style game (proposed; change here only)
-const DEFAULTS = { haptics: true, sound: true, hold: true, guess: true, imps: 1, customText: '', count: 5, names: [], packId: 'all', diff: 1, mode: 'decoy', hint: true, timerMin: 3, mfCount: 7, mfNames: [] };
+const DEFAULTS = { haptics: true, sound: true, hold: true, guess: true, imps: 1, customText: '', count: 5, names: [], packId: 'all', diff: 1, mode: 'decoy', hint: true, timerMin: 3, mfCount: 7, mfNames: [], jCount: 5, jStyle: 'mix', jAns: 45, jTimer: 3, jGuess: true };
 const ST = Object.assign({}, DEFAULTS, DB.settings); DB.settings = ST;
 const nameFor = (arr, i) => (arr[i] && arr[i].trim()) || 'Player ' + (i + 1);
 
@@ -1442,10 +2022,11 @@ function impAct(a, b) {
 
 /* ===== The Night Watch: online Mafia (one phone per player) ===== */
 const NWE = window.NightWatch, NWKEY = 'oddDisciple.nw';
-const NWS = { mode: null, code: null, id: null, name: '', s: null, view: null, tr: null, loops: [], offset: 0, lastSent: 0, seen: {}, sig: '', chatN: -1, unread: 0, closed: false };
+let ENG = NWE;   // the engine of the room in play: The Night Watch or Judas (both share the same lobby, transport and host logic)
+const NWS = { game: 'nw', mode: null, code: null, id: null, name: '', s: null, view: null, tr: null, loops: [], offset: 0, lastSent: 0, seen: {}, sig: '', chatN: -1, unread: 0, closed: false };
 const NWROLE_IDS = Object.keys(NWE.ROLES);
 const NWST = () => /test/.test(location.hash) ? sessionStorage : localStorage;   // automated tests keep each tab's room separate
-const nwSave = () => { try { NWST().setItem(NWKEY, JSON.stringify({ mode: NWS.mode, code: NWS.code, id: NWS.id, name: NWS.name, s: NWS.mode === 'host' ? NWS.s : null })); } catch (e) { } };
+const nwSave = () => { try { NWST().setItem(NWKEY, JSON.stringify({ rtc: RT.on || undefined, game: NWS.game, mode: NWS.mode, code: NWS.code, id: NWS.id, name: NWS.name, s: NWS.mode === 'host' ? NWS.s : null })); } catch (e) { } };
 const nwLoad = () => { try { return JSON.parse(NWST().getItem(NWKEY)); } catch (e) { return null; } };
 const nwClear = () => { try { NWST().removeItem(NWKEY); } catch (e) { } };
 const nwRand = () => 'p' + Math.random().toString(36).slice(2, 10);
@@ -1469,7 +2050,7 @@ function fbLoad() {
   if (FBP) return FBP;
   FBP = new Promise((res, rej) => {
     const urls = ['app', 'auth', 'database'].map(n => 'https://www.gstatic.com/firebasejs/' + FBV + '/firebase-' + n + '-compat.js');
-    (function next(i) { if (i === urls.length) return res(); const sc = document.createElement('script'); sc.src = urls[i]; sc.onload = () => next(i + 1); sc.onerror = () => { FBP = null; rej(new Error('Could not reach the online service. Check your internet connection.')); }; document.head.appendChild(sc); })(0);
+    (function next(i) { if (i === urls.length) return res(); const sc = document.createElement('script'); sc.src = urls[i]; sc.onload = () => next(i + 1); sc.onerror = () => { FBP = null; rej(new Error('Could not reach the online service. Check your internet, and open the game from its website link or home-screen icon. No internet? Try “Host without internet”.')); }; document.head.appendChild(sc); })(0);
   });
   return FBP;
 }
@@ -1503,17 +2084,17 @@ const TPFB = {
 };
 /* the local transport (tabs of one browser) is used for automated tests and as a fallback; it gets the same shape */
 Object.assign(TP, { name: 'local', async ident(code, joining, resume) { return resume || nwRand(); }, async claim() { return NWE.createRoom({ hostId: 'x', hostName: 'x' }).code; }, async touch() { }, async exists() { return true; } });
-const TPS = () => /test|local/.test(location.hash) && !/fb/.test(location.hash) ? TP : TPFB;
+const TPS = () => RT.on ? TPRTC : /test|local/.test(location.hash) && !/fb/.test(location.hash) ? TP : TPFB;
 
 /* ---- host: owns the game state, applies every action, sends each player only their own view ---- */
-const CLIENT_OK = ['ACK_ROLE', 'NIGHT_ACT', 'READY_VOTE', 'VOTE', 'CHAT', 'LEAVE', 'SPARE'];
+const CLIENT_OK_NW = ['ACK_ROLE', 'NIGHT_ACT', 'READY_VOTE', 'VOTE', 'CHAT', 'LEAVE', 'SPARE'], CLIENT_OK_JD = ['ANSWER', 'ADVANCE', 'VOTE', 'GUESS', 'LEAVE'];
 function hostDispatch(action) {
-  const r = NWE.dispatch(NWS.s, action, Date.now()); if (!r.ok) return r;
+  const r = ENG.dispatch(NWS.s, action, Date.now()); if (!r.ok) return r;
   NWS.s = r.state; nwSave(); hostBroadcast(); nwRefresh(); return r;
 }
 function hostBroadcast() {
   if (!NWS.tr) return; const now = Date.now();
-  NWS.s.players.forEach(p => { if (p.id !== NWS.id && !p.bot && p.connected) NWS.tr.send(p.id, { kind: 'view', view: NWE.getView(NWS.s, p.id), now }); });
+  NWS.s.players.forEach(p => { if (p.id !== NWS.id && !p.bot && p.connected) NWS.tr.send(p.id, { kind: 'view', view: ENG.getView(NWS.s, p.id), now }); });
 }
 const hostSeen = {};
 function hostOnMsg(m) {
@@ -1521,12 +2102,12 @@ function hostOnMsg(m) {
   const pl = NWS.s.players.find(p => p.id === cid);
   if (m.kind === 'hello') {
     const r = hostDispatch({ type: 'JOIN', id: cid, name: m.name }); if (!r.ok) return NWS.tr.send(cid, { kind: 'err', text: r.error });
-    return NWS.tr.send(cid, { kind: 'view', view: NWE.getView(NWS.s, cid), now: Date.now() });
+    return NWS.tr.send(cid, { kind: 'view', view: ENG.getView(NWS.s, cid), now: Date.now() });
   }
   if (!pl) return NWS.tr.send(cid, { kind: 'err', text: 'You are not in this room.' });
   if (pl && !pl.connected) hostDispatch({ type: 'CONNECTION', id: cid, connected: true });
-  if (m.kind === 'ping') return NWS.tr.send(cid, { kind: 'view', view: NWE.getView(NWS.s, cid), now: Date.now() });
-  if (m.kind === 'act' && m.action && CLIENT_OK.indexOf(m.action.type) >= 0) {
+  if (m.kind === 'ping') return NWS.tr.send(cid, { kind: 'view', view: ENG.getView(NWS.s, cid), now: Date.now() });
+  if (m.kind === 'act' && m.action && (ENG === NWE ? CLIENT_OK_NW : CLIENT_OK_JD).indexOf(m.action.type) >= 0) {
     if (m.action.type === 'CHAT') { if (Date.now() - (NWS.seen[cid] || 0) < 600) return; NWS.seen[cid] = Date.now(); }
     const r = hostDispatch(Object.assign({}, m.action, { by: cid })); if (!r.ok) NWS.tr.send(cid, { kind: 'err', text: r.error });
   }
@@ -1535,10 +2116,10 @@ function hostLoops() {
   NWS.loops.push(setInterval(() => {
     if (!NWS.s) return; const now = Date.now(), s = NWS.s;
     if (s.deadline && now >= s.deadline) hostDispatch({ type: 'TICK' });
-    if (NWS.tp === TP) NWS.s.players.forEach(p => { if (!p.bot && p.id !== NWS.id && p.connected && now - (hostSeen[p.id] || 0) > 15000) hostDispatch({ type: 'CONNECTION', id: p.id, connected: false }); });
+    if (NWS.tp === TP || NWS.tp === TPRTC) NWS.s.players.forEach(p => { if (!p.bot && p.id !== NWS.id && p.connected && now - (hostSeen[p.id] || 0) > 15000) hostDispatch({ type: 'CONNECTION', id: p.id, connected: false }); });
     const st = NWS.s;
-    if (st.players.some(p => p.bot) && ['night', 'vote', 'day'].indexOf(st.phase) >= 0 && Math.random() < .55) { const a = NWE.botActions(st); if (a.length) hostDispatch(a[Math.floor(Math.random() * a.length)]); }
-    if (st.phase === 'day' && Math.random() < .14) { const c = NWE.botChat(st); if (c) hostDispatch(c); }
+    if (st.players.some(p => p.bot) && (ENG === NWE ? ['night', 'vote', 'day'] : ENG.botPhases).indexOf(st.phase) >= 0 && Math.random() < .55) { const a = ENG.botActions(st); if (a.length) hostDispatch(a[Math.floor(Math.random() * a.length)]); }
+    if (ENG === NWE && st.phase === 'day' && Math.random() < .14) { const c = NWE.botChat(st); if (c) hostDispatch(c); }
     nwSave();
   }, 1000));
 }
@@ -1547,19 +2128,21 @@ function hostPresence() {
   if (!NWS.tr || !NWS.tr.presence) return;
   NWS.tr.presence(list => { if (!NWS.s) return; NWS.s.players.forEach(p => { if (p.bot || p.id === NWS.id) return; const on = list.indexOf(p.id) >= 0; if (on !== p.connected && NWS.s.phase !== undefined) hostDispatch({ type: 'CONNECTION', id: p.id, connected: on }); }); });
 }
-async function nwCreate(name) {
+async function nwCreate(name, game) {
+  ENG = game === 'jd' ? JDE : NWE;
   const tp = TPS(); if (!tp.ok()) return toast('Online play is not available in this browser.');
   nwShutdown(); toast('Setting up your room…');
   try {
     const id = await tp.ident(), code = await tp.claim(id, name);
-    NWS.mode = 'host'; NWS.closed = false; NWS.tp = tp; NWS.id = id; NWS.name = name;
-    NWS.s = NWE.createRoom({ hostId: id, hostName: name, code }); NWS.code = code; NWS.tr = tp.host(code, hostOnMsg); hostPresence(); hostLoops(); nwSave(); nwResetUI(); go('nw', null, 'fwd');
+    NWS.mode = 'host'; NWS.game = ENG.game || 'nw'; NWS.closed = false; NWS.tp = tp; NWS.id = id; NWS.name = name;
+    NWS.s = ENG.createRoom({ hostId: id, hostName: name, code }); NWS.code = code; NWS.tr = tp.host(code, hostOnMsg); hostPresence(); hostLoops(); nwSave(); nwResetUI(); go(nwScreen(), null, 'fwd');
   } catch (e) { NWS.mode = null; toast(e.message || NET_ERR); }
 }
 async function nwResumeHost(sv) {
   const tp = TPS(); try {
     const id = await tp.ident(null, false, sv.id); if (id !== sv.id) throw new Error('This room can no longer be resumed.');
     await tp.touch(sv.code, id, sv.name);
+    ENG = sv.s && sv.s.game === 'jd' ? JDE : NWE; NWS.game = ENG.game || 'nw';
     NWS.mode = 'host'; NWS.closed = false; NWS.tp = tp; NWS.id = sv.id; NWS.name = sv.name; NWS.s = sv.s; NWS.code = sv.code;
     NWS.s.players.forEach(p => { if (!p.bot && p.id !== NWS.id) p.connected = false; }); NWS.tr = tp.host(NWS.code, hostOnMsg); hostPresence(); hostLoops(); nwResetUI(); nwRefresh();
   } catch (e) { NWS.mode = null; NWS.s = null; toast(e.message || NET_ERR); }
@@ -1574,41 +2157,45 @@ async function nwJoin(code, name, resumeId) {
   return new Promise(res => {
     let done = false; const fin = ok => { if (!done) { done = true; res(ok); } };
     NWS.tr = tp.join(code, NWS.id, m => {
-      if (m.kind === 'view') { NWS.view = m.view; NWS.offset = m.now - Date.now(); nwSave(); if (!done) fin(true); else nwRefresh(); }
+      if (m.kind === 'view') { NWS.view = m.view; NWS.game = m.view.game || 'nw'; NWS.offset = m.now - Date.now(); nwSave(); if (!done) fin(true); else nwRefresh(); }
       else if (m.kind === 'err') { if (!done) { fin(false); nwShutdown(); toast(m.text); } else toast(m.text); }
-      else if (m.kind === 'closed') { NWS.closed = true; NWS.view = null; if (A.screen === 'nw') { A.dlg = null; A.sheet = null; toast('The host closed the room.'); nwShutdown(); nwClear(); go('games', null, 'back'); } }
+      else if (m.kind === 'closed') { NWS.closed = true; NWS.view = null; if (A.screen === 'nw' || A.screen === 'jo') { A.dlg = null; A.sheet = null; toast('The host closed the room.'); nwShutdown(); nwClear(); go('games', null, 'back'); } }
     });
     NWS.tr.send({ kind: 'hello', name });
-    if (tp === TP) NWS.loops.push(setInterval(() => NWS.tr && NWS.tr.send({ kind: 'ping' }), 4000));
-    setTimeout(() => { if (!done) { fin(false); nwShutdown(); toast('The host didn’t answer. Is the host’s phone open and online?'); } }, tp === TP ? 3000 : 9000);
+    if (tp !== TPFB) NWS.loops.push(setInterval(() => NWS.tr && NWS.tr.send({ kind: 'ping' }), 4000));
+    setTimeout(() => { if (!done) { fin(false); nwShutdown(); toast('The host didn’t answer. Is the host’s phone open and online?'); } }, tp !== TPFB ? 3000 : 9000);
   });
 }
 function nwShutdown() { nwStopLoops(); if (NWS.tr) { try { NWS.tr.close(); } catch (e) { } } NWS.tr = null; NWS.mode = null; NWS.s = null; NWS.view = null; }
 function nwLeave() {
   if (NWS.mode === 'host') { if (NWS.s.phase !== 'lobby' && NWS.s.phase !== 'ended') hostDispatch({ type: 'LEAVE', by: NWS.id }); NWS.s.players.forEach(p => { if (!p.bot && p.id !== NWS.id) NWS.tr.send(p.id, { kind: 'closed' }); }); const tr = NWS.tr; if (tr && tr.drop) setTimeout(() => { try { tr.drop(); } catch (e) { } }, 2500); }
   else if (NWS.tr) NWS.tr.send({ kind: 'act', action: { type: 'LEAVE' } });
-  nwShutdown(); nwClear();
+  nwShutdown(); nwClear(); RT.on = false; rtcWatchStop(); rtcCamStop(); if (RT.wake) { try { RT.wake.release(); } catch (e) { } RT.wake = null; }
 }
-const nwView = () => NWS.mode === 'host' ? NWE.getView(NWS.s, NWS.id) : NWS.view;
+const nwView = () => NWS.mode === 'host' ? ENG.getView(NWS.s, NWS.id) : NWS.view;
+const nwScreen = () => NWS.game === 'jd' ? 'jo' : 'nw';
 function nwSend(a) {
   if (NWS.mode === 'host') { const r = hostDispatch(Object.assign({}, a, { by: NWS.id })); if (!r.ok) toast(r.error); return r.ok; }
   if (NWS.tr) NWS.tr.send({ kind: 'act', action: a }); return true;
 }
 const nwNow = () => Date.now() + (NWS.mode === 'host' ? 0 : NWS.offset);
-function nwResetUI() { A.U = { tab: 'game', t: null, a: null, use: false, vt: null, draft: '' }; NWS.sig = ''; NWS.chatN = -1; NWS.unread = 0; }
+function nwResetUI() { A.U = { tab: 'game', t: null, a: null, use: false, vt: null, draft: '', g: A.U && A.U.g }; NWS.sig = ''; NWS.chatN = -1; NWS.unread = 0; }
 
 /* ---- screens ---- */
 const nwRoleName = id => NWE.ROLES[id].name;
 SCR['nw-entry'] = () => {
-  const nm = ST.nwName || '';
-  return `<div class="scr setup"><div class="hdr"><button data-act="gback" aria-label="Back to game selection">${ic('back')}</button><h2 class="ptitle" style="font-size:22px">${MFN}</h2><span></span></div>
+  const nm = ST.nwName || '', jd = A.U.g === 'jd';
+  return `<div class="scr setup"><div class="hdr"><button data-act="gback" aria-label="Back to game selection">${ic('back')}</button><h2 class="ptitle" style="font-size:22px">${jd ? 'Judas' : MFN}</h2><span></span></div>
  <div class="scroll grow">
-  <p class="sub" style="margin:4px 0 14px">Everyone plays on their own phone, 5 to 20 players. Secret roles, night abilities and a lobby chat, so it works across a room or from separate homes.</p>
+  <p class="sub" style="margin:4px 0 14px">${jd ? 'Everyone plays on their own phone, 4 to 12 players, sitting together in one room. Answer a question, show your answer to the group, and find the player who got a different one.' : 'Everyone plays on their own phone, 5 to 20 players. Secret roles, night abilities and a lobby chat, so it works across a room or from separate homes.'}</p>
   <label class="lbl" for="nwn">Your name</label><div class="names"><div class="nrow"><input id="nwn" data-nwname value="${esc(nm)}" placeholder="Your name" maxlength="14" autocomplete="off" autocapitalize="words"></div></div>
   <button class="btn pri" data-act="nwcreate" data-cs>Create a room</button>
   <div class="orn" style="margin:20px 0"><i></i></div>
   <label class="lbl" for="nwc">Join with a room code</label><div class="names"><div class="nrow"><input id="nwc" data-nwcode value="${esc(A.U.code || '')}" placeholder="ABCD" maxlength="4" autocomplete="off" autocapitalize="characters" style="text-transform:uppercase;letter-spacing:.3em;text-align:center;font-size:20px;height:44px"></div></div>
   <button class="btn sec" data-act="nwjoin">Join room</button>
+  <div class="orn" style="margin:20px 0 14px"><i></i></div>
+  <p class="lbl" style="margin-bottom:2px">No internet?</p><p class="hint" style="margin:0 0 10px">Play with phones in the same room over Wi‑Fi or a hotspot. You connect each player once by scanning a QR code.</p>
+  <button class="btn sec" data-act="rtchost">Host without internet</button><button class="btn sec" data-act="rtcjoin" style="margin-top:8px">Join without internet</button>
   <p class="note" style="margin-top:18px;text-align:left">Online play needs an internet connection. The host’s phone runs the game, so the host should keep the app open.</p>
  </div></div>`;
 };
@@ -1643,7 +2230,7 @@ function lobbyHTML(v) {
   return `<div class="codecard"><small>Room code</small><b>${esc(v.code)}</b><button class="btn sec" style="width:auto;height:38px;padding:0 16px;font-size:14px" data-act="nwshare">Share code</button></div>
  <p class="lbl" style="margin:14px 0 6px">Players <small>(${n} of ${NWE.MAX}, need ${NWE.MIN} or more)</small></p>
  <div class="plist">${v.players.map(p => `<div class="pl ${p.connected ? '' : 'off'}"><span class="av2">${esc(p.name.charAt(0).toUpperCase())}</span><span class="nm">${esc(p.name)}${p.me ? ' <small>(you)</small>' : ''}${p.host ? ' <small class="tagc">host</small>' : ''}${p.bot ? ' <small class="tagc">practice bot</small>' : ''}${!p.connected ? ' <small>offline</small>' : ''}</span>${host && !p.me ? `<button class="x" data-act="nwkick" data-id="${p.id}" aria-label="Remove ${esc(p.name)}">${ic('close')}</button>` : ''}</div>`).join('')}</div>
- ${host ? `<button class="btn sec" style="height:44px;margin-top:8px" data-act="nwbot" ${n >= NWE.MAX ? 'disabled' : ''}>Add a practice bot</button>
+ ${host ? `${rtcLobbyBtn()}<button class="btn sec" style="height:44px;margin-top:8px" data-act="nwbot" ${n >= NWE.MAX ? 'disabled' : ''}>Add a practice bot</button>
  <p class="hint">Bots fill empty seats so you can try the game alone. They are labelled and run on your phone.</p>
  <div class="orn" style="margin:16px 0 6px"><i></i></div>
  <p class="lbl">Characters for this round</p><p class="hint" style="margin-top:2px">Tap to switch on or off. Everyone not chosen plays as a plain Disciple.</p>
@@ -1749,6 +2336,8 @@ function nwFill(force) {
   const bd = $('[data-unread]', e); if (bd) { if ((U.tab || 'game') === 'chat') NWS.unread = 0; bd.hidden = !NWS.unread; bd.textContent = NWS.unread; }
 }
 function nwRefresh() {
+  if (A.screen === 'rtc-host') return rtcPaint(true);
+  if (A.screen === 'jo') return joRefresh();
   if (A.screen !== 'nw' || !cur()) return; const v = nwView(); if (!v) return;
   const sg = nwSig(v);
   if (NWS.sig !== sg) {   // phase changed: reset local choices, play the right feel
@@ -1773,14 +2362,15 @@ function nwAct(a, b) {
   switch (a) {
     case 'nwenter': return go('nw-entry', null, 'fwd');
     case 'nwresume': { const sv = nwLoad(); if (!sv) return;
-      if (sv.mode === 'host') { const enter = () => { nwResetUI(); go('nw', null, 'fwd'); }; if (NWS.tr) return enter(); return nwResumeHost(sv).then(() => { if (NWS.tr) enter(); }); }
-      return nwJoin(sv.code, sv.name, sv.id).then(ok => { if (ok) { nwResetUI(); go('nw', null, 'fwd'); } else { toast('Couldn’t rejoin. You can discard this room with the ✕.'); } }); }
-    case 'nwcreate': { const nm = (ST.nwName || '').trim(); if (!nm) { toast('Enter your name first.'); const i = $('[data-nwname]'); if (i) i.focus(); return; } return nwCreate(nm); }
-    case 'nwjoin': { const nm = (ST.nwName || '').trim(), code = (U.code || '').toUpperCase().trim(); if (!nm) return toast('Enter your name first.'); if (code.length !== 4) return toast('Room codes have 4 letters.'); b.disabled = true; return nwJoin(code, nm).then(ok => { b.disabled = false; if (ok) { nwResetUI(); go('nw', null, 'fwd'); } }); }
+      if (sv.rtc) { RT.on = true; if (sv.mode !== 'host') { RT.j = { step: 'scan' }; RT.dc = null; RT.pc = null; rtcCam().then(() => A.screen === 'rtc-join' && RT.j.step === 'scan' && rtcPaint()); return go('rtc-join', null, 'fwd'); } rtcWatchStart(); rtcWake(); } else RT.on = false;
+      if (sv.mode === 'host') { const enter = () => { nwResetUI(); go(nwScreen(), null, 'fwd'); }; if (NWS.tr) return enter(); return nwResumeHost(sv).then(() => { if (NWS.tr) enter(); }); }
+      return nwJoin(sv.code, sv.name, sv.id).then(ok => { if (ok) { nwResetUI(); go(nwScreen(), null, 'fwd'); } else { toast('Couldn’t rejoin. You can discard this room with the ✕.'); } }); }
+    case 'nwcreate': { const nm = (ST.nwName || '').trim(); if (!nm) { toast('Enter your name first.'); const i = $('[data-nwname]'); if (i) i.focus(); return; } RT.on = false; return nwCreate(nm, U.g); }
+    case 'nwjoin': { const nm = (ST.nwName || '').trim(), code = (U.code || '').toUpperCase().trim(); if (!nm) return toast('Enter your name first.'); if (code.length !== 4) return toast('Room codes have 4 letters.'); b.disabled = true; RT.on = false; return nwJoin(code, nm).then(ok => { b.disabled = false; if (ok) { nwResetUI(); go(nwScreen(), null, 'fwd'); } }); }
     case 'nwleavedlg': A.dlg = { kind: 'nwleave', host: NWS.mode === 'host' }; return patch();
     case 'nwleavego': A.dlg = null; nwLeave(); return go('games', null, 'back');
     case 'nwtab': return nwTabSwitch(b.dataset.v);
-    case 'nwshare': { const msg = 'Join my Night Watch game. Room code: ' + NWS.code; if (navigator.share) navigator.share({ text: msg, url: location.href.split('#')[0] }).catch(() => { }); else { try { navigator.clipboard.writeText(msg); toast('Code copied'); } catch (e) { toast(msg); } } return; }
+    case 'nwshare': { const msg = 'Join my ' + (NWS.game === 'jd' ? 'Judas' : 'Night Watch') + ' game. Room code: ' + NWS.code; if (navigator.share) navigator.share({ text: msg, url: location.href.split('#')[0] }).catch(() => { }); else { try { navigator.clipboard.writeText(msg); toast('Code copied'); } catch (e) { toast(msg); } } return; }
     case 'nwbot': return nwSend({ type: 'ADD_BOT' });
     case 'nwkick': return nwSend({ type: 'KICK', id });
     case 'nwrtog': { const r = v.cfg.roles.slice(), i = r.indexOf(id); if (i >= 0) r.splice(i, 1); else r.push(id); return nwSend({ type: 'CONFIG', patch: { roles: r } }); }
@@ -1816,6 +2406,402 @@ stage.addEventListener('change', e => { const k = e.target.dataset.nwsel; if (k)
 /* a hosted room survives a reload; a joined player rejoins automatically */
 function nwStartup() {   // a saved room is only reconnected when the player taps Resume
   const sv = nwLoad(); if (sv && !(sv.code && (sv.mode === 'client' || (sv.s && sv.s.phase !== 'ended')))) nwClear();
+}
+
+const rtcLobbyBtn = () => RT.on && NWS.mode === 'host' ? '<button class="btn pri" style="height:46px;margin-top:10px" data-act="rtcconnect">Connect a player</button><p class="hint" style="margin:4px 0 0">Each player scans a code once to join.</p>' : '';
+
+/* ===== Play without internet: phones connect straight to each other over the same Wi-Fi or a hotspot.
+   Each player is paired once by scanning two QR codes (host shows one, player shows a reply). Then the game runs exactly like the online version. ===== */
+const RT = { on: false, dcs: {}, slot: null, cam: null, mode: 'show', j: { step: 'scan' }, pc: null, dc: null, cid: null, code: null, rx: 0, pf: null, onMsg: null, wake: null, scanT: null, watchT: null };
+const RTC_LETTERS = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+const rtcHex = u => Array.from(u, b => ('0' + b.toString(16)).slice(-2)).join('');
+const rtcB64 = u => btoa(String.fromCharCode.apply(null, u)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+const rtcUnB64 = s => { s = String(s).replace(/\s+/g, '').replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; return Uint8Array.from(atob(s), c => c.charCodeAt(0)); };
+
+/* ---- the connection details are squeezed into about 100 bytes so the QR code stays easy to scan ---- */
+function rtcPack(sdp, role, game, code, cid) {
+  const g = re => (sdp.match(re) || [])[1], uf = g(/a=ice-ufrag:(\S+)/), pw = g(/a=ice-pwd:(\S+)/), fp = g(/a=fingerprint:sha-256 (\S+)/);
+  if (!uf || !pw || !fp) throw new Error('This browser could not prepare a connection.');
+  const cands = []; let m; const re = /a=candidate:\S+ 1 udp \d+ (\S+) (\d+) typ host/g;
+  while ((m = re.exec(sdp))) { const ip = m[1], port = +m[2]; if (/^\d+\.\d+\.\d+\.\d+$/.test(ip)) cands.push({ t: 1, b: ip.split('.').map(Number), port }); else if (/^[0-9a-f-]{36}\.local$/i.test(ip)) cands.push({ t: 2, b: (ip.slice(0, 36).replace(/-/g, '').match(/../g) || []).map(h => parseInt(h, 16)), port }); }
+  cands.sort((a, b) => (a.b[0] === 192 || a.b[0] === 172 || a.b[0] === 10 ? 0 : 1) - (b.b[0] === 192 || b.b[0] === 172 || b.b[0] === 10 ? 0 : 1)); cands.length = Math.min(cands.length, 3);
+  if (!cands.length) throw new Error('No Wi-Fi or hotspot found. Connect to the same Wi-Fi, or join the host’s hotspot, then try again.');
+  const out = [0x20 | (role === 'answer' ? 1 : 0) | (game === 'jd' ? 2 : 0) | (cands.length << 2)];
+  for (let i = 0; i < 4; i++) out.push(code.charCodeAt(i));
+  if (role === 'offer') for (let i = 0; i < 6; i++) out.push(parseInt(cid.slice(1 + 2 * i, 3 + 2 * i), 16));
+  out.push(uf.length); for (const c of uf) out.push(c.charCodeAt(0)); out.push(pw.length); for (const c of pw) out.push(c.charCodeAt(0));
+  fp.split(':').forEach(h => out.push(parseInt(h, 16)));
+  cands.forEach(c => { out.push(c.t); c.b.forEach(x => out.push(x)); out.push(c.port >> 8, c.port & 255); });
+  return Uint8Array.from(out);
+}
+function rtcUnpack(u) {
+  try {
+    if (!u || u.length < 40 || (u[0] & 0xe0) !== 0x20) return null; let p = 0; const f = u[p++], role = f & 1 ? 'answer' : 'offer', game = f & 2 ? 'jd' : 'nw', nc = (f >> 2) & 3;
+    let code = ''; for (let i = 0; i < 4; i++) code += String.fromCharCode(u[p++]);
+    let cid = null; if (role === 'offer') { cid = 'r' + rtcHex(u.slice(p, p + 6)); p += 6; }
+    const ul = u[p++], uf = String.fromCharCode.apply(null, u.slice(p, p + ul)); p += ul; const pl = u[p++], pw = String.fromCharCode.apply(null, u.slice(p, p + pl)); p += pl;
+    const fp = Array.from(u.slice(p, p + 32), b => ('0' + b.toString(16)).slice(-2).toUpperCase()).join(':'); p += 32;
+    const cands = []; for (let i = 0; i < nc; i++) { const t = u[p++]; let ip; if (t === 1) { ip = Array.from(u.slice(p, p + 4)).join('.'); p += 4; } else { const h = rtcHex(u.slice(p, p + 16)); p += 16; ip = [h.slice(0, 8), h.slice(8, 12), h.slice(12, 16), h.slice(16, 20), h.slice(20)].join('-') + '.local'; } const port = (u[p] << 8) | u[p + 1]; p += 2; cands.push({ ip, port }); }
+    if (p > u.length || !/^[A-Z]{4}$/.test(code) || !uf || !pw) return null; return { role, game, code, cid, uf, pw, fp, cands };
+  } catch (e) { return null; }
+}
+function rtcSdp(o) {
+  const offer = o.role === 'offer';
+  return ['v=0', 'o=- 1 2 IN IP4 127.0.0.1', 's=-', 't=0 0', 'a=group:BUNDLE 0', 'm=application 9 UDP/DTLS/SCTP webrtc-datachannel', 'c=IN IP4 0.0.0.0', 'a=ice-ufrag:' + o.uf, 'a=ice-pwd:' + o.pw, 'a=fingerprint:sha-256 ' + o.fp, 'a=setup:' + (offer ? 'actpass' : 'active'), 'a=mid:0', 'a=sctp-port:5000', 'a=max-message-size:262144']
+    .concat(o.cands.map((c, i) => 'a=candidate:' + (i + 1) + ' 1 udp ' + (2122260223 - i) + ' ' + c.ip + ' ' + c.port + ' typ host'), ['a=end-of-candidates']).join('\r\n') + '\r\n';
+}
+const rtcGathered = pc => new Promise(res => {
+  if (pc.iceGatheringState === 'complete') return res(); let t;
+  const done = () => { clearTimeout(t); pc.removeEventListener('icegatheringstatechange', h); res(); }, h = () => { if (pc.iceGatheringState === 'complete') done(); };
+  pc.addEventListener('icegatheringstatechange', h); t = setTimeout(done, 2500);
+});
+
+/* ---- camera. It is switched on before connections are prepared, because browsers then reveal the phone's real Wi-Fi address ---- */
+async function rtcCam() {
+  if (RT.cam && RT.cam.active) return RT.cam;
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return null;
+  RT.camBusy = true; try { RT.cam = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false }); } catch (e) { RT.cam = null; RT.camErr = e && e.name; }
+  RT.camBusy = false; return RT.cam;
+}
+function rtcCamStop() { rtcScanStop(); if (RT.cam) { RT.cam.getTracks().forEach(t => t.stop()); RT.cam = null; } }
+function rtcScanStart(onBytes) {
+  rtcScanStop(); const v = $('[data-rtc-vid]'); if (!v || !RT.cam) return; v.srcObject = RT.cam; const pl = v.play(); if (pl && pl.catch) pl.catch(() => { });
+  const cv = document.createElement('canvas'), cx = cv.getContext('2d', { willReadFrequently: true }); let busy = false;
+  RT.scanT = setInterval(() => {
+    if (busy || !v.videoWidth) return; busy = true;
+    try {
+      const sc = Math.min(1, 800 / v.videoWidth); cv.width = Math.round(v.videoWidth * sc); cv.height = Math.round(v.videoHeight * sc); cx.drawImage(v, 0, 0, cv.width, cv.height);
+      const d = cx.getImageData(0, 0, cv.width, cv.height).data, g = new Uint8Array(cv.width * cv.height); for (let i = 0, j = 0; j < g.length; i += 4, j++) g[j] = (d[i] * 77 + d[i + 1] * 150 + d[i + 2] * 29) >> 8;
+      const r = window.QRX.decode(g, cv.width, cv.height); if (r) { const o = rtcUnpack(r); if (o) { rtcScanStop(); onBytes(r); } }
+    } catch (e) { } busy = false;
+  }, 160);
+}
+function rtcScanStop() { if (RT.scanT) { clearInterval(RT.scanT); RT.scanT = null; } }
+function rtcQR(cv, bytes) {
+  const q = window.QRX.encode(bytes), z = 4, px = Math.max(3, Math.floor(300 / (q.size + 2 * z))), W = (q.size + 2 * z) * px; cv.width = cv.height = W; const c = cv.getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, W, W); c.fillStyle = '#000';
+  for (let y = 0; y < q.size; y++) for (let x = 0; x < q.size; x++) if (q.get(x, y)) c.fillRect((x + z) * px, (y + z) * px, px, px);
+}
+async function rtcWake() { try { if (navigator.wakeLock && !RT.wake) { RT.wake = await navigator.wakeLock.request('screen'); RT.wake.addEventListener('release', () => { RT.wake = null; }); } } catch (e) { } }
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && RT.on && NWS.mode) rtcWake(); });
+
+/* ---- the transport used by the game when internet is not available ---- */
+const rtcOpenList = () => Object.keys(RT.dcs).filter(k => RT.dcs[k].readyState === 'open');
+const TPRTC = {
+  name: 'rtc', ok: () => typeof RTCPeerConnection !== 'undefined',
+  async ident(code, joining, resume) { return joining ? RT.cid : (resume || nwRand()); },
+  async claim() { let c = ''; for (let i = 0; i < 4; i++) c += RTC_LETTERS[Math.floor(Math.random() * 24)]; return c; },
+  async touch() { }, async exists() { return true; },
+  host(code, onMsg) {
+    RT.onMsg = onMsg;
+    return { send: (cid, msg) => { const d = RT.dcs[cid]; if (d && d.readyState === 'open') { try { d.send(JSON.stringify(msg)); } catch (e) { } } }, presence: f => { RT.pf = f; }, drop() { },
+      close() { Object.keys(RT.dcs).forEach(k => { try { RT.dcs[k].close(); } catch (e) { } }); RT.dcs = {}; rtcSlotClose(); RT.pf = null; } };
+  },
+  join(code, cid, onMsg) {
+    const d = RT.dc, pcc = RT.pc; RT.rx = Date.now();
+    d.onmessage = e => { RT.rx = Date.now(); try { onMsg(JSON.parse(e.data)); } catch (x) { } };
+    return { send: msg => { if (d.readyState === 'open') { try { d.send(JSON.stringify(msg)); } catch (e) { } } }, close() { try { d.close(); if (pcc) pcc.close(); } catch (e) { } } };
+  }
+};
+
+/* ---- host: one pairing slot at a time ---- */
+function rtcSlotClose() { const s = RT.slot; RT.slot = null; if (s && !s.done) { try { s.pc.close(); } catch (e) { } } }
+async function rtcHostSlot(cid) {
+  rtcSlotClose(); const my = RT.slot = { cid: cid || 'r' + rtcHex(crypto.getRandomValues(new Uint8Array(6))), payload: null, err: null, busy: false, done: false }; rtcPaint();
+  try {
+    await rtcCam();
+    const pc = new RTCPeerConnection({ iceServers: [] }), dc = pc.createDataChannel('g'); my.pc = pc;
+    dc.onopen = () => {
+      const old = RT.dcs[my.cid]; RT.dcs[my.cid] = dc; my.done = true; if (old && old !== dc) { try { old.close(); } catch (e) { } }
+      dc.onmessage = e => { try { RT.onMsg && RT.onMsg(Object.assign(JSON.parse(e.data), { cid: my.cid })); } catch (x) { } };
+      dc.onclose = () => { if (RT.dcs[my.cid] === dc) delete RT.dcs[my.cid]; RT.pf && RT.pf(rtcOpenList()); rtcPaint(true); };
+      RT.pf && RT.pf(rtcOpenList()); if (RT.slot === my) { RT.mode = 'show'; rtcHostSlot(); } toast('Player connected ✓');
+    };
+    await pc.setLocalDescription(await pc.createOffer()); await rtcGathered(pc); if (RT.slot !== my) return;
+    my.payload = rtcPack(pc.localDescription.sdp, 'offer', NWS.game, NWS.code, my.cid);
+  } catch (e) { my.err = e.message || 'Could not prepare the connection.'; }
+  if (RT.slot === my) rtcPaint();
+}
+async function rtcHostGot(bytes) {
+  const my = RT.slot, o = rtcUnpack(bytes); if (!my || !my.payload || my.busy) return;
+  if (!o || o.role !== 'answer') { toast('That is not a reply code. Ask the player to scan your code first.'); return rtcScanAgain(); }
+  if (o.code !== NWS.code) { toast('That reply is for a different room.'); return rtcScanAgain(); }
+  my.busy = true; RT.mode = 'wait'; rtcPaint();
+  try { await my.pc.setRemoteDescription({ type: 'answer', sdp: rtcSdp(o) }); } catch (e) { my.busy = false; RT.mode = 'show'; toast('That reply code could not be used. Try again.'); return rtcHostSlot(my.cid); }
+  setTimeout(() => { if (RT.slot === my && !my.done) { toast('Could not connect. Check that both phones are on the same Wi-Fi or hotspot.'); RT.mode = 'show'; rtcHostSlot(my.cid); } }, 20000);
+}
+const rtcScanAgain = () => { if (RT.mode === 'scan') rtcScanStart(rtcHostGot); };
+
+/* ---- player ---- */
+async function rtcJoinGot(bytes) {
+  const o = rtcUnpack(bytes), J = RT.j; if (J.busy) return;
+  if (!o || o.role !== 'offer') { toast('That is not the host’s code. Scan the code on the host’s phone.'); return rtcJoinScan(); }
+  J.busy = true; J.step = 'make'; rtcPaint(); rtcJoinClose();
+  try {
+    const pc = new RTCPeerConnection({ iceServers: [] }); RT.pc = pc; RT.cid = o.cid; RT.code = o.code; RT.dc = null;
+    pc.ondatachannel = e => { RT.dc = e.channel; const go1 = () => rtcJoined(); if (e.channel.readyState === 'open') go1(); else e.channel.onopen = go1; };
+    await pc.setRemoteDescription({ type: 'offer', sdp: rtcSdp(o) }); await pc.setLocalDescription(await pc.createAnswer()); await rtcGathered(pc);
+    J.payload = rtcPack(pc.localDescription.sdp, 'answer', o.game, o.code); J.step = 'show'; J.busy = false; rtcPaint();
+    const t = J.t = Date.now(); setTimeout(() => { if (RT.j.t === t && RT.j.step === 'show' && A.screen === 'rtc-join') { toast('Could not connect. Check that both phones are on the same Wi-Fi or hotspot, then scan again.'); RT.j = { step: 'scan' }; rtcPaint(); } }, 40000);
+  } catch (e) { J.busy = false; J.step = 'scan'; toast(e.message || 'Could not prepare the connection.'); rtcPaint(); }
+}
+function rtcJoinClose() { if (RT.pc && !RT.dc) { try { RT.pc.close(); } catch (e) { } } }
+const rtcJoinScan = () => { RT.j = { step: 'scan' }; rtcPaint(); };
+async function rtcJoined() {
+  if (RT.j.joining) return; RT.j.joining = true; const nm = (ST.nwName || '').trim() || 'Player';
+  RT.on = true; const ok = await nwJoin(RT.code, nm, RT.cid);
+  if (ok) { rtcCamStop(); rtcWake(); rtcWatchStart(); nwResetUI(); go(nwScreen(), null, 'fwd'); } else { RT.j = { step: 'scan' }; rtcPaint(); }
+}
+
+/* ---- screens ---- */
+const RTC_TIP = `<p class="hint" style="margin-top:12px">Both phones must be on the <b>same Wi-Fi</b>. No Wi-Fi? Turn on <b>Personal Hotspot</b> on the host’s phone and have everyone join it; that works with no mobile data.</p>`;
+SCR['rtc-host'] = () => `<div class="scr setup rtc"><div class="hdr"><button data-act="rtcdone" aria-label="Done">${ic('back')}</button><h2 class="ptitle" style="font-size:22px">Connect players</h2><span></span></div>
+ <div class="scroll grow"><div data-rtc-main></div><div data-rtc-list></div>${RTC_TIP}</div></div>`;
+SCR['rtc-join'] = () => `<div class="scr setup rtc"><div class="hdr"><button data-act="rtcjback" aria-label="Back">${ic('back')}</button><h2 class="ptitle" style="font-size:22px">Join without internet</h2><span></span></div>
+ <div class="scroll grow"><div data-rtc-main></div>${RTC_TIP}</div></div>`;
+const rtcCamBox = msg => `<div class="camwrap"><video data-rtc-vid playsinline muted autoplay></video><i class="reticle"></i></div><p class="sub" style="text-align:center">${msg}</p>`;
+const rtcNoCam = () => RT.camBusy ? '' : `<p class="err" role="alert">${RT.camErr === 'NotAllowedError' ? 'Camera access is switched off. Allow the camera for this app in your phone’s settings, or use the text code below.' : 'No camera is available. Use the text code below.'}</p>`;
+function rtcPaint(listOnly) {
+  const el = cur(); if (!el) return;
+  if (A.screen === 'rtc-host') {
+    const L = $('[data-rtc-list]', el); if (L && NWS.s) { const ps = NWS.s.players.filter(p => !p.bot && p.id !== NWS.id);
+      L.innerHTML = `<p class="lbl" style="margin:16px 0 6px">Connected <small>(${ps.filter(p => p.connected).length})</small></p>` + (ps.length ? `<div class="plist">${ps.map(p => `<div class="pl ${p.connected ? '' : 'off'}"><span class="av2">${esc(p.name.charAt(0).toUpperCase())}</span><span class="nm">${esc(p.name)}</span>${p.connected ? '<span class="rtok">✓</span>' : `<button class="btn sec" style="width:auto;height:34px;padding:0 12px;font-size:13px" data-act="rtcslot" data-id="${esc(p.id)}">Reconnect</button>`}</div>`).join('')}</div>` : '<p class="hint">Nobody yet.</p>'); }
+    if (listOnly) return; const M = $('[data-rtc-main]', el), my = RT.slot; if (!M) return;
+    if (RT.mode === 'scan') { M.innerHTML = rtcCamBox('Point the camera at the reply code on the player’s phone.') + (RT.cam ? '' : rtcNoCam()) + `<button class="btn sec" data-act="rtcshow">Back to my code</button>`; rtcScanStart(rtcHostGot); return; }
+    rtcScanStop();
+    if (RT.mode === 'wait') { M.innerHTML = `<div class="rtwait"><div class="spin"></div><p class="sub" style="text-align:center">Connecting…</p></div>`; return; }
+    if (!my || (!my.payload && !my.err)) { M.innerHTML = `<div class="rtwait"><div class="spin"></div><p class="sub" style="text-align:center">Making your code…</p></div>`; return; }
+    if (my.err) { M.innerHTML = `<p class="err" role="alert">${esc(my.err)}</p><button class="btn sec" data-act="rtcretry">Try again</button>`; return; }
+    M.innerHTML = `<p class="sub"><b>Step 1.</b> The other player opens the game, taps <b>Join without internet</b> and scans this code.</p><div class="qrwrap"><canvas data-qr aria-label="Connection code"></canvas></div>
+ <p class="sub"><b>Step 2.</b> Their phone then shows a reply code. Scan it here.</p><button class="btn pri" data-act="rtcscan">Scan their reply code</button>
+ <details class="rtctxt"><summary>Can’t scan? Use a text code instead</summary><p class="hint">Send this code to the player (AirDrop, Messages…):</p><textarea readonly rows="3" data-rtc-out>${esc(rtcB64(my.payload))}</textarea><button class="btn sec" style="height:40px" data-act="rtccopy">Copy code</button>
+ <p class="hint">Paste the player’s reply code here:</p><textarea rows="3" data-rtc-in placeholder="Paste reply code" autocomplete="off" autocapitalize="off"></textarea><button class="btn sec" style="height:40px" data-act="rtcpaste">Connect</button></details>`;
+    rtcQR($('[data-qr]', M), my.payload); return;
+  }
+  if (A.screen === 'rtc-join') {
+    const M = $('[data-rtc-main]', el), J = RT.j; if (!M) return;
+    if (J.step === 'scan') { M.innerHTML = `<p class="sub"><b>Scan the host’s code.</b> Ask the host to open <b>Connect players</b> and show their code.</p>` + rtcCamBox('Point the camera at the code on the host’s phone.') + (RT.cam ? '' : rtcNoCam())
+      + `<details class="rtctxt"><summary>Can’t scan? Use a text code instead</summary><p class="hint">Paste the host’s code here:</p><textarea rows="3" data-rtc-in placeholder="Paste host code" autocomplete="off" autocapitalize="off"></textarea><button class="btn sec" style="height:40px" data-act="rtcpaste">Continue</button></details>`; rtcScanStart(rtcJoinGot); return; }
+    rtcScanStop();
+    if (J.step === 'make') { M.innerHTML = `<div class="rtwait"><div class="spin"></div><p class="sub" style="text-align:center">Making your reply…</p></div>`; return; }
+    M.innerHTML = `<p class="sub"><b>Now show this to the host.</b> They scan it with their camera. Keep this screen open until the game appears.</p><div class="qrwrap"><canvas data-qr aria-label="Reply code"></canvas></div><div class="rtwait"><div class="spin"></div><p class="sub" style="text-align:center">Waiting for the host…</p></div>
+ <details class="rtctxt"><summary>Can’t scan? Use a text code instead</summary><p class="hint">Send this reply code to the host:</p><textarea readonly rows="3" data-rtc-out>${esc(rtcB64(J.payload))}</textarea><button class="btn sec" style="height:40px" data-act="rtccopy">Copy code</button></details>`;
+    rtcQR($('[data-qr]', M), J.payload);
+  }
+}
+function rtcAfter() { if (A.screen === 'rtc-host' && !RT.slot) rtcHostSlot(); else rtcPaint(); }
+
+/* ---- banner when someone drops out ---- */
+function rtcWatchStart() { if (RT.watchT) return; RT.watchT = setInterval(rtcWatch, 1000); rtcWatch(); }
+function rtcWatchStop() { if (RT.watchT) clearInterval(RT.watchT); RT.watchT = null; const b = $('[data-rtcbar]'); if (b) b.remove(); }
+function rtcWatch() {
+  let msg = null; const bar = $('[data-rtcbar]');
+  if (RT.on && NWS.mode && (A.screen === 'nw' || A.screen === 'jo')) {
+    if (NWS.mode === 'client') { if (RT.dc && (RT.dc.readyState !== 'open' || Date.now() - RT.rx > 13000)) msg = 'Lost the connection to the host.'; }
+    else if (NWS.s) { const n = NWS.s.players.filter(p => !p.bot && p.id !== NWS.id && !p.connected && !p.left).length; if (n && NWS.s.phase !== 'ended') msg = n + (n > 1 ? ' players are' : ' player is') + ' disconnected.'; }
+  }
+  if (!msg) { if (bar) bar.remove(); return; }
+  if (!bar) stage.appendChild(html2el(`<div class="rtcbar" data-rtcbar role="alert"><span></span><button data-act="rtcre">Reconnect</button></div>`));
+  $('[data-rtcbar] span').textContent = msg;
+}
+
+/* ---- actions ---- */
+function rtcAct(a, b) {
+  switch (a) {
+    case 'rtchost': { const nm = (ST.nwName || '').trim(); if (!nm) { toast('Enter your name first.'); const i = $('[data-nwname]'); if (i) i.focus(); return; }
+      RT.on = true; return nwCreate(nm, A.U.g).then(() => { if (NWS.mode === 'host') { rtcWake(); rtcWatchStart(); RT.mode = 'show'; go('rtc-host', null, 'fwd'); } else RT.on = false; }); }
+    case 'rtcjoin': { const nm = (ST.nwName || '').trim(); if (!nm) { toast('Enter your name first.'); const i = $('[data-nwname]'); if (i) i.focus(); return; }
+      RT.on = true; RT.j = { step: 'scan' }; RT.dc = null; RT.pc = null; rtcCam().then(() => A.screen === 'rtc-join' && RT.j.step === 'scan' && rtcPaint()); return go('rtc-join', null, 'fwd'); }
+    case 'rtcconnect': RT.mode = 'show'; go('rtc-host', null, 'fwd'); return;
+    case 'rtcdone': rtcScanStop(); RT.mode = 'show'; rtcSlotClose(); nwResetUI(); return go(nwScreen(), null, 'back');
+    case 'rtcjback': rtcCamStop(); rtcJoinClose(); if (!NWS.mode) RT.on = false; return go(NWS.mode ? nwScreen() : 'nw-entry', null, 'back');
+    case 'rtcscan': RT.mode = 'scan'; rtcCam().then(() => rtcPaint()); return rtcPaint();
+    case 'rtcshow': RT.mode = 'show'; return rtcPaint();
+    case 'rtcretry': return rtcHostSlot(RT.slot && RT.slot.cid);
+    case 'rtcslot': RT.mode = 'show'; return rtcHostSlot(b.dataset.id);
+    case 'rtcre': if (NWS.mode === 'host') { RT.mode = 'show'; return go('rtc-host', null, 'fwd'); } RT.j = { step: 'scan' }; RT.dc = null; RT.pc = null; rtcCam().then(() => A.screen === 'rtc-join' && RT.j.step === 'scan' && rtcPaint()); return go('rtc-join', null, 'fwd');
+    case 'rtccopy': { const t = $('[data-rtc-out]'); if (!t) return; t.select(); try { navigator.clipboard.writeText(t.value); } catch (e) { try { document.execCommand('copy'); } catch (x) { } } return toast('Code copied'); }
+    case 'rtcpaste': { const t = $('[data-rtc-in]'); if (!t || !t.value.trim()) return toast('Paste the code first.'); let u; try { u = rtcUnB64(t.value); } catch (e) { return toast('That code looks wrong. Copy it again.'); }
+      return A.screen === 'rtc-host' ? rtcHostGot(u) : rtcJoinGot(u); }
+  }
+}
+window.__rtc = { RT, rtcPack, rtcUnpack, rtcHostGot, rtcJoinGot, rtcB64, rtcUnB64 };
+
+/* ===== Judas: the online question game (one phone per player, played in the same room or apart) ===== */
+const JDE = window.JudasEngine;
+const jdv = () => { const v = nwView(); return v && v.game === 'jd' ? v : null; };
+const joStyles = [['mix', 'A mix'], ['bible', 'Bible only'], ['player', 'About us']];
+const slateSize = t => { const n = t.length; return n <= 10 ? 66 : n <= 20 ? 52 : n <= 34 ? 40 : 30; };
+const joAv = (p, cls) => `<span class="av2 ${cls || ''}">${esc(p.name.charAt(0).toUpperCase())}</span>`;
+function joChips(v, key) {
+  return v.players.filter(p => !p.left).map(p => `<span class="jchip ${p[key] ? 'on' : ''} ${p.connected ? '' : 'off'}">${joAv(p)}<small>${esc(p.name)}</small>${p[key] ? '<i aria-hidden="true">✓</i>' : ''}</span>`).join('');
+}
+function joConfetti(win) {
+  const cols = win ? ['#38d5ff', '#e8c780', '#f4f1e6', '#7fe3ff'] : ['#ff3b4e', '#ff8a98', '#ffb36b', '#7a1020']; let h = '', r = 17;
+  for (let i = 0; i < 34; i++) { r = (r * 9301 + 49297) % 233280; const a = r / 233280; r = (r * 9301 + 49297) % 233280; const b = r / 233280;
+    h += `<i style="--x:${(a * 100).toFixed(1)}%;--d:${(b * 2.4).toFixed(2)}s;--t:${(3.2 + a * 2.6).toFixed(2)}s;--c:${cols[i % cols.length]};--w:${(6 + b * 7).toFixed(0)}px;--r:${Math.round(a * 360)}deg"></i>`; }
+  return `<div class="conf ${win ? '' : 'ember'}" aria-hidden="true">${h}</div>`;
+}
+SCR['jo'] = () => {
+  const v = jdv(); if (!v) return '<div class="scr"></div>';
+  return `<div class="scr jo" data-ph="${v.phase}"><div class="hdr"><button data-act="nwleavedlg" aria-label="Leave room">${ic('close')}</button><h2 class="ptitle" style="font-size:21px" data-jotitle></h2><span class="jbar" data-jbar></span></div>
+ <div class="jbody" data-jbody></div></div>`;
+};
+/* ---- one function per phase: returns the inner HTML (header text is set separately) ---- */
+function joLobby(v) {
+  const host = v.isHost, c = v.cfg, n = v.players.length;
+  const sel = (k, opts) => `<select data-nwsel="${k}" aria-label="${k}">${opts.map(([val, l]) => `<option value="${val}" ${c[k] === val ? 'selected' : ''}>${l}</option>`).join('')}</select>`;
+  return `<div class="scroll grow"><div class="codecard"><small>Room code</small><b>${esc(v.code)}</b><button class="btn sec" style="width:auto;height:38px;padding:0 16px;font-size:14px" data-act="nwshare">Share code</button></div>
+ <p class="lbl" style="margin:14px 0 6px">Players <small>(${n} of ${v.max}, need ${v.min} or more)</small></p>
+ <div class="plist">${v.players.map(p => `<div class="pl ${p.connected ? '' : 'off'}">${joAv(p)}<span class="nm">${esc(p.name)}${p.me ? ' <small>(you)</small>' : ''}${p.host ? ' <small class="tagc">host</small>' : ''}${p.bot ? ' <small class="tagc">practice bot</small>' : ''}${!p.connected ? ' <small>offline</small>' : ''}</span>${host && !p.host ? `<button class="x" data-act="nwkick" data-id="${esc(p.id)}" aria-label="Remove ${esc(p.name)}">${ic('close')}</button>` : ''}</div>`).join('')}</div>
+ ${host ? `${rtcLobbyBtn()}<button class="btn sec" style="height:44px;margin-top:8px" data-act="nwbot" ${n >= v.max ? 'disabled' : ''}>Add a practice bot</button>
+ <div class="orn" style="margin:16px 0 6px"><i></i></div>
+ <p class="lbl">Questions</p><div class="seg" role="group" aria-label="Question style">${joStyles.map(([k, l]) => `<button data-act="joc" data-k="style" data-v="${k}" aria-pressed="${c.style === k}">${l}</button>`).join('')}</div>
+ <p class="hint">${c.style === 'bible' ? 'Type a short answer about people and stories of the Bible.' : c.style === 'player' ? 'Pick a player from the group, like “who here is most like Ananias?”.' : 'Some questions ask for a Bible answer, some ask you to pick a player.'}</p>
+ <div class="tmr"><label>Answer ${sel('ansSec', [[30, '30 sec'], [45, '45 sec'], [60, '1 min'], [90, '1½ min'], [120, '2 min'], [0, 'No limit']])}</label><label>Talk ${sel('discSec', [[60, '1 min'], [120, '2 min'], [180, '3 min'], [300, '5 min'], [0, 'No limit']])}</label><label>Vote ${sel('voteSec', [[30, '30 sec'], [45, '45 sec'], [60, '1 min'], [90, '1½ min']])}</label></div>
+ <p class="lbl">Last chance</p><div class="seg" role="group" aria-label="Last chance"><button data-act="joc" data-k="guess" data-v="1" aria-pressed="${c.guess}">Judas can guess</button><button data-act="joc" data-k="guess" data-v="0" aria-pressed="${!c.guess}">Off</button></div>
+ <p class="hint">${c.guess ? 'If Judas is found out, they get one guess at the group’s real question. A right guess steals the win.' : 'Finding Judas wins the game for the group.'}</p>
+ ${v.errors.length ? `<p class="err" role="alert">${esc(v.errors[0])}</p>` : ''}` : `<div class="orn" style="margin:16px 0 6px"><i></i></div><p class="note">Waiting for the host to start the game…</p>`}</div>
+ ${host ? `<div class="foot"><button class="btn pri" data-act="jostart" ${v.errors.length ? 'disabled' : ''}>Start game</button></div>` : ''}`;
+}
+function joAnswer(v) {
+  const me = v.me, U = A.U, j = me.isJudas, bible = v.type === 'bible';
+  const banner = j ? `<div class="jjudas"><b>You are JUDAS</b>Your question is different from everyone else’s. Answer it, then blend in.</div>` : `<div class="jhonest">Answer honestly. One of you got a different question.</div>`;
+  const card = `<div class="parch jq"><div class="y">${me.locked ? 'Your question' : 'Your question'}</div><div class="rule"></div><div class="ww">${esc(me.q)}</div></div>`;
+  let input = '';
+  if (me.locked) input = `<div class="stamp"><span>LOCKED IN</span></div><p class="sub" style="text-align:center;margin:6px 0">Your answer: <b>${esc(me.answer)}</b></p>`;
+  else if (bible) input = `<textarea data-jans rows="2" maxlength="60" placeholder="Type your answer…" aria-label="Your answer" autocomplete="off">${esc(U.draft || '')}</textarea><p class="hint">Keep it short. You will show it to the room.</p>`;
+  else input = `<div class="opts" role="radiogroup" aria-label="Your answer">${v.players.filter(p => !p.left).map(p => `<button class="opt" role="radio" data-act="josel" data-id="${esc(p.id)}" aria-checked="${U.sel === p.id}" aria-pressed="${U.sel === p.id}">${joAv(p)}<span class="nm">${esc(p.name)}${p.me ? ' <small>(you)</small>' : ''}</span></button>`).join('')}</div>`;
+  const can = bible ? !!(U.draft || '').trim() : !!U.sel;
+  return `<div class="scroll grow">${banner}${card}${input}
+  <p class="lbl" style="text-align:center;margin:12px 0 6px"><span data-jcount>${v.done} of ${v.total}</span> locked in</p><div class="jchips" data-jchips>${joChips(v, 'locked')}</div></div>
+  ${me.locked ? '' : `<div class="foot"><button class="btn pri" data-act="joans" ${can ? '' : 'disabled'}>Lock in my answer</button></div>`}`;
+}
+function joRead(v) {
+  if (v.me.isMod) return `<div class="scroll grow jcenter"><p class="sub" style="text-align:center;margin:0 0 12px">Everyone has answered. Read this question out loud to the room.</p>
+  <div class="readcard"><span class="rib">READ ALOUD</span><div class="rq">${esc(v.q)}</div><div class="torch l"></div><div class="torch r"></div></div>
+  <p class="big" style="margin-top:14px">Judas, take a breath.<br>Think how your answer could fit.</p></div>
+  <div class="foot"><button class="btn pri" data-act="joadv">I’ve read it. Show your answers</button><div class="note">Pause for a few seconds first.</div></div>`;
+  return `<div class="scroll grow jcenter"><div class="waves" aria-hidden="true"><i></i><i></i><i></i>${joAv(v.players.find(p => p.mod), 'big')}</div>
+  <p class="big" style="margin-top:22px"><b>${esc(v.modName)}</b> is about to read<br>the question aloud.</p><p class="sub" style="text-align:center">Listen closely. Get your answer ready to show.</p></div>`;
+}
+function joShow(v) {
+  const me = v.me, flip = !!A.U.flip, txt = me.answer || '—';
+  const slate = `<div class="slatewrap"><div class="slate ${flip ? 'flip' : ''}" data-act="joflip" role="button" tabindex="0" aria-label="${flip ? 'Turn your answer face down' : 'Turn your answer around'}">
+   <div class="sf back"><div class="bk"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M50 10c-20 0-34 12-34 30 0 12 6 20 10 26 3 5 4 9 4 14h40c0-5 1-9 4-14 4-6 10-14 10-26 0-18-14-30-34-30Z" fill="none" stroke="currentColor" stroke-width="3"/><path d="M34 42c4-4 10-4 14 0M52 42c4-4 10-4 14 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M38 60c8 7 16 7 24 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg><b>Your answer is hidden</b><span>Tap to turn it around</span></div></div>
+   <div class="sf front"><div class="sl"><div class="who">${esc(me.name)}</div><div class="ch"></div><div class="ans" style="font-size:${slateSize(txt)}px">${esc(txt)}</div><div class="tray"></div></div></div></div></div>`;
+  return `<div class="jshow"><p class="jq2"><small>The question</small>${esc(v.q)}</p>${slate}
+  <p class="sub jhint" style="text-align:center;margin:10px 0 4px">${flip ? 'Hold your phone up so everyone can read it. Look at everyone else’s too.' : 'When the moderator says go, tap the slate and turn it around.'}</p>${me.isJudas ? '<p class="jj" style="text-align:center">Stay calm. Be ready to defend it.</p>' : ''}</div>
+  <div class="foot">${me.isMod ? '<button class="btn pri" data-act="joadv">Everyone has shown. Start discussion</button>' : `<div class="note" style="margin:0">Waiting for <b>${esc(v.modName)}</b> to start the discussion…</div>`}</div>`;
+}
+function joAnswersList(v, mark) {
+  return `<div class="opts jans">${v.answers.map(a => `<div class="opt" style="cursor:default"><span class="nm"><small style="display:block;opacity:.7">${esc(a.name)}${a.id === mark ? ' · Judas' : ''}</small><b>${esc(a.text)}</b></span></div>`).join('')}</div>`;
+}
+function joRing(v, tot) {
+  const C = 2 * Math.PI * 96; return `<div class="tring" data-ring data-tot="${tot}"><svg viewBox="0 0 210 210" aria-hidden="true"><circle class="tr" cx="105" cy="105" r="96" fill="none" stroke-width="5"/><circle class="tv" cx="105" cy="105" r="96" fill="none" stroke-width="5" stroke-linecap="round" stroke-dasharray="${C.toFixed(1)}" style="stroke-dashoffset:0"/></svg><b data-jt>${v.deadline ? '' : '∞'}</b></div>`;
+}
+function joDiscuss(v) {
+  return `<div class="scroll grow"><p class="sub jq2" style="margin:0 0 8px"><small>The question</small>${esc(v.q)}</p>
+  ${joRing(v, v.cfg.discSec)}<p class="big" style="margin:4px 0 8px">Ask each other to explain.<br>One answer belongs to a different question.</p>${joAnswersList(v)}</div>
+  <div class="foot">${v.me.isMod ? '<button class="btn pri" data-act="joadv">Start the vote</button>' : `<div class="note" style="margin:0">Voting starts when the timer ends, or when <b>${esc(v.modName)}</b> calls it.</div>`}</div>`;
+}
+function joVote(v) {
+  const U = A.U, mine = U.vt || v.me.vote;
+  return `<div class="scroll grow"><p class="lbl" style="margin:0 0 8px">Who do you think is Judas?</p>
+  <div class="opts" role="radiogroup" aria-label="Suspects">${v.answers.filter(a => a.id !== v.me.id).map(a => `<button class="opt" role="radio" data-act="jovs" data-id="${esc(a.id)}" aria-checked="${mine === a.id}" aria-pressed="${mine === a.id}">${joAv({ name: a.name })}<span class="nm"><b>${esc(a.name)}</b><small style="display:block;opacity:.75">${esc(a.text)}</small></span></button>`).join('')}</div>
+  <p class="lbl" style="text-align:center;margin:12px 0 6px"><span data-jcount>${v.done} of ${v.total}</span> voted</p><div class="jchips" data-jchips>${joChips(v, 'voted')}</div></div>
+  <div class="foot"><button class="btn pri" data-act="jovote" ${mine ? '' : 'disabled'}>${v.me.vote ? 'Change my vote' : 'Lock in my vote'}</button></div>`;
+}
+function joTally(v) {
+  return `<div class="jtally">${v.tally.filter(t => t.n > 0).map(t => `<div class="${t.id === v.judasId ? 'jd' : ''}"><span>${esc(t.name)}${t.id === v.judasId ? ' · Judas' : ''}</span><i style="--w:${Math.round(t.n / Math.max(1, v.total || v.players.length) * 100)}%"></i><b>${t.n}</b></div>`).join('') || '<p class="sub">No votes were cast.</p>'}</div>`;
+}
+function joReveal(v, st) {
+  const line = v.caught ? 'The group found them out!' : v.tie ? 'The vote was tied. Judas slipped away.' : `The group accused ${esc(v.accusedName || 'no one')}. Judas got away.`;
+  return `<div class="fin jfin" data-stage="${st}"><div class="spot"></div>
+ <div class="ringv"><div class="halo"></div><div class="disc"><span class="q">?</span><div class="mkv">${mask('#ff6b7a', ['#3a0f1a', '#14060b'])}</div></div>${crown()}</div>
+ <div class="below"><div class="pre">The votes are in<span class="dots"><i></i><i></i><i></i></span></div>
+ <div class="post"><div class="was">Judas was…</div><div class="nm">${esc(v.judasName).toUpperCase()}</div><div class="fool">${line}</div>${joTally(v)}
+  ${v.phase === 'reveal' ? (v.me.isMod ? '<button class="btn pri" data-act="joadv" style="margin-top:12px">Continue</button>' : '<p class="note" style="margin-top:12px">Continuing shortly…</p>') : ''}</div></div></div>`;
+}
+function joGuess(v) {
+  if (v.me.isJudas) return `<div class="scroll grow"><p class="big" style="margin:0 0 6px">You were found out!</p><p class="sub" style="text-align:center;margin-bottom:10px">One last chance. Which question did the group really get? A right guess steals the win.</p>
+  <p class="lbl" style="text-align:center;margin:0 0 8px"><b data-jt></b></p>
+  <div class="opts" role="radiogroup" aria-label="Guess the question">${v.guessOpts.map(o => `<button class="opt" role="radio" data-act="jogs" data-id="${o.id}" aria-checked="${A.U.gs === o.id}" aria-pressed="${A.U.gs === o.id}"><span class="rd"></span><span class="nm">${esc(o.text)}</span></button>`).join('')}</div></div>
+  <div class="foot"><button class="btn pri" data-act="jogo" ${A.U.gs != null ? '' : 'disabled'}>Lock in my guess</button></div>`;
+  return `<div class="scroll grow jcenter"><div class="waves" aria-hidden="true"><i></i><i></i><i></i>${joAv({ name: v.judasName }, 'big')}</div><p class="big" style="margin-top:22px"><b>${esc(v.judasName)}</b> was found out.<br>One last guess…</p><p class="sub" style="text-align:center">Judas is trying to name the group’s real question. <b data-jt></b></p></div>`;
+}
+function joEnded(v) {
+  if (v.winner === 'abandoned') return `<div class="scroll grow jcenter"><p class="big">${esc(v.winnerText)}</p></div><div class="foot">${v.isHost ? '<button class="btn pri" data-act="joagain">Play again</button>' : ''}<button class="btn sec" data-act="nwleavego" style="margin-top:8px">Leave room</button></div>`;
+  const group = v.winner === 'group';
+  return `<div class="scroll grow jend">${joConfetti(group)}<div class="jwin ${group ? 'g' : 'j'}"><small>${group ? 'The group wins' : 'Judas wins'}</small><b>${esc(v.winnerText.replace(/^(The group wins|Judas wins)!\s*/, ''))}</b></div>
+  <div class="jwho">Judas was <b>${esc(v.judasName)}</b></div>
+  <div class="scrip jqs"><h4>The group’s question</h4><q>${esc(v.q)}</q></div>
+  <div class="scrip jqs"><h4>${esc(v.judasName)}’s question</h4><q>${esc(v.jq)}</q></div>
+  ${v.guessText ? `<p class="sub" style="text-align:center">Judas guessed: “${esc(v.guessText)}” ${v.guessRight ? '(right!)' : '(wrong)'}</p>` : ''}
+  <h4 class="sec">The answers</h4>${joAnswersList(v, v.judasId)}<h4 class="sec">The votes</h4>${joTally(v)}</div>
+  <div class="foot">${v.isHost ? '<button class="btn pri" data-act="joagain">Play again · next moderator</button>' : '<div class="note" style="margin:0 0 8px">The host can start another round.</div>'}<button class="btn sec" data-act="nwleavego" style="margin-top:8px">Leave room</button></div>`;
+}
+const JO_TITLES = { lobby: v => 'Room ' + v.code, answer: () => 'Answer Now', read: () => 'Listen', show: () => 'Show Your Answer', discuss: () => 'Discussion', vote: () => 'The Vote', reveal: () => 'The Verdict', guess: () => 'Last Chance', ended: () => 'Game Over' };
+function joBody(v) {
+  switch (v.phase) {
+    case 'lobby': return joLobby(v); case 'answer': return joAnswer(v); case 'read': return joRead(v); case 'show': return joShow(v); case 'discuss': return joDiscuss(v);
+    case 'vote': return joVote(v); case 'reveal': return joReveal(v, A.U.rstage || 0); case 'guess': return joGuess(v); case 'ended': return joEnded(v);
+  }
+  return '';
+}
+const joSig = v => [v.phase, v.round, v.me.locked, v.me.vote, v.me.left, v.modId, v.winner, v.phase === 'lobby' ? JSON.stringify([v.players.map(p => p.id + p.connected), v.cfg]) : ''].join('|');
+function joRender(first) {
+  const e = cur(); if (!e || A.screen !== 'jo') return; const v = jdv(); if (!v) return;
+  e.dataset.ph = v.phase; const b = $('[data-jobody]', e) || $('[data-jbody]', e), ti = $('[data-jotitle]', e); if (ti) ti.textContent = JO_TITLES[v.phase](v);
+  b.innerHTML = joBody(v); b.className = 'jbody ph-' + v.phase;
+  if (v.phase === 'reveal') joRunReveal(v);
+  joDyn(v);
+}
+function joDyn(v) {   // the small things that change without redrawing the screen
+  const e = cur(); if (!e) return;
+  const c = $('[data-jcount]', e); if (c && v.total !== undefined) c.textContent = v.done + ' of ' + v.total;
+  const ch = $('[data-jchips]', e); if (ch) ch.innerHTML = joChips(v, v.phase === 'vote' ? 'voted' : 'locked');
+  joTick();
+}
+function joTick() {
+  const e = cur(); if (!e || A.screen !== 'jo') return; const v = jdv(); if (!v) return;
+  const left = v.deadline ? Math.max(0, Math.ceil((v.deadline - nwNow()) / 1000)) : 0;
+  $$('[data-jt]', e).forEach(t => { t.textContent = v.deadline ? fmt(left) : (t.closest('.tring') ? '∞' : ''); });
+  const r = $('[data-ring]', e); if (r) { const tot = +r.dataset.tot || 1; $('.tv', r).style.strokeDashoffset = v.deadline ? (2 * Math.PI * 96 * (1 - Math.min(1, left / tot))).toFixed(1) : 0; r.classList.toggle('low', !!v.deadline && left <= 10); }
+  const bar = $('[data-jbar]', e); if (bar) bar.textContent = v.deadline && v.phase !== 'lobby' && v.phase !== 'reveal' ? fmt(left) : '';
+  if (v.phase === 'answer' && v.deadline && left > 0 && left <= 5 && A.U.jl !== left) { A.U.jl = left; fx('tap'); }
+}
+function joRunReveal(v) {
+  if (A.U.rrun === v.round) return; A.U.rrun = v.round; A.U.rstage = 0; const set = k => { A.U.rstage = k; const f = $('.jfin', cur() || document); if (f) f.dataset.stage = k; const s = cur(); if (s && k === 2) fx('heavy'); if (k === 3) fx(v.caught ? 'success' : 'warn'); };
+  const f = $('.jfin', cur()); if (f) f.dataset.stage = 0; T(() => set(1), 1500); T(() => set(2), 2900); T(() => set(3), 3800);
+}
+function joRefresh() {
+  const e = cur(); if (!e || A.screen !== 'jo') return; const v = jdv(); if (!v) return;
+  const sg = joSig(v);
+  if (A.U.josig !== sg) {
+    A.U.josig = sg; const prev = A.U.jph; A.U.jph = v.phase;
+    if (prev !== v.phase) { A.U.flip = false; A.U.vt = null; A.U.gs = null; if (v.phase === 'answer') { A.U.draft = ''; A.U.sel = null; } A.U.rrun = null;
+      fx(v.phase === 'read' ? 'bell' : v.phase === 'show' ? 'double' : v.phase === 'vote' ? 'night' : v.phase === 'ended' ? (v.winner === 'group' ? 'success' : 'warn') : 'tap'); }
+    joRender(); return;
+  }
+  joDyn(v);
+}
+function joAfter() { const v = jdv(); A.U.josig = ''; A.U.jph = v ? v.phase : null; onTick = joTick; startTimer(); joRefresh(); }
+function joInput(e) { A.U.draft = e.target.value; const b = $('[data-act=joans]', stage); if (b) b.disabled = !A.U.draft.trim(); }
+function joAct(a, b) {
+  const v = jdv(), U = A.U, id = b.dataset.id;
+  switch (a) {
+    case 'joc': return nwSend({ type: 'CONFIG', patch: { [b.dataset.k]: b.dataset.k === 'guess' ? b.dataset.v === '1' : b.dataset.v } });
+    case 'jostart': return nwSend({ type: 'START' });
+    case 'josel': U.sel = id; $$('.opt', cur()).forEach(x => { const on = x.dataset.id === id; x.setAttribute('aria-pressed', on); x.setAttribute('aria-checked', on); }); { const l = $('[data-act=joans]', cur()); if (l) l.disabled = false; } return;
+    case 'joans': return nwSend(v.type === 'player' ? { type: 'ANSWER', target: U.sel } : { type: 'ANSWER', text: U.draft || '' });
+    case 'joadv': return nwSend({ type: 'ADVANCE' });
+    case 'joflip': { U.flip = !U.flip; const s = $('.slate', cur()); if (s) { s.classList.toggle('flip', U.flip); fx(U.flip ? 'reveal' : 'tap'); const h = $('.jhint', cur()); if (h) h.textContent = U.flip ? 'Hold your phone up so everyone can read it. Look at everyone else’s too.' : 'When the moderator says go, tap the slate and turn it around.'; } return; }
+    case 'jovs': U.vt = id; $$('.opt', cur()).forEach(x => { const on = x.dataset.id === id; x.setAttribute('aria-pressed', on); x.setAttribute('aria-checked', on); }); { const l = $('[data-act=jovote]', cur()); if (l) l.disabled = false; } return;
+    case 'jovote': return nwSend({ type: 'VOTE', target: U.vt || (v.me && v.me.vote) });
+    case 'jogs': U.gs = +id; $$('.opt', cur()).forEach(x => { const on = +x.dataset.id === U.gs; x.setAttribute('aria-pressed', on); x.setAttribute('aria-checked', on); }); { const l = $('[data-act=jogo]', cur()); if (l) l.disabled = false; } return;
+    case 'jogo': return nwSend({ type: 'GUESS', id: U.gs });
+    case 'joagain': return nwSend({ type: 'AGAIN' });
+  }
 }
 
 /* ===== The Night Watch: moderator mode (one phone; the moderator sits out and runs the game) =====
@@ -2008,6 +2994,7 @@ if (MD && MD.st === 'deal' && MD.sub === 'role') MD.sub = 'pass';   // a reload 
 
 /* ===== sheets (How to Play, Bible Connections) and dialogs ===== */
 const HOW_IMP = [['Pass the phone', 'Everyone gets a turn alone with the phone. Tap Reveal my secret, read it, then hide it.'], ['Spot the odd one', 'All but one player share a Bible word with a Scripture verse. The impostor holds either a similar word (they know they are the impostor) or no word at all, depending on your setting.'], ['Discuss', 'Talk about the word without saying it. Listen for the answer that doesn’t fit.'], ['Vote', 'Agree on the player you suspect. Then the verdict is revealed along with the word and its Scripture.']];
+const HOW_JD = [['Gather in one room', 'One player creates a room and shares the code. Everyone joins on their own phone, 4 to 12 players, sitting together.'], ['Answer at the same time', 'Everyone sees a question. One player, Judas, secretly gets a different one that sounds similar, and knows it. Type a short answer or pick a player, then lock it in.'], ['The moderator reads it aloud', 'One player is the moderator (it changes each round). Their phone shows a read-aloud card with the group’s real question. Judas now learns what everyone else was asked, and has a moment to think how to blend in.'], ['Turn your slate around', 'Everyone taps their phone to flip their answer onto a chalk slate, then holds it up so the whole room can read it. Look at every answer.'], ['Discuss', 'Ask each other to explain and defend what they wrote. One answer belongs to a different question.'], ['Vote and reveal', 'Everyone votes on their own phone for who they think is Judas. Then the reveal! If Judas is found, they get one guess at the group’s real question to steal the win.']];
 function howMafia() {
   const R = NightWatch.ROLES;
   const grp = f => Object.keys(R).filter(k => R[k].faction === f && k !== 'townsperson').map(k => `<li><b>${esc(R[k].name)} · ${esc(R[k].title)}</b>${esc(R[k].text)}</li>`).join('');
@@ -2026,12 +3013,13 @@ function howMafia() {
 function SHEET(kind) {
   let title, body;
   if (kind === 'how-imp') { title = 'How to Play'; body = `<ol>${HOW_IMP.map(r => `<li><b>${r[0]}</b>${r[1]}</li>`).join('')}</ol>`; }
+  else if (kind === 'how-jd') { title = 'How to Play · Judas'; body = `<ol>${HOW_JD.map(r => `<li><b>${r[0]}</b>${r[1]}</li>`).join('')}</ol>`; }
   else if (kind === 'settings') { title = 'Settings'; const sw = (k, n, d) => `<div class="setrow"><div><b>${n}</b><small>${d}</small></div><button class="sw" role="switch" data-act="tog" data-k="${k}" aria-checked="${!!ST[k]}" aria-label="${n}"><i></i></button></div>`;
     body = sw('haptics', 'Haptics', 'Short buzzes (iPhone needs iOS 17.4 or newer).') + sw('sound', 'Sound', 'Soft tones. An iPhone’s silent switch also mutes them.') + sw('hold', 'Hold to reveal', 'Secrets show only while you press and hold, and hide when you let go.') + '<p class="fine">Settings are saved on this device.</p>'; }
   else if (kind === 'about') { title = 'About'; body = `<h5>The Odd Disciple</h5><p>A Bible-themed party game for youth groups and friends, with The Odd Disciple (find the impostor) and ${MFN} (a game of hidden traitors).</p><h5>Designed by</h5><p><b>Anderson Jones</b></p><p>© 2026 Anderson Jones. All rights reserved.</p><h5>Feedback</h5><p>Would love to hear your feedback and suggestions. Thank you!</p><p><a href="mailto:andy.andersonjones@gmail.com">andy.andersonjones@gmail.com</a></p><p class="fine">Scripture quotations are from the King James Version (public domain). Character abilities are fictional game mechanics inspired by Bible stories, and character scripture lines are labelled paraphrases.</p>`; }
   else if (kind === 'nwrole') { title = 'Your role'; const nv = nwView(); body = nv && nv.me.role ? '<p class="sub">Press and hold to look. Let go to hide it.</p>' + holdBox(nwCard(nv)) : '<p>No role yet.</p>'; }
   else if (kind === 'how-mf') { title = MFN + ' · Rules'; body = howMafia(); }
-  else if (kind === 'how') { const t = A.U.htab || 'imp'; title = 'How to Play'; body = `<div class="seg" role="tablist"><button role="tab" data-act="htab" data-v="imp" aria-pressed="${t === 'imp'}">The Odd Disciple</button><button role="tab" data-act="htab" data-v="mf" aria-pressed="${t === 'mf'}">${MFN}</button></div>` + (t === 'imp' ? `<ol>${HOW_IMP.map(r => `<li><b>${r[0]}</b>${r[1]}</li>`).join('')}</ol>` : howMafia()); }
+  else if (kind === 'how') { const t = A.U.htab || 'imp'; title = 'How to Play'; body = `<div class="seg" role="tablist"><button role="tab" data-act="htab" data-v="imp" aria-pressed="${t === 'imp'}">The Odd Disciple</button><button role="tab" data-act="htab" data-v="jd" aria-pressed="${t === 'jd'}">Judas</button><button role="tab" data-act="htab" data-v="mf" aria-pressed="${t === 'mf'}">${MFN}</button></div>` + (t === 'imp' ? `<ol>${HOW_IMP.map(r => `<li><b>${r[0]}</b>${r[1]}</li>`).join('')}</ol>` : t === 'jd' ? `<ol>${HOW_JD.map(r => `<li><b>${r[0]}</b>${r[1]}</li>`).join('')}</ol>` : howMafia()); }
   else {
     const tab = A.U.btab || 'chars', packs = D.packs.packs;
     title = 'Bible Connections';
@@ -2058,11 +3046,14 @@ const HAPIC = on => `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rec
 const gameCards = () => {
   const res = [];
   if (MD) res.push(`<div class="resume" style="--cy:#e8c780;--acr:232,199,128"><div><b>${MFN} (moderator) in progress</b>${MD.S.players.length} players</div><button class="btn pri" data-act="mdresume">Resume</button><button class="btn sec" style="width:44px;padding:0" data-act="discard" data-g="md" aria-label="Discard moderator game">${ic('close')}</button></div>`);
-  if (hasNw()) res.push(`<div class="resume" style="--cy:#e8c780;--acr:232,199,128"><div><b>${MFN} room ${esc(NWS.code || (nwLoad() || {}).code)}</b>${(NWS.mode || (nwLoad() || {}).mode) === 'host' ? 'You are hosting' : 'Rejoin your room'}</div><button class="btn pri" data-act="nwresume">Resume</button><button class="btn sec" style="width:44px;padding:0" data-act="discard" data-g="nw" aria-label="Leave ${MFN} room">${ic('close')}</button></div>`);
+  if (hasNw()) res.push(`<div class="resume" style="--cy:#e8c780;--acr:232,199,128"><div><b>${(NWS.mode ? NWS.game : (nwLoad() || {}).game) === 'jd' ? 'Judas' : MFN} room ${esc(NWS.code || (nwLoad() || {}).code)}</b>${(NWS.mode || (nwLoad() || {}).mode) === 'host' ? 'You are hosting' : 'Rejoin your room'}</div><button class="btn pri" data-act="nwresume">Resume</button><button class="btn sec" style="width:44px;padding:0" data-act="discard" data-g="nw" aria-label="Leave ${MFN} room">${ic('close')}</button></div>`);
   if (hasImp()) res.push(`<div class="resume"><div><b>Impostor game in progress</b>${I.players.length} players</div><button class="btn pri" data-act="resume" data-g="imp">Resume</button><button class="btn sec" style="width:44px;padding:0" data-act="discard" data-g="imp" aria-label="Discard saved impostor game">${ic('close')}</button></div>`);
   return res.join('') + `<article class="gcard g1"><h3><small>Social deduction · Classic</small>The Odd Disciple</h3><p>Everyone shares a Bible word except the impostor. Talk around it, spot who doesn’t fit.</p>
    <div class="gmeta"><span><b>${IMP_MIN}–${IMP_MAX}</b> players</span><span>~<b>10</b> min</span><span>Offline</span></div>
    <div class="gact"><button class="btn pri" data-act="newimp">Play</button><button class="btn sec" data-act="sheet" data-v="how-imp">How to play</button></div></article>
+  <article class="gcard g3"><h3><small>Question game · Online, same room</small>Judas</h3><p>Everyone answers at once on their own phone, then shows their answer to the room. One player secretly got a different question. Find who is bluffing.</p>
+   <div class="gmeta"><span><b>4–12</b> players</span><span>~<b>10–15</b> min</span></div>
+   <div class="gact"><button class="btn pri" data-act="newjd">Play online</button><button class="btn sec" data-act="sheet" data-v="how-jd">How to play</button></div></article>
   <article class="gcard g2"><h3><small>Mafia-style · One phone or online</small>${MFN} <span class="tag-p">Proposed name</span></h3><p>Run it on one phone with a moderator, or play online with a room code, each on your own phone. Secret roles and night abilities.</p>
    <div class="gmeta"><span><b>5–20</b> players</span><span>~<b>20–40</b> min <span class="muted">(est.)</span></span></div>
    <div class="gact"><button class="btn pri" data-act="newmf">Play online</button><button class="btn pri" data-act="mdsetup">Moderator mode</button></div><div class="gact" style="margin-top:8px"><button class="btn sec" data-act="sheet" data-v="how-mf">Rules</button></div></article>`;
@@ -2094,6 +3085,8 @@ function after(p) {
   const sig = hapSig(); if (sig !== lastSig) { lastSig = sig; if (sig) fx(sig.split('|')[0]); }
   if (A.screen === 'imp-disc') { if (!p) lastTick = -1; onTick = impTick; startTimer(); }
   if (A.screen === 'imp-verdict' && !p) impVerdictRun();
+  if (A.screen === 'jo') joAfter();
+  if (A.screen === 'rtc-host' || A.screen === 'rtc-join') rtcAfter();
   if (A.screen === 'nw') nwAfter();
   if (A.screen === 'md') mdAfter();
 }
@@ -2103,30 +3096,34 @@ function act(a, b) {
     case 'home': return go('home', null, 'back');
     case 'gback': return go('games', null, 'back');
     case 'new': return go('games', null, 'fwd');
+    case 'newjd': return go('nw-entry', { g: 'jd' }, 'fwd');
     case 'newimp': return go('imp-setup', null, 'fwd');
-    case 'newmf': return go('nw-entry', null, 'fwd');
+    case 'newmf': return go('nw-entry', { g: 'nw' }, 'fwd');
     case 'tog': { const k = b.dataset.k; ST[k] = !ST[k]; persist(); A.U.still = true; patch(); if (ST[k] && (k === 'haptics' || k === 'sound')) fx('success'); return; }
     case 'htab': A.U.htab = b.dataset.v; A.U.still = true; return patch();
     case 'sheet': if (A.sheet !== 'how' || b.dataset.v !== 'how') A.U.still = false; A.sheet = b.dataset.v; A.U.btab = A.U.btab || 'chars'; return patch();
     case 'btab': A.U.btab = b.dataset.v; A.U.still = true; return patch();
     case 'closeSheet': A.sheet = null; return patch();
     case 'dlgclose': A.dlg = null; return patch();
-    case 'quitgo': A.dlg = null; if (A.screen === 'md') { MD = DB.mod = null; } else if (A.screen === 'nw') { nwLeave(); } else if (A.screen.indexOf('imp-') === 0) { I = DB.imp = null; } persist(); return go('games', null, 'back');
+    case 'quitgo': A.dlg = null; if (A.screen === 'md') { MD = DB.mod = null; } else if (A.screen === 'nw' || A.screen === 'jo') { nwLeave(); } else if (A.screen.indexOf('imp-') === 0) { I = DB.imp = null; } persist(); return go('games', null, 'back');
     case 'discard': A.dlg = { kind: 'discard', game: b.dataset.g }; return patch();
     case 'discardgo': A.dlg = null; if (b.dataset.g === 'md') { MD = DB.mod = null; } else if (b.dataset.g === 'nw') { nwLeave(); } else { I = DB.imp = null; } persist(); return patch();
     case 'resume': return I.screen === 'imp-secret' ? go('imp-pass', null, 'fwd') : go(I.screen, null, 'fwd');
   }
   if (a[0] === 'i') return impAct(a, b);
+  if (a.slice(0, 3) === 'rtc') return rtcAct(a, b);
+  if (a.slice(0, 2) === 'jo') return joAct(a, b);
   if (a.slice(0, 2) === 'nw') return nwAct(a, b);
   if (a.slice(0, 2) === 'md') return mdAct(a, b);
 }
-stage.addEventListener('click', e => { const b = e.target.closest('[data-act]'); if (b && !b.disabled) { if (b.dataset.act !== 'none' && b.dataset.act !== 'tog') fx(/^(isel|igsel|nwt|nwa|nwvt|nwuse|nwrtog|mdt|mdv|mdvs|mduse|mdrtog)$/.test(b.dataset.act) ? 'select' : 'tap'); act(b.dataset.act, b); } });
+stage.addEventListener('click', e => { const b = e.target.closest('[data-act]'); if (b && !b.disabled) { if (b.dataset.act !== 'none' && b.dataset.act !== 'tog') fx(/^(isel|igsel|josel|jovs|jogs|nwt|nwa|nwvt|nwuse|nwrtog|mdt|mdv|mdvs|mduse|mdrtog)$/.test(b.dataset.act) ? 'select' : 'tap'); act(b.dataset.act, b); } });
 stage.addEventListener('input', e => {
   if (e.target.hasAttribute('data-cw')) {   // custom word list: update in place so the keyboard stays open
     ST.customText = e.target.value; persist(); const n = customWords().length, ok = n >= 6;
     const h = $('[data-cwn]', stage); if (h) h.textContent = n + ' word' + (n === 1 ? '' : 's') + (ok ? '' : ' (add ' + (6 - n) + ' more)') + '. No verses are attached to your own words.';
     const b = $('[data-act=istart]', stage); if (b) b.disabled = !ok; return;
   }
+  if (e.target.hasAttribute('data-jans')) return joInput(e);
   const k = e.target.dataset.name, i = +e.target.dataset.i;
   if (k === 'ist') { ST.names[i] = e.target.value; persist(); } else if (k === 'mst') { ST.mfNames[i] = e.target.value; persist(); }
 });
