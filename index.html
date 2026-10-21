@@ -512,6 +512,8 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
 .script small{display:block;font:600 11.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
 .scr.md .foot{flex:none}
 
+.aboutlk{background:none;border:0;color:inherit;opacity:.6;font:inherit;font-size:12px;padding:10px;margin:2px auto 0;display:block;text-decoration:underline;text-underline-offset:3px}
+
 </style>
 </head>
 <body>
@@ -697,10 +699,18 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
     nathan: { id: 'nathan', name: 'Nathan', title: 'The Prophet', faction: 'town', night: 'reveal', once: true, text: 'Once per game, at night, publicly name one player’s side, Town or Traitor, at dawn. Your name is not given.', ref: '2 Samuel 12:7', para: 'Nathan told King David, “Thou art the man.”' },
     nicodemus: { id: 'nicodemus', name: 'Nicodemus', title: 'The Night Watcher', faction: 'town', night: 'watch', text: 'Each night, learn privately whether anyone visited one chosen player in the night (not who).', ref: 'John 3:1-2', para: 'Nicodemus came to Jesus by night.' },
     samson: { id: 'samson', name: 'Samson', title: 'The Last Stand', faction: 'town', night: 'none', text: 'If the town votes you out, you take down one of the players who voted against you.', ref: 'Judges 16:30', para: 'Samson pushed against the pillars, and the temple fell, saying “Let me die with the Philistines.”' },
+    mary: { id: 'mary', name: 'Mary Magdalene', title: 'The Witness', faction: 'town', night: 'none', text: 'Each night, you learn the exact role of the most recent player to fall.', ref: 'John 20:1-2', para: 'Mary Magdalene went to the tomb early, while it was still dark, and saw that the stone had been taken away.' },
+    noah: { id: 'noah', name: 'Noah', title: 'The Builder', faction: 'town', night: 'shelter', aux: 'pair', once: true, text: 'Once per game, at night, shelter exactly two players (a pair, and you may be one). If the traitors strike either, the attack fails.', ref: 'Genesis 6:19', para: 'Noah brought two of every kind of creature into the ark, to keep them alive.' },
+    esther: { id: 'esther', name: 'Esther', title: 'The Petitioner', faction: 'town', night: 'none', once: true, text: 'Once per game, when the town votes someone out, you may plead for them and spare them. Your plea is public.', ref: 'Esther 7:3-4', para: 'Esther begged the king to spare her life and the lives of her people.' },
+    ananias: { id: 'ananias', name: 'Ananias', title: 'The Liar', faction: 'traitor', night: 'attack', text: 'A traitor. You look like Town to every investigation and prophecy.', ref: 'Acts 5:1-5', para: 'Ananias sold a piece of land, secretly kept back part of the money, and pretended he had given it all.' },
+    john: { id: 'john', name: 'John the Baptist', title: 'The Voice', faction: 'town', night: 'proclaim', once: true, text: 'Once per game, at night, cry out about one player. At dawn everyone hears whether they are a traitor. Your name is given, and a disguise cannot fool you.', ref: 'Matthew 3:1-3', para: 'John cried out in the wilderness, calling people to turn back and prepare the way.' },
+    herod: { id: 'herod', name: 'Herod', title: 'The Tyrant', faction: 'traitor', night: 'attack', aux: 'decree', text: 'A traitor. Once per game, at night, issue a decree: the first vote tomorrow is void and the town must vote again.', ref: 'Mark 6:26', para: 'King Herod made a rash promise and then felt bound to keep it.' },
+    haman: { id: 'haman', name: 'Haman', title: 'The Schemer', faction: 'traitor', night: 'attack', aux: 'mute', text: 'A traitor. Once per game, at night, choose a player: their vote does not count the next day.', ref: 'Esther 3:8-9', para: 'Haman plotted against the Jewish people and persuaded the king to sign a decree.' },
+    zacchaeus: { id: 'zacchaeus', name: 'Zacchaeus', title: 'The Survivor', faction: 'neutral', night: 'none', text: 'Neutral. You win, alongside whoever else wins, if you are still alive when the game ends. Until then you count with the town.', ref: 'Luke 19:3-4', para: 'Zacchaeus, small in stature, climbed a sycamore tree to see Jesus.' },
     jonah: { id: 'jonah', name: 'Jonah', title: 'The Reluctant', faction: 'neutral', night: 'none', text: 'Neutral. You win alone if the town votes you out on day 1 or day 2. Otherwise you count with the town.', ref: 'Jonah 1:12', para: 'Jonah told the sailors to throw him into the sea.' }
   };
-  const OPTIONAL = ['investigator', 'protector', 'deborah', 'daniel', 'peter', 'elijah', 'nathan', 'nicodemus', 'samson', 'delilah', 'jezebel', 'jonah'];
-  const TIMES = { nightSec: 90, daySec: 300, voteSec: 60, resultSec: 12, rolesSec: 75 };
+  const OPTIONAL = ['investigator', 'protector', 'deborah', 'daniel', 'peter', 'elijah', 'nathan', 'nicodemus', 'samson', 'mary', 'noah', 'esther', 'delilah', 'jezebel', 'ananias', 'haman', 'john', 'herod', 'jonah', 'zacchaeus'];
+  const TIMES = { nightSec: 90, daySec: 300, voteSec: 60, resultSec: 20, rolesSec: 75 };
   const clone = o => JSON.parse(JSON.stringify(o));
   function rnd(s) { s.rs = (s.rs + 0x6D2B79F5) >>> 0; let t = s.rs; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }
   const pick = (s, a) => a[Math.floor(rnd(s) * a.length)];
@@ -708,7 +718,7 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
   const defaultTraitors = n => n <= 6 ? 1 : n <= 9 ? 2 : n <= 12 ? 3 : n <= 16 ? 4 : 5;
   function suggestRoles(n) {
     const r = ['investigator', 'protector'];
-    if (n >= 7) r.push('deborah', 'daniel'); if (n >= 9) r.push('peter', 'delilah'); if (n >= 12) r.push('elijah', 'nathan', 'nicodemus'); if (n >= 16) r.push('samson', 'jezebel');
+    if (n >= 7) r.push('deborah', 'daniel'); if (n >= 9) r.push('peter', 'delilah'); if (n >= 11) r.push('mary'); if (n >= 12) r.push('elijah', 'nathan', 'nicodemus'); if (n >= 14) r.push('noah', 'esther'); if (n >= 16) r.push('samson', 'jezebel'); if (n >= 18) r.push('ananias'); if (n >= 19) r.push('haman'); if (n >= 18) r.push('john'); if (n >= 20) r.push('herod');
     return r;
   }
   const tf = p => ROLES[p.role].faction;                 // true faction
@@ -768,8 +778,9 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
     if (!p.alive) return null;
     const ids = a => a.map(x => x.id);
     switch (R.night) {
-      case 'attack': o.targets = ids(al.filter(x => !isTraitor(x))); if (R.aux) o.auxTargets = ids(others); break;
-      case 'investigate': case 'watch': case 'strike': case 'reveal': o.targets = ids(others); break;
+      case 'attack': o.targets = ids(al.filter(x => !isTraitor(x))); if (R.aux) { o.auxTargets = ids(others); if (p.role === 'haman' && s.used[p.id]) { o.aux = null; o.auxTargets = []; } if (R.aux === 'decree') { o.auxTargets = []; if (s.used[p.id]) o.aux = null; } } break;
+      case 'shelter': o.targets = ids(al); o.auxTargets = ids(al); break;
+      case 'investigate': case 'watch': case 'strike': case 'reveal': case 'proclaim': o.targets = ids(others); break;
       case 'protect': o.targets = ids(al.filter(x => x.id !== s.lastProtect[p.id])); break;
       case 'revive': o.canUse = !!s.lastDead; break;
       default: o.decoy = true; o.targets = ids(others);
@@ -784,15 +795,17 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
     else if (info.kind === 'revive') act.use = !!a.use && info.canUse;
     else {
       if (a.target != null) { if (info.targets.indexOf(a.target) < 0) return 'That player can’t be chosen.'; act.target = a.target; }
-      if (info.aux && a.aux != null) { if (info.auxTargets.indexOf(a.aux) < 0) return 'That player can’t be chosen.'; act.aux = a.aux; }
+      if (info.aux === 'decree') act.use = !!a.use;
+      else if (info.aux && a.aux != null) { if (info.auxTargets.indexOf(a.aux) < 0) return 'That player can’t be chosen.'; act.aux = a.aux; }
     }
+    if (info.kind === 'shelter' && ((act.target == null) !== (act.aux == null) || (act.target && act.target === act.aux))) return 'Choose two different players, or no one.';
     s.night.acts[p.id] = act; return null;
   }
 
   /* ----- phases ----- */
   function setDeadline(s, sec, now) { s.deadline = sec > 0 && now ? now + sec * 1000 : 0; }
   function startNight(s, now) {
-    s.round++; s.phase = 'night'; s.night = { acts: {} }; s.readyVote = []; s.announce = null; s.vote = null;
+    s.round++; s.muted = null; s.decree = false; s.phase = 'night'; s.night = { acts: {} }; s.readyVote = []; s.announce = null; s.vote = null;
     setDeadline(s, s.cfg.nightSec, now); sys(s, 'Night ' + s.round + ' falls. Everyone, close your eyes.');
   }
   function resolveNight(s, now) {
@@ -809,6 +822,12 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
     al.forEach(p => { if (blocked[p.id] && real(p)) note(s, p.id, 'Something kept you from acting tonight.'); });
     const prev = s.lastDead, dead = [];
     const die = (p, cause) => { if (p.alive) { p.alive = false; dead.push(p.id); ev.push({ kind: 'death', pid: p.id, faction: tf(p), cause }); } };
+    // 2b Haman silences one vote
+    al.filter(p => p.role === 'haman' && !blocked[p.id] && !s.used[p.id]).forEach(h => { const t = act(h.id).aux; if (t) { s.used[h.id] = true; s.muted = t; visits[t] = (visits[t] || 0) + 1; note(s, t, 'Your voice is silenced: your vote will not count today.'); } });
+    al.filter(p => p.role === 'herod' && !blocked[p.id] && !s.used[p.id]).forEach(h => { if (act(h.id).use) { s.used[h.id] = true; s.decree = true; note(s, h.id, 'Your decree is set: the first vote today will be void.'); } });
+    // 2c Noah shelters a pair
+    let ark = [];
+    al.filter(p => p.role === 'noah' && !s.used[p.id]).forEach(nh => { const a = act(nh.id); if (a.target && a.aux) { [a.target, a.aux].forEach(t => { visits[t] = (visits[t] || 0) + 1; }); if (!blocked[nh.id]) { ark = [a.target, a.aux]; s.used[nh.id] = true; } } });
     // 3 protection
     let prot = null; const R = al.find(p => p.role === 'protector');
     if (R) { const t = act(R.id).target; if (t) { s.lastProtect[R.id] = t; visits[t] = (visits[t] || 0) + 1; if (!blocked[R.id]) prot = t; } else s.lastProtect[R.id] = null; }
@@ -819,7 +838,7 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
     if (top.length) { const best = tally[top[0]]; victim = pick(s, top.filter(k => tally[k] === best)); }
     if (victim) {
       const v = byId(s, victim);
-      if (victim === prot) { const rr = R; note(s, rr.id, 'Your hiding place held: an attack on your protected player failed tonight.'); }
+      if (victim === prot || ark.indexOf(victim) >= 0) { if (victim === prot) note(s, R.id, 'Your hiding place held: an attack on your protected player failed tonight.'); if (ark.indexOf(victim) >= 0) al.filter(q => q.role === 'noah').forEach(q => note(s, q.id, 'Your ark held: an attack on a sheltered player failed tonight.')); }
       else if (v.role === 'daniel' && !s.danielHit[v.id]) { s.danielHit[v.id] = true; ev.push({ kind: 'daniel', pid: v.id }); }
       else die(v, 'attack');
     }
@@ -832,14 +851,16 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
       else note(s, e.id, 'There was no one to bring back, so you kept your gift.');
     });
     // 7 information
-    const side = t => (isTraitor(t) || framed[t.id]) ? 'Traitor' : 'Town';
+    const side = t => framed[t.id] ? 'Traitor' : t.role === 'ananias' ? 'Town' : isTraitor(t) ? 'Traitor' : 'Town';
     al.forEach(p => {
       if (blocked[p.id]) return; const a = act(p.id), t = a.target && byId(s, a.target);
       if (p.role === 'investigator' && t) { note(s, p.id, t.name + ' is on the side of the ' + (side(t) === 'Traitor' ? 'TRAITORS.' : 'TOWN.')); }
       if (p.role === 'nicodemus' && t) { const n = (visits[t.id] || 0); note(s, p.id, n > 0 ? 'Someone visited ' + t.name + ' in the night.' : 'No one visited ' + t.name + ' in the night.'); }
+      if (p.role === 'john' && t && !s.used[p.id]) { s.used[p.id] = true; ev.push({ kind: 'voice', pid: t.id, side: isTraitor(t) ? 'Traitor' : 'Town', who: p.name }); }
       if (p.role === 'nathan' && t && !s.used[p.id]) { s.used[p.id] = true; ev.push({ kind: 'nathan', pid: t.id, side: side(t) }); }
     });
     if (dead.length) s.lastDead = dead[dead.length - 1];
+    al.filter(p => p.role === 'mary' && p.alive).forEach(m => { const f = s.lastDead && byId(s, s.lastDead); note(s, m.id, f ? f.name + ' was ' + ROLES[f.role].name + ' (' + ROLES[f.role].title + ').' : 'No one has fallen yet.'); });
     s.announce = { round: s.round, events: ev };
     s.night = null; s.phase = 'day'; s.readyVote = []; setDeadline(s, s.cfg.daySec, now);
     const w = winCheck(s); if (w) return end(s, w);
@@ -852,15 +873,17 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
   function end(s, w) {
     s.winner = w; s.phase = 'ended'; s.deadline = 0;
     s.winnerText = w === 'town' ? 'The Town wins! Every traitor has been found.' : w === 'traitor' ? 'The Traitors win! They now equal or outnumber the town.' : w === 'jonah' ? 'Jonah wins! The town cast him out.' : 'The game was ended by the host.';
+    if (w !== 'abandoned' && alive(s).some(p => p.role === 'zacchaeus')) s.winnerText += ' Zacchaeus survived and shares the victory!';
     sys(s, s.winnerText);
   }
   function startVote(s, now) { s.phase = 'vote'; s.vote = { votes: {}, result: null }; setDeadline(s, s.cfg.voteSec, now); sys(s, 'The vote begins.'); }
   function resolveVote(s, now) {
+    if (s.decree && !s.vote.redo) { s.decree = false; s.vote = { votes: {}, result: null, redo: true }; setDeadline(s, s.cfg.voteSec, now); sys(s, 'A decree is read: the first vote is void. Vote again.'); return; }
     const tally = {}; let samsonVictim = null;
-    alive(s).forEach(p => { const t = s.vote.votes[p.id]; if (t && t !== 'abstain') tally[t] = (tally[t] || 0) + (p.role === 'deborah' ? 2 : 1); });
+    alive(s).forEach(p => { if (s.muted === p.id) return; const t = s.vote.votes[p.id]; if (t && t !== 'abstain') tally[t] = (tally[t] || 0) + (p.role === 'deborah' ? 2 : 1); });
     const ids = Object.keys(tally).sort((a, b) => tally[b] - tally[a]); let elim = null, tie = false;
     if (ids.length) { const best = tally[ids[0]], tops = ids.filter(k => tally[k] === best); if (tops.length === 1) elim = tops[0]; else tie = true; }
-    const res = { tally, eliminated: elim, tie, faction: null, samson: null }; s.vote.result = res; s.phase = 'result'; setDeadline(s, s.cfg.resultSec, now);
+    const res = { tally, eliminated: elim, tie, faction: null, samson: null, spared: false, prevDead: s.lastDead }; s.vote.result = res; s.phase = 'result'; setDeadline(s, s.cfg.resultSec, now);
     if (elim) {
       const p = byId(s, elim); p.alive = false; res.faction = tf(p); s.lastDead = elim;
       if (p.role === 'samson') { const voters = s.players.filter(x => x.alive && s.vote.votes[x.id] === elim); if (voters.length) { const v = pick(s, voters); v.alive = false; res.samson = v.id; res.samsonFaction = tf(v); s.lastDead = v.id; } }
@@ -915,10 +938,17 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
       case 'CONTINUE': {
         if (s.phase !== 'result' || !host) return err('Not now.'); startNight(s, now); return ok();
       }
+      case 'SPARE': {
+        if (s.phase !== 'result' || !me) return err('Not now.'); const r = s.vote && s.vote.result;
+        if (!r || !r.eliminated || r.spared) return err('There is no one to spare.');
+        if (me.role !== 'esther' || s.used[by]) return err('You can’t do that.'); if (!(me.alive || r.eliminated === by)) return err('You can’t do that.');
+        const sp = byId(s, r.eliminated); sp.alive = true; if (r.samson) byId(s, r.samson).alive = true;
+        r.spared = true; s.used[by] = true; s.lastDead = r.prevDead || null; sys(s, 'Esther pleads, and ' + sp.name + ' is spared.'); return ok();
+      }
       case 'RESET': {
         if (!host || s.phase !== 'ended') return err('Not now.');
         s.players = s.players.filter(p => !p.left); s.players.forEach(p => { p.role = null; p.alive = true; p.left = false; });
-        Object.assign(s, { phase: 'lobby', round: 0, deadline: 0, winner: null, winnerText: '', night: null, vote: null, announce: null, lastDead: null, used: {}, lastProtect: {}, danielHit: {}, readyVote: [], acked: [], notes: [] });
+        Object.assign(s, { muted: null, decree: false, phase: 'lobby', round: 0, deadline: 0, winner: null, winnerText: '', night: null, vote: null, announce: null, lastDead: null, used: {}, lastProtect: {}, danielHit: {}, readyVote: [], acked: [], notes: [] });
         sys(s, 'Back in the lobby.'); return ok();
       }
       case 'FORCE': {   // host moves things along when someone is away
@@ -981,11 +1011,12 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
     if (R) {
       v.me.role = R; v.me.faction = R.faction; v.me.notes = s.notes.filter(x => x.pid === pid);
       if (isTraitor(p)) v.me.allies = s.players.filter(x => isTraitor(x) && x.id !== pid).map(x => ({ id: x.id, name: x.name, role: x.role, alive: x.alive }));
-      if (R.once) v.me.used = !!s.used[pid];
+      if (R.once || p.role === 'haman' || p.role === 'herod') v.me.used = !!s.used[pid];
+      if (s.phase === 'result' && p.role === 'esther' && s.vote && s.vote.result) { const rr = s.vote.result; v.me.canSpare = !!rr.eliminated && !rr.spared && !s.used[pid] && (p.alive || rr.eliminated === pid); }
       if (s.phase === 'night') { v.night = nightInfo(s, p) || {}; v.night.submitted = !!s.night.acts[pid]; v.night.mine = s.night.acts[pid] || null; v.night.done = alive(s).filter(x => s.night.acts[x.id]).length; v.night.total = alive(s).length; v.night.lastDead = s.lastDead ? byId(s, s.lastDead).name : null; }
     }
     if (s.phase === 'day' || s.phase === 'vote' || s.phase === 'result' || over) v.announce = s.announce && { round: s.announce.round, events: s.announce.events.map(e => Object.assign({}, e, { name: e.pid ? byId(s, e.pid).name : undefined })) };
-    if (s.phase === 'vote') v.vote = { mine: s.vote.votes[pid] || null, done: Object.keys(s.vote.votes).length, total: alive(s).length };
+    if (s.phase === 'vote') v.vote = { redo: !!s.vote.redo, mine: s.vote.votes[pid] || null, done: Object.keys(s.vote.votes).length, total: alive(s).length };
     if (s.phase === 'result' || (over && s.vote && s.vote.result)) { const r = s.vote.result; v.result = Object.assign({}, r, { name: r.eliminated ? byId(s, r.eliminated).name : null, samsonName: r.samson ? byId(s, r.samson).name : null, tallyNames: Object.keys(r.tally).map(k => ({ name: byId(s, k).name, n: r.tally[k] })).sort((a, b) => b.n - a.n) }); }
     if (s.phase === 'roles') v.rolesDone = s.acked.length;
     if (s.phase === 'day') v.readyCount = s.readyVote.length;
@@ -1000,6 +1031,8 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
     if (s.phase === 'night') bots.forEach(b => {
       if (s.night.acts[b.id]) return; const i = nightInfo(s, b); if (!i) return; const a = { type: 'NIGHT_ACT', by: b.id };
       if (i.kind === 'revive') a.use = !!(i.canUse && rng() < .5);
+      else if (i.kind === 'shelter') { if (rng() < .3 && i.targets.length > 1) { a.target = r(i.targets); a.aux = r(i.auxTargets.filter(x => x !== a.target)); } }
+      else if (i.aux === 'decree') { a.target = r(i.targets); a.use = rng() < .3; }
       else if (i.once && !i.decoy) a.target = rng() < .25 ? r(i.targets) : null;
       else if (i.targets.length && !i.decoy) { a.target = r(i.targets); if (i.aux && i.auxTargets.length) a.aux = r(i.auxTargets); }
       out.push(a);
@@ -1008,10 +1041,12 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
       if (s.vote.votes[b.id]) return; const opts = alive(s).filter(x => x.id !== b.id && (!isTraitor(b) || !isTraitor(x)));
       out.push({ type: 'VOTE', by: b.id, target: opts.length && rng() > .08 ? r(opts).id : 'abstain' });
     });
+    if (s.phase === 'result') s.players.filter(p => p.bot && p.role === 'esther').forEach(b => { if (NW_canSpare(s, b)) out.push({ type: 'SPARE', by: b.id }); });
     if (s.phase === 'day') bots.forEach(b => { if (s.readyVote.indexOf(b.id) < 0 && rng() < .5) out.push({ type: 'READY_VOTE', by: b.id }); });
     return out;
   }
   const BOT_LINES = ['I’m not sure who to trust yet.', 'Anyone seen anything strange?', 'Let’s hear from the quiet ones.', 'I think we should be careful tonight.', 'Who are we suspecting?', 'I’m on the town’s side, I promise.', 'That seemed a bit too convenient.'];
+  function NW_canSpare(s, b) { const r = s.vote && s.vote.result; return !!(r && r.eliminated && !r.spared && !s.used[b.id] && (b.alive || r.eliminated === b.id) && Math.random() < .4); }
   function botChat(s, rng) { rng = rng || Math.random; const b = s.players.filter(p => p.bot && p.alive); if (!b.length || (s.phase !== 'day' && s.phase !== 'vote')) return null; const p = b[Math.floor(rng() * b.length)]; return { type: 'CHAT', by: p.id, text: BOT_LINES[Math.floor(rng() * BOT_LINES.length)] }; }
 
   return { MIN, MAX, ROLES, OPTIONAL, TIMES, createRoom, dispatch, getView, validateConfig, suggestRoles, defaultTraitors, botActions, botChat, isTraitor, winCheck };
@@ -1090,6 +1125,14 @@ const EMB = {
   delilah: '<path d="M30 14l40 52M70 14L30 66"/><circle cx="28" cy="78" r="9"/><circle cx="72" cy="78" r="9"/>',
   jezebel: '<path d="M14 28h72v46H14Z"/><path d="M14 28l36 26 36-26"/><circle cx="50" cy="64" r="9" opacity=".8"/>',
   jonah: '<path d="M10 56c10-24 40-32 64-18 10 6 16 16 16 26-12-6-20-4-26 4-8-8-18-8-26 0-8-4-16-4-28-12Z"/><circle cx="68" cy="46" r="2.600"/><path d="M10 78c10-8 20-8 30 0s20 8 30 0 14-6 20 0" opacity=".7"/>',
+  mary: '<path d="M40 14h20M44 14v10c-12 6-16 18-16 32 0 18 10 28 22 28s22-10 22-28c0-14-4-26-16-32V14"/><path d="M36 50h28" opacity=".7"/>',
+  noah: '<path d="M10 56h80l-12 24H22Z"/><path d="M30 56V36h40v20M50 36V20M44 28h12"/><path d="M8 90c10-6 20-6 30 0s20 6 30 0 14-4 24 0" opacity=".7"/>',
+  esther: '<path d="M18 62l6-30 16 16 10-24 10 24 16-16 6 30Z"/><path d="M22 74h56M26 84h48"/>',
+  ananias: '<path d="M34 26c0-8 32-8 32 0l8 12c10 16 4 44-24 44S16 54 26 38Z"/><path d="M38 26h24M50 46v18M44 52c0-6 12-6 12 0s-12 4-12 10 12 6 12 0"/>',
+  haman: '<path d="M26 18h48v52H26Z"/><circle cx="50" cy="80" r="10"/><path d="M34 32h32M34 44h32M34 56h20"/>',
+  zacchaeus: '<path d="M50 92V54"/><path d="M50 56c-20 0-32-14-26-28 4-10 18-12 26-4 8-8 22-6 26 4 6 14-6 28-26 28Z"/><path d="M42 74l8-8 8 8"/>',
+  john: '<path d="M50 14c-14 10-22 22-22 36a22 22 0 0 0 44 0c0-14-8-26-22-36Z"/><path d="M36 54c8 6 20 6 28 0" opacity=".8"/><path d="M12 86c8-5 16-5 24 0s16 5 24 0 16-5 28 0" opacity=".7"/>',
+  herod: '<path d="M14 66l8-34 18 18 10-26 10 26 18-18 8 34Z"/><path d="M22 78h56M50 82v10M38 92h24" opacity=".8"/>',
   townsperson: '<path d="M16 62c0-12 14-18 32-18 9 0 15 2 21 6l15-8-3 14c0 14-14 24-35 24S16 76 16 62Z"/><path d="M50 44c-6-9-6-16 0-24 6 8 6 15 0 24Z"/>'
 };
 const emb = (id, cls) => `<svg class="${cls || 'emb'}" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${EMB[id] || EMB.townsperson}</svg>`;
@@ -1463,7 +1506,7 @@ Object.assign(TP, { name: 'local', async ident(code, joining, resume) { return r
 const TPS = () => /test|local/.test(location.hash) && !/fb/.test(location.hash) ? TP : TPFB;
 
 /* ---- host: owns the game state, applies every action, sends each player only their own view ---- */
-const CLIENT_OK = ['ACK_ROLE', 'NIGHT_ACT', 'READY_VOTE', 'VOTE', 'CHAT', 'LEAVE'];
+const CLIENT_OK = ['ACK_ROLE', 'NIGHT_ACT', 'READY_VOTE', 'VOTE', 'CHAT', 'LEAVE', 'SPARE'];
 function hostDispatch(action) {
   const r = NWE.dispatch(NWS.s, action, Date.now()); if (!r.ok) return r;
   NWS.s = r.state; nwSave(); hostBroadcast(); nwRefresh(); return r;
@@ -1620,6 +1663,7 @@ function annHTML(v) {
   if (!v.announce) return ''; const ev = v.announce.events;
   const lines = ev.map(e => e.kind === 'death' ? `<li><b>${esc(e.name)}</b> fell in the night. They were on the side of the ${sideName(e.faction)}.</li>`
     : e.kind === 'daniel' ? `<li><b>${esc(e.name)}</b> was attacked in the night, but survived!</li>`
+    : e.kind === 'voice' ? `<li><b>${esc(e.who)}</b> cries out in the wilderness: <b>${esc(e.name)}</b> stands with the ${sideName(e.side === 'Traitor' ? 'traitor' : 'town')}.</li>`
     : e.kind === 'revived' ? `<li><b>${esc(e.name)}</b> has been brought back to the living!</li>`
     : `<li>A prophet has spoken: <b>${esc(e.name)}</b> stands with the ${sideName(e.side === 'Traitor' ? 'traitor' : 'town')}.</li>`).join('');
   return `<div class="dawn"><h4>Day ${v.announce.round} dawns</h4><ul>${lines || '<li>The night passed quietly.</li>'}</ul></div>`;
@@ -1632,30 +1676,32 @@ function nightHTML(v) {
   let head = '', body = '', ok = true;
   switch (n.kind) {
     case 'attack': head = ['Choose tonight’s victim', 'Your fellow traitors choose too. The most-chosen player falls (ties are settled at random). Use the Chat tab to whisper together.'];
-      body = targetList(n.targets, v, U.t, 'nwt'); if (n.aux) { body += `<h4 class="sec">${n.aux === 'block' ? 'Distract one player: their ability fails tonight' : 'Frame one player: they look like a traitor tonight'}</h4>` + targetList(n.auxTargets, v, U.a, 'nwa'); } ok = !!U.t; break;
+      body = targetList(n.targets, v, U.t, 'nwt'); if (n.aux) { body += `<h4 class="sec">${n.aux === 'block' ? 'Distract one player: their ability fails tonight' : n.aux === 'frame' ? 'Frame one player: they look like a traitor tonight' : 'Silence one player (once per game): their vote will not count tomorrow. Optional.'}</h4>` + targetList(n.auxTargets, v, U.a, 'nwa'); } if (n.aux === 'decree') body += `<h4 class="sec">Issue a decree? (once per game)</h4><div class="opts"><button class="opt" role="switch" data-act="nwuse" aria-pressed="${!!U.use}" aria-checked="${!!U.use}"><span class="rd"></span><span class="nm">The first vote tomorrow is void. The town votes again.</span></button></div>`; ok = !!U.t; break;
+    case 'shelter': head = ['Shelter a pair? (once per game)', 'Choose exactly two players, and you may be one of them. If the traitors strike either, the attack fails. Or hold back.']; body = `<h4 class="sec" style="margin-top:6px">First of the pair</h4>` + targetList(n.targets, v, U.t, 'nwt') + `<h4 class="sec">Second of the pair</h4>` + targetList(n.auxTargets, v, U.a, 'nwa'); ok = (!U.t && !U.a) || (!!U.t && !!U.a && U.t !== U.a); break;
     case 'investigate': head = ['Choose who to investigate', 'You will learn privately whether they are Town or Traitor.']; body = targetList(n.targets, v, U.t, 'nwt'); ok = !!U.t; break;
     case 'protect': head = ['Choose who to protect', 'If the traitors strike them tonight, the attack fails. You may protect yourself, but not the same player two nights in a row.']; body = targetList(n.targets, v, U.t, 'nwt'); ok = !!U.t; break;
     case 'watch': head = ['Choose who to watch', 'You will learn whether anyone visited them tonight, but not who.']; body = targetList(n.targets, v, U.t, 'nwt'); ok = !!U.t; break;
     case 'strike': head = ['Strike a player? (once per game)', 'If they are a traitor, they fall. If not, you fall instead. Hold back if you are not sure.']; body = targetList(n.targets, v, U.t, 'nwt'); ok = true; break;
+    case 'proclaim': head = ['Cry out in the wilderness? (once per game)', 'At dawn everyone hears whether your chosen player is a traitor. Your name is given, and disguises cannot fool you. Hold back if you are not sure.']; body = targetList(n.targets, v, U.t, 'nwt'); ok = true; break;
     case 'reveal': head = ['Name a player’s side? (once per game)', 'At dawn the town hears whether they are Town or Traitor. Your name is not given.']; body = targetList(n.targets, v, U.t, 'nwt'); ok = true; break;
     case 'revive': head = ['Bring someone back? (once per game)', n.canUse ? 'You can bring back ' + esc(n.lastDead || 'the last player to fall') + '.' : 'No one has fallen yet.']; body = `<div class="opts"><button class="opt" role="switch" data-act="nwuse" aria-pressed="${!!U.use}" aria-checked="${!!U.use}" ${n.canUse ? '' : 'disabled'}><span class="rd"></span><span class="nm">Use my gift tonight</span></button></div>`; ok = true; break;
     default: head = ['The night is quiet', 'Nothing stirs for you tonight. Think about who you trust, or choose someone you suspect and then rest.']; body = targetList(n.targets, v, U.t, 'nwt'); ok = true;
   }
-  const label = (n.once && n.kind !== 'none' && !U.t && !U.use && n.kind !== 'revive') ? 'Hold back tonight' : 'Confirm';
+  const label = ((n.once && n.kind !== 'none' && !U.t && !U.use && n.kind !== 'revive') || (n.aux === 'mute' && !U.a && false)) ? 'Hold back tonight' : 'Confirm';
   return `<h3 class="ph">${head[0]}</h3><p class="sub">${head[1]}</p>${body}${act(n.kind === 'none' ? 'Rest until morning' : label, !ok)}${noteHTML(v)}`;
 }
 function voteHTML(v) {
   if (!v.me.alive) return `<div class="banner dead">You have fallen. Watch the vote from beyond.</div><p class="sub" style="text-align:center">${v.vote.done} of ${v.vote.total} have voted.</p>`;
   const others = v.players.filter(p => p.alive && !p.me).map(p => p.id), mine = A.U.vt || v.vote.mine;
-  return `<h3 class="ph">Who is a traitor?</h3><p class="sub">Vote for the player you suspect. Only the totals are shown. You can change your vote until everyone is done.</p>
+  return `${v.vote.redo ? '<div class="banner">A decree has been read: the first vote is void. Vote again.</div>' : ''}<h3 class="ph">Who is a traitor?</h3><p class="sub">Vote for the player you suspect. Only the totals are shown. You can change your vote until everyone is done.</p>
  ${targetList(others, v, mine && mine !== 'abstain' ? mine : null, 'nwvt')}
  <button class="btn sec" style="margin-top:8px" data-act="nwvt" data-id="abstain" aria-pressed="${mine === 'abstain'}">Abstain</button>
  <button class="btn pri" data-act="nwvote" style="margin-top:12px" ${mine ? '' : 'disabled'}>${v.vote.mine ? 'Update my vote' : 'Cast my vote'}</button><p class="sub" style="text-align:center;margin-top:10px"><b>${v.vote.done} of ${v.vote.total}</b> have voted</p>`;
 }
 function resultHTML(v) {
-  const r = v.result; return `<h3 class="ph">The vote</h3><div class="nwtally">${r.tallyNames.length ? r.tallyNames.map(t => `<div><span>${esc(t.name)}</span><b>${t.n}</b></div>`).join('') : '<div><span>Nobody was chosen</span></div>'}</div>
- <div class="banner ${r.eliminated && r.faction === 'traitor' ? '' : ''}">${r.eliminated ? `<b>${esc(r.name)}</b> is out.<br>They were on the side of the <b>${sideName(r.faction)}</b>.` : r.tie ? 'The vote was tied. No one is out.' : 'No one was voted out.'}${r.samsonName ? `<br><br>Samson’s last stand takes down <b>${esc(r.samsonName)}</b>.` : ''}</div>
- ${v.isHost ? '<button class="btn pri" data-act="nwcontinue" style="margin-top:12px">Continue to night</button>' : '<p class="sub" style="text-align:center">The next night begins shortly.</p>'}`;
+  const r = v.result, sp = v.me.canSpare ? `<button class="btn sec" data-act="nwspare" style="margin-top:10px">Plead for ${esc(r.name)}: spare them (once per game)</button>` : ''; return `<h3 class="ph">The vote</h3><div class="nwtally">${r.tallyNames.length ? r.tallyNames.map(t => `<div><span>${esc(t.name)}</span><b>${t.n}</b></div>`).join('') : '<div><span>Nobody was chosen</span></div>'}</div>
+ <div class="banner">${r.spared ? `Esther pleads, and <b>${esc(r.name)}</b> is spared.` : r.eliminated ? `<b>${esc(r.name)}</b> is out.<br>They were on the side of the <b>${sideName(r.faction)}</b>.` : r.tie ? 'The vote was tied. No one is out.' : 'No one was voted out.'}${r.samsonName ? `<br><br>Samson’s last stand takes down <b>${esc(r.samsonName)}</b>.` : ''}</div>
+ ${sp}${v.isHost ? '<button class="btn pri" data-act="nwcontinue" style="margin-top:12px">Continue to night</button>' : '<p class="sub" style="text-align:center">The next night begins shortly.</p>'}`;
 }
 function nwMain(v) {
   const me = v.me;
@@ -1752,6 +1798,7 @@ function nwAct(a, b) {
     case 'nwvt': U.vt = id; return nwFill(false);
     case 'nwvote': return nwSend({ type: 'VOTE', target: U.vt || (v.vote && v.vote.mine) });
     case 'nwcontinue': return nwSend({ type: 'CONTINUE' });
+    case 'nwspare': return nwSend({ type: 'SPARE' });
     case 'nwforce': return nwSend({ type: 'FORCE' });
     case 'nwagain': return nwSend({ type: 'RESET' });
   }
@@ -1790,7 +1837,8 @@ const mdDo = a => { const r = NWE.dispatch(MD.S, a, 0); if (!r.ok) { toast(r.err
 const mdP = id => MD.S.players.find(p => p.id === id);
 const mdView = id => NWE.getView(MD.S, id);
 const mdHostView = () => NWE.getView(MD.S, MD.S.hostId);
-const STEP_ORDER = ['delilah', 'jezebel', 'protector', 'investigator', 'nicodemus', 'peter', 'elijah', 'nathan'];
+const STEP_ORDER = ['delilah', 'jezebel', 'haman', 'herod', 'protector', 'investigator', 'nicodemus', 'peter', 'elijah', 'noah', 'nathan', 'john'];
+const OPT_STEP = ['haman', 'peter', 'nathan', 'noah', 'john'];
 const SCRIPT = {
   traitors: ['Traitors', 'Traitors, open your eyes and look at each other. Point to tonight’s victim, then close your eyes.', 'attack'],
   delilah: ['Delilah', 'Delilah, open your eyes. Point to one player to distract. Close your eyes.', 'aux'],
@@ -1800,6 +1848,10 @@ const SCRIPT = {
   nicodemus: ['Nicodemus', 'Nicodemus, open your eyes. Point to the player you will watch. Close your eyes.', 'target'],
   peter: ['Peter', 'Peter, open your eyes. Point to the player you strike, or shake your head. Close your eyes.', 'target'],
   elijah: ['Elijah', 'Elijah, open your eyes. Nod if you bring someone back tonight. Close your eyes.', 'use'],
+  haman: ['Haman', 'Haman, open your eyes. Point to one player whose vote you will cancel tomorrow, or shake your head. Close your eyes.', 'aux'],
+  herod: ['Herod', 'Herod, open your eyes. Nod if you issue a decree tonight, or shake your head. Close your eyes.', 'use'],
+  john: ['John the Baptist', 'John the Baptist, open your eyes. Point to the player you cry out about at dawn, or shake your head. Close your eyes.', 'target'],
+  noah: ['Noah', 'Noah, open your eyes. Point to the pair of players you shelter, or shake your head. Close your eyes.', 'pair'],
   nathan: ['Nathan', 'Nathan, open your eyes. Point to the player whose side you name at dawn, or shake your head. Close your eyes.', 'target']
 };
 function mdSteps() {
@@ -1820,7 +1872,7 @@ function mdAckSeat() {
 }
 function mdResolveNight() {
   MD.S.players.filter(p => p.alive).forEach(p => { if (MD.S.phase !== 'night') return; const a = MD.acts[p.id] || {}; mdDo({ type: 'NIGHT_ACT', by: p.id, target: a.target || null, aux: a.aux || null, use: !!a.use }); });
-  const S = MD.S, wr = ['investigator', 'nicodemus', 'protector', 'elijah', 'peter'];
+  const S = MD.S, wr = ['investigator', 'nicodemus', 'protector', 'elijah', 'peter', 'mary', 'noah'];
   const rank = p => { const i = wr.indexOf(p.role); return i < 0 ? 99 : i; };
   MD.wh = S.players.filter(p => wr.indexOf(p.role) >= 0 || S.notes.some(n => n.pid === p.id && n.round === S.round)).sort((a, b) => rank(a) - rank(b)).map(p => p.id); MD.wi = 0;
   MD.st = MD.wh.length ? 'whisper' : 'dawn'; mdSave(); fx(MD.st === 'dawn' ? 'bell' : 'night'); mount(true);
@@ -1831,10 +1883,11 @@ function mdDawnNext() {
 }
 function mdVote() {
   const S = MD.S, X = MD.vsel; if (!X) return;
+  MD.S.muted = null; MD.S.decree = false;   // the moderator already counted the hands, so Haman's silence is applied by eye, not twice
   if (!mdDo({ type: 'START_VOTE', by: S.hostId })) return;
   const alive = MD.S.players.filter(p => p.alive), el = X === 'none' ? null : X, samson = el && mdP(el).role === 'samson';
   alive.forEach(p => { if (MD.S.phase !== 'vote') return; let t = 'abstain'; if (el && p.id !== el && (!samson || p.id === MD.vsam)) t = el; mdDo({ type: 'VOTE', by: p.id, target: t }); });
-  MD.st = MD.S.phase === 'ended' ? 'result' : 'result'; mdSave(); fx(el ? 'heavy' : 'warn'); mount(true);
+  MD.st = 'result'; mdSave(); fx(el ? 'heavy' : 'warn'); mount(true);
 }
 function mdNextNight() { if (MD.S.phase === 'ended') { MD.st = 'ended'; fx(MD.S.winner === 'town' ? 'success' : 'warn'); mdSave(); return mount(true); } if (!mdDo({ type: 'CONTINUE', by: MD.S.hostId })) return; mdBeginNight(); fx('night'); }
 
@@ -1877,12 +1930,13 @@ SCR.md = () => {
       const tr = S.players.filter(p => p.alive && NWE.isTraitor(p)); who = tr.map(p => esc(p.name) + ' (' + esc(NWE.ROLES[p.role].name) + ')').join(', '); info = mdView(tr[0].id).night; body = mdList(info.targets, sel.t, 'mdt'); ready = !!sel.t;
     } else {
       const a = mdActor(stp.k); who = a ? esc(a.name) + (a.alive ? '' : ' (fallen)') : ''; info = a && a.alive ? mdView(a.id).night : null;
-      if (!info || (info.once && info.used) || info.kind === 'none') { absent = true; body = `<div class="banner dead">${!a.alive ? 'This player has fallen.' : 'This ability has already been used.'} Pause about five seconds, as if they were acting, then continue.</div>`; }
-      else if (mode === 'use') { body = `<div class="opts"><button class="opt" role="switch" data-act="mduse" aria-pressed="${!!sel.use}" aria-checked="${!!sel.use}" ${info.canUse ? '' : 'disabled'}><span class="rd"></span><span class="nm">${info.canUse ? 'Bring back ' + esc(info.lastDead || 'the last player to fall') : 'No one has fallen yet'}</span></button></div>`; }
-      else if (mode === 'aux') { body = mdList(info.auxTargets, sel.t, 'mdt'); ready = !!sel.t; }
+      if (!info || (info.once && info.used) || (info.kind === 'none' && mode !== 'aux') || (stp.k === 'herod' && !info.aux)) { absent = true; body = `<div class="banner dead">${!a.alive ? 'This player has fallen.' : 'This ability has already been used.'} Pause about five seconds, as if they were acting, then continue.</div>`; }
+      else if (mode === 'use') { body = `<div class="opts"><button class="opt" role="switch" data-act="mduse" aria-pressed="${!!sel.use}" aria-checked="${!!sel.use}" ${info.canUse ? '' : 'disabled'}><span class="rd"></span><span class="nm">${stp.k === 'herod' ? 'Issue the decree: the first vote is void' : info.canUse ? 'Bring back ' + esc(info.lastDead || 'the last player to fall') : 'No one has fallen yet'}</span></button></div>`; }
+      else if (mode === 'pair') { body = '<h4 class="sec" style="margin-top:0">First of the pair</h4>' + mdList(info.targets, sel.t, 'mdt') + '<h4 class="sec">Second of the pair</h4>' + mdList(info.auxTargets, sel.a, 'mda'); ready = (!sel.t && !sel.a) || (!!sel.t && !!sel.a && sel.t !== sel.a); }
+      else if (mode === 'aux') { if (!info.auxTargets.length) { absent = true; body = '<div class="banner dead">This ability has already been used. Pause about five seconds, as if they were acting, then continue.</div>'; } else { body = mdList(info.auxTargets, sel.t, 'mdt'); ready = OPT_STEP.indexOf(stp.k) >= 0 || !!sel.t; } }
       else { body = mdList(info.targets, sel.t, 'mdt'); ready = info.once ? true : !!sel.t; }
     }
-    const label = absent ? 'Next' : (mode === 'target' && info && info.once && !sel.t) || (mode === 'use' && !sel.use) ? 'Next (no action)' : 'Confirm';
+    const label = absent ? 'Next' : ((mode === 'target' || mode === 'aux') && OPT_STEP.indexOf(stp.k) >= 0 && !sel.t) || (mode === 'pair' && !sel.t && !sel.a) || (mode === 'use' && !sel.use) ? 'Next (no action)' : 'Confirm';
     return `<div class="scr md">${mdHead('Night ' + S.round, true)}<div class="nwbar"><span>Step ${MD.step + 1} of ${MD.steps.length}</span><b>${esc(name)}</b></div>
  <div class="scroll grow"><div class="script"><small>Say aloud</small>${esc(line)}</div><p class="hint" style="margin:0 0 10px"><b>Moderator only:</b> ${who || 'no one'}</p>${body}</div>
  <div class="foot"><button class="btn pri" data-act="mdstep" ${ready || absent ? '' : 'disabled'}>${label}</button></div></div>`;
@@ -1896,7 +1950,7 @@ SCR.md = () => {
   }
   if (st === 'dawn') return `<div class="scr md">${mdHead('Dawn', true)}<div class="scroll grow"><div class="script"><small>Say aloud</small>Everyone, open your eyes. It is morning.</div>${annHTML(mdHostView())}<p class="hint">Read the lines above to the group.</p></div><div class="foot"><button class="btn pri" data-act="mddawn">${S.phase === 'ended' ? 'See the result' : 'Begin the discussion'}</button></div></div>`;
   if (st === 'day') return `<div class="scr md">${mdHead('Day ' + S.round, true)}<div class="nwbar"><span>Discussion</span><b data-mdtimer>${MD.dayEnds ? fmtMs(MD.dayEnds - Date.now()) : ''}</b></div>
- <div class="scroll grow"><p class="sub">The group talks it out face to face. ${S.players.some(p => p.alive && p.role === 'deborah') ? 'Remember: <b>Deborah’s vote counts twice</b>.' : ''}</p><h4 class="sec">Still in the game (${mdAlive().length})</h4><div class="plist">${S.players.map(p => `<div class="pl ${p.alive ? '' : 'off'}"><span class="av2">${esc(p.name.charAt(0).toUpperCase())}</span><span class="nm">${esc(p.name)}</span><small>${p.alive ? 'alive' : 'fallen'}</small></div>`).join('')}</div></div>
+ <div class="scroll grow"><p class="sub">The group talks it out face to face. ${S.muted && mdP(S.muted) ? `<b>Moderator only:</b> ${esc(mdP(S.muted).name)}’s vote does not count today (they were told quietly).<br>` : ''}${S.decree ? '<b>Moderator only:</b> Herod’s decree. Hold the first vote, then call it void and hold it again. Tap the outcome of the second vote.<br>' : ''}${S.players.some(p => p.alive && p.role === 'deborah') ? 'Remember: <b>Deborah’s vote counts twice</b>.' : ''}</p><h4 class="sec">Still in the game (${mdAlive().length})</h4><div class="plist">${S.players.map(p => `<div class="pl ${p.alive ? '' : 'off'}"><span class="av2">${esc(p.name.charAt(0).toUpperCase())}</span><span class="nm">${esc(p.name)}</span><small>${p.alive ? 'alive' : 'fallen'}</small></div>`).join('')}</div></div>
  <div class="foot"><button class="btn pri" data-act="mdtovote">Start the vote</button></div></div>`;
   if (st === 'vote') {
     const alive = mdAlive().map(p => p.id), X = MD.vsel, sam = X && X !== 'none' && mdP(X).role === 'samson';
@@ -1905,7 +1959,7 @@ SCR.md = () => {
  ${sam ? `<h4 class="sec">Samson’s last stand: who voted against him?</h4><p class="hint">He takes one of them down with him. Pick one.</p>${mdList(alive.filter(i => i !== X), MD.vsam, 'mdvs')}` : ''}</div>
  <div class="foot"><button class="btn pri" data-act="mdvote" ${X && (!sam || MD.vsam) ? '' : 'disabled'}>Confirm</button></div></div>`;
   }
-  if (st === 'result') { const v = mdHostView(), r = v.result || {}; return `<div class="scr md">${mdHead('The Vote', true)}<div class="scroll grow"><div class="banner">${r.eliminated ? `<b>${esc(r.name)}</b> is out.<br>They were on the side of the <b>${sideName(r.faction)}</b>.` : 'No one is out.'}${r.samsonName ? `<br><br>Samson’s last stand takes down <b>${esc(r.samsonName)}</b>.` : ''}</div><p class="hint">Read this aloud. Don’t say what role they had.</p></div>
+  if (st === 'result') { const v = mdHostView(), r = v.result || {}; return `<div class="scr md">${mdHead('The Vote', true)}<div class="scroll grow"><div class="banner">${r.spared ? `Esther pleads, and <b>${esc(r.name)}</b> is spared.` : r.eliminated ? `<b>${esc(r.name)}</b> is out.<br>They were on the side of the <b>${sideName(r.faction)}</b>.` : 'No one is out.'}${r.samsonName ? `<br><br>Samson’s last stand takes down <b>${esc(r.samsonName)}</b>.` : ''}</div><p class="hint">Read this aloud. Don’t say what role they had.</p>${(() => { const e = S.players.find(p => p.role === 'esther'), r = v.result; return e && r && r.eliminated && !r.spared && mdView(e.id).me.canSpare ? '<div class="privnotes"><h4>Esther may plead</h4><p>If someone speaks up for the player who was voted out, tap below. This can be used once per game.</p><button class="btn sec" data-act="mdspare" style="margin-top:8px">Esther spares ' + esc(r.name) + '</button></div>' : ''; })()}</div>
  <div class="foot"><button class="btn pri" data-act="mdnextnight">${S.phase === 'ended' ? 'See the result' : 'Continue to night'}</button></div></div>`; }
   const v = mdHostView();
   return `<div class="scr md">${mdHead('Game over', false)}<div class="scroll grow"><div class="winner ${v.winner}"><h3>${esc(v.winnerText)}</h3></div><h4 class="sec">Who was who</h4><div class="plist">${v.reveal.map(x => `<div class="pl ${x.alive ? '' : 'off'}"><span class="nm">${esc(x.name)}</span><small>${esc(NWE.ROLES[x.role].name + ' · ' + NWE.ROLES[x.role].title)}</small></div>`).join('')}</div></div>
@@ -1925,11 +1979,13 @@ function mdAct(a, b) {
     case 'mdshow': MD.sub = 'role'; mdSave(); return mount(true);
     case 'mdack': return mdAckSeat();
     case 'mdt': MD.sel.t = MD.sel.t === id ? null : id; return patch();
+    case 'mda': MD.sel.a = MD.sel.a === id ? null : id; return patch();
+    case 'mdspare': { const e = MD.S.players.find(p => p.role === 'esther'); if (e && mdDo({ type: 'SPARE', by: e.id })) { fx('success'); mdSave(); patch(); } return; }
     case 'mduse': MD.sel.use = !MD.sel.use; return patch();
     case 'mdstep': {
       const stp = MD.steps[MD.step], sel = MD.sel;
       if (stp.k === 'traitors') MD.S.players.filter(p => p.alive && NWE.isTraitor(p)).forEach(p => { MD.acts[p.id] = Object.assign(MD.acts[p.id] || {}, { target: sel.t }); });
-      else { const a = mdActor(stp.k); if (a && a.alive) { const m = SCRIPT[stp.k][2]; MD.acts[a.id] = Object.assign(MD.acts[a.id] || {}, m === 'aux' ? { aux: sel.t } : m === 'use' ? { use: !!sel.use } : { target: sel.t }); } }
+      else { const a = mdActor(stp.k); if (a && a.alive) { const m = SCRIPT[stp.k][2]; MD.acts[a.id] = Object.assign(MD.acts[a.id] || {}, m === 'aux' ? { aux: sel.t } : m === 'pair' ? { target: sel.t, aux: sel.a } : m === 'use' ? { use: !!sel.use } : { target: sel.t }); } }
       MD.step++; MD.sel = {}; mdSave(); return mount(true);
     }
     case 'mdresolve': return mdResolveNight();
@@ -1972,6 +2028,7 @@ function SHEET(kind) {
   if (kind === 'how-imp') { title = 'How to Play'; body = `<ol>${HOW_IMP.map(r => `<li><b>${r[0]}</b>${r[1]}</li>`).join('')}</ol>`; }
   else if (kind === 'settings') { title = 'Settings'; const sw = (k, n, d) => `<div class="setrow"><div><b>${n}</b><small>${d}</small></div><button class="sw" role="switch" data-act="tog" data-k="${k}" aria-checked="${!!ST[k]}" aria-label="${n}"><i></i></button></div>`;
     body = sw('haptics', 'Haptics', 'Short buzzes (iPhone needs iOS 17.4 or newer).') + sw('sound', 'Sound', 'Soft tones. An iPhone’s silent switch also mutes them.') + sw('hold', 'Hold to reveal', 'Secrets show only while you press and hold, and hide when you let go.') + '<p class="fine">Settings are saved on this device.</p>'; }
+  else if (kind === 'about') { title = 'About'; body = `<h5>The Odd Disciple</h5><p>A Bible-themed party game for youth groups and friends, with The Odd Disciple (find the impostor) and ${MFN} (a game of hidden traitors).</p><h5>Designed by</h5><p><b>Anderson Jones</b></p><p>© 2026 Anderson Jones. All rights reserved.</p><h5>Feedback</h5><p>Would love to hear your feedback and suggestions. Thank you!</p><p><a href="mailto:andy.andersonjones@gmail.com">andy.andersonjones@gmail.com</a></p><p class="fine">Scripture quotations are from the King James Version (public domain). Character abilities are fictional game mechanics inspired by Bible stories, and character scripture lines are labelled paraphrases.</p>`; }
   else if (kind === 'nwrole') { title = 'Your role'; const nv = nwView(); body = nv && nv.me.role ? '<p class="sub">Press and hold to look. Let go to hide it.</p>' + holdBox(nwCard(nv)) : '<p>No role yet.</p>'; }
   else if (kind === 'how-mf') { title = MFN + ' · Rules'; body = howMafia(); }
   else if (kind === 'how') { const t = A.U.htab || 'imp'; title = 'How to Play'; body = `<div class="seg" role="tablist"><button role="tab" data-act="htab" data-v="imp" aria-pressed="${t === 'imp'}">The Odd Disciple</button><button role="tab" data-act="htab" data-v="mf" aria-pressed="${t === 'mf'}">${MFN}</button></div>` + (t === 'imp' ? `<ol>${HOW_IMP.map(r => `<li><b>${r[0]}</b>${r[1]}</li>`).join('')}</ol>` : howMafia()); }
@@ -2016,7 +2073,8 @@ SCR.home = () => `<div class="scr home">
   <div class="tag">A Bible-based<br>social deduction game</div></div>
  <div class="heroF">${landscape('0 30 390 300')}</div>
  <div class="menu"><button class="btn pri" data-act="new">New Game</button>${(hasNw() || hasImp() || MD) ? '<button class="btn sec" data-act="new">Resume a Game</button>' : ''}<button class="btn sec" data-act="sheet" data-v="how">How to Play</button><button class="btn sec" data-act="sheet" data-v="bible">Bible Connections</button></div>
- <blockquote class="verse">“And the light shineth in darkness; and the darkness comprehended it not.”<cite>– John 1:5 · KJV</cite></blockquote></div>`;
+ <blockquote class="verse">“And the light shineth in darkness; and the darkness comprehended it not.”<cite>– John 1:5 · KJV</cite></blockquote>
+ <button class="aboutlk" data-act="sheet" data-v="about">© 2026 Anderson Jones · About</button></div>`;
 SCR.games = () => `<div class="scr games">
  <div class="hdr"><button data-act="home" aria-label="Back to home">${ic('back')}</button><h2 class="ptitle" style="font-size:22px">Choose a Game</h2><button data-act="sheet" data-v="settings" aria-label="Settings">${GEAR}</button></div><div class="orn"><i></i></div>
  <div class="scroll grow"><div class="gcards">${gameCards()}</div></div></div>`;
