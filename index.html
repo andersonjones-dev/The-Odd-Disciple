@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>The Odd Disciple</title>
-<meta name="description" content="Bible-based party games for one phone: The Odd Disciple (one phone) and The Night Watch (online Mafia-style). Impostor game works offline.">
+<meta name="description" content="Bible-based party games for one phone: The Odd Disciple (one phone) and While Men Slept (Mafia-style). Impostor game works offline.">
 <meta name="theme-color" content="#040813">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -230,6 +230,7 @@ select option{background:#0a1a30;color:#e8f1fa}
 .gcard.g1{--cy:#38d5ff;--acr:56,213,255}
 .gcard.g2{--cy:#e8c780;--acr:232,199,128;--ln:rgba(232,199,128,.32)}
 .gcard h3{font:600 19px/1.15 var(--disp);letter-spacing:.04em;color:#f1f6fc}
+.gcard h3 .vref{font:italic 500 16px var(--serif);letter-spacing:.04em;color:var(--cy);margin-left:6px;white-space:nowrap}
 .gcard h3 small{display:block;font:600 11px var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--cy);margin-bottom:5px}
 .gcard p{color:#c5d6e8;font-size:14px;line-height:1.4;margin-top:6px}
 .gmeta{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:9px;font-size:12.5px;color:var(--mu)}
@@ -2337,7 +2338,7 @@ const store = {
 };
 const DB = Object.assign({ settings: {}, imp: null, jud: null, mafia: null, recent: [] }, store.load());
 const persist = () => store.save(DB);
-const MFN = 'The Night Watch';   // display name of the Mafia-style game (proposed; change here only)
+const MFN = 'While Men Slept';   // display name of the Mafia-style game (change here only)
 const DEFAULTS = { haptics: true, sound: true, hold: true, guess: true, imps: 1, customText: '', count: 5, names: [], packId: 'all', diff: 1, mode: 'decoy', hint: true, timerMin: 3, mfCount: 7, mfNames: [], jCount: 5, jStyle: 'mix', jAns: 45, jTimer: 3, jGuess: true };
 const ST = Object.assign({}, DEFAULTS, DB.settings); DB.settings = ST;
 const nameFor = (arr, i) => (arr[i] && arr[i].trim()) || 'Player ' + (i + 1);
@@ -3093,7 +3094,7 @@ function nwAct(a, b) {
     case 'nwleavedlg': A.dlg = { kind: 'nwleave', host: NWS.mode === 'host' }; return patch();
     case 'nwleavego': A.dlg = null; nwLeave(); return go('games', null, 'back');
     case 'nwtab': return nwTabSwitch(b.dataset.v);
-    case 'nwshare': { const msg = 'Join my ' + (NWS.game === 'jd' ? 'Judas' : 'Night Watch') + ' game. Room code: ' + NWS.code; if (navigator.share) navigator.share({ text: msg, url: location.href.split('#')[0] }).catch(() => { }); else { try { navigator.clipboard.writeText(msg); toast('Code copied'); } catch (e) { toast(msg); } } return; }
+    case 'nwshare': { const msg = 'Join my ' + (NWS.game === 'jd' ? 'Judas' : 'While Men Slept') + ' game. Room code: ' + NWS.code; if (navigator.share) navigator.share({ text: msg, url: location.href.split('#')[0] }).catch(() => { }); else { try { navigator.clipboard.writeText(msg); toast('Code copied'); } catch (e) { toast(msg); } } return; }
     case 'nwbot': return nwSend({ type: 'ADD_BOT' });
     case 'nwkick': return nwSend({ type: 'KICK', id });
     case 'nwrtog': { const r = v.cfg.roles.slice(), i = r.indexOf(id); if (i >= 0) r.splice(i, 1); else r.push(id); return nwSend({ type: 'CONFIG', patch: { roles: r } }); }
@@ -3952,13 +3953,13 @@ const gameCards = () => {
   const res = [];
   if (hasNw()) res.push(`<div class="resume" style="--cy:#e8c780;--acr:232,199,128"><div><b>${(NWS.mode ? NWS.game : (nwLoad() || {}).game) === 'jd' ? 'Judas' : MFN} room ${esc(NWS.code || (nwLoad() || {}).code)}</b>${(NWS.mode || (nwLoad() || {}).mode) === 'host' ? 'You are hosting' : 'Rejoin your room'}</div><button class="btn pri" data-act="nwresume">Resume</button><button class="btn sec" style="width:44px;padding:0" data-act="discard" data-g="nw" aria-label="Leave ${MFN} room">${ic('close')}</button></div>`);
   if (hasImp()) res.push(`<div class="resume"><div><b>Impostor game in progress</b>${I.players.length} players</div><button class="btn pri" data-act="resume" data-g="imp">Resume</button><button class="btn sec" style="width:44px;padding:0" data-act="discard" data-g="imp" aria-label="Discard saved impostor game">${ic('close')}</button></div>`);
-  return res.join('') + `<article class="gcard g1"><h3><small>Social deduction · Classic</small>The Odd Disciple</h3><p>Everyone shares a Bible word except the impostor. Talk around it, spot who doesn’t fit.</p>
+  return res.join('') + `<article class="gcard g1"><h3><small>Social deduction · Classic</small>The Odd Disciple <span class="vref">Mat 26:25</span></h3><p>Everyone shares a Bible word except the impostor. Talk around it, spot who doesn’t fit.</p>
    <div class="gmeta"><span><b>${IMP_MIN}–${IMP_MAX}</b> players</span><span>~<b>10</b> min</span><span>Offline</span></div>
    <div class="gact"><button class="btn pri" data-act="newimp">Play</button><button class="btn sec" data-act="sheet" data-v="how-imp">How to play</button></div></article>
-  <article class="gcard g3"><h3><small>Question game · Online, same room</small>Judas</h3><p>Everyone answers at once on their own phone, then shows their answer to the room. One player secretly got a different question. Find who is bluffing.</p>
+  <article class="gcard g3"><h3><small>Question game · Online, same room</small>Judas <span class="vref">John 13:22</span></h3><p>Everyone answers at once on their own phone, then shows their answer to the room. One player secretly got a different question. Find who is bluffing.</p>
    <div class="gmeta"><span><b>4–12</b> players</span><span>~<b>10–15</b> min</span></div>
    <div class="gact"><button class="btn pri" data-act="newjd">Play online</button><button class="btn sec" data-act="sheet" data-v="how-jd">How to play</button></div></article>
-  <article class="gcard g2"><h3><small>Mafia-style · One phone or online</small>${MFN} <span class="tag-p">Proposed name</span></h3><p>Secret roles and night abilities, each player on their own phone. Play online with a room code, or have one friend moderate the room and run the nights aloud.</p>
+  <article class="gcard g2"><h3><small>Mafia-style · Each on your own phone</small>${MFN} <span class="vref">Mat 13:25</span></h3><p>Secret roles and night abilities, each player on their own phone. Play online with a room code, or have one friend moderate the room and run the nights aloud.</p>
    <div class="gmeta"><span><b>5–20</b> players</span><span>~<b>20–40</b> min <span class="muted">(est.)</span></span></div>
    <div class="gact"><button class="btn pri" data-act="newmf">Play online</button><button class="btn pri" data-act="newmod">Moderator mode</button></div><div class="gact" style="margin-top:8px"><button class="btn sec" data-act="sheet" data-v="how-mf">Rules</button></div></article>`;
 };
