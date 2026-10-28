@@ -19,7 +19,7 @@ No server, accounts or internet needed once loaded. Progress is saved on the dev
 Open that link in Safari → Share → **Add to Home Screen**. Open the app once while online; after that it works with no signal.
 
 ## Updating
-Upload the new `index.html` (and `sw.js` if supplied) over the old ones. Installed copies pick up the update the next time they open online (you may need to close and reopen the app once).
+Upload the new `index.html` (and `sw.js` if supplied) over the old ones. Change `VERSION` in `sw.js` too. Installed copies then show "A new version of The Odd Disciple is ready" with an **Update** button (`update.js`); nothing changes until it’s tapped.
 
 ## Known limits
 - Fonts use the phone's built-in serif (no web fonts), so offline works with nothing to download. Custom fonts can be added later.
