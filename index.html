@@ -13,7 +13,8 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<style>/* Bottom spacing (same in all of Anderson's apps; ClockIt 2.4.1, checked on an iPhone 12).
+<style>
+/* Bottom spacing (same in all of Anderson's apps; ClockIt 2.4.1, checked on an iPhone 12).
    --safe-b is the home-bar space, reduced by however much iOS has made a Home Screen
    app's window short (it then already ends above the home bar). CSS only: no height
    measuring code, which made iOS shrink the window and the layout jump. */
@@ -1580,7 +1581,7 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
       case 'JOSHUA': { if (!host || s.phase !== 'day' || !s.fx || s.fx.card !== 'joshua' || s.joshuaDone || !s.nightSnap) return err('Not now.'); doJoshua(s, now); return ok(); }
       case 'READY_VOTE': {
         if (s.phase !== 'day' || !me || !me.alive) return err('Not now.'); const i = s.readyVote.indexOf(by); if (i >= 0) s.readyVote.splice(i, 1); else s.readyVote.push(by);
-        if (s.readyVote.length * 2 > alive(s).length) startVote(s, now); return ok();
+        if (alive(s).every(x => s.readyVote.indexOf(x.id) >= 0)) startVote(s, now); return ok();
       }
       case 'START_VOTE': { if (!host || s.phase !== 'day') return err('Not now.'); startVote(s, now); return ok(); }
       case 'VOTE': {
@@ -1749,7 +1750,7 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
       const R = ROLES[b.role]; const others = alive(s).filter(x => x.id !== b.id);
       if (R && R.day && !s.usedDay[b.id] && rng() < .15 && others.length > 2) { const x = r(others), y = r(others.filter(o => o !== x)); out.push(R.day === 'compare' ? { type: 'DAY_ACT', by: b.id, a: x.id, b: y.id } : R.day === 'boost' ? { type: 'DAY_ACT', by: b.id, target: x.id } : { type: 'DAY_ACT', by: b.id, target: x.id, about: y.id, claim: rng() < .3 ? 'town' : 'traitor' }); }
       if (b.role === 'esther' && !s.used[b.id] && !s.estherPick[b.id] && rng() < .25) out.push({ type: 'ESTHER_NAME', by: b.id, target: rng() < .5 ? b.id : r(others).id });
-      if (s.readyVote.indexOf(b.id) < 0 && rng() < .5) out.push({ type: 'READY_VOTE', by: b.id });
+      if (s.readyVote.indexOf(b.id) < 0 && alive(s).every(x => x.bot || s.readyVote.indexOf(x.id) >= 0) && rng() < .5) out.push({ type: 'READY_VOTE', by: b.id });
     });
     return out;
   }
@@ -3463,9 +3464,6 @@ SCR['imp-pass'] = () => {
 SCR['imp-secret'] = () => {
   const i = I.seat, a = I.deal.assignments[i], last = i === I.players.length - 1, plural = I.imps === 2;
   const go = last ? 'Hide and start discussion' : 'Hide and pass phone', sub = last ? `You have ${I.timerMin}:00 to talk` : 'Keep this secret. Don’t let them know.';
-  if (a.role === 'impostor' && I.stage === 'role') return `<div class="scr secret"><h2 class="ptitle">Your Secret</h2><div class="orn"><i></i></div>
-  <div class="scroll grow">${holdBox(`<div class="frame flare"><div class="you" style="margin-top:0">You are ${plural ? 'an' : 'the'}</div><div class="role">IMPOSTOR</div><div class="mk">${mask('#7fe3ff', ['#12365c', '#07162b'])}</div><p>${I.deal.mode === 'decoy' ? 'You know a different word<br>than the others.' : 'You have no word.<br>Listen closely and blend in.'}${plural ? '<br>Another player is an impostor too.' : ''}</p></div>`)}</div>
-  <button class="btn pri" data-act="ishow" ${needSeen()}>${I.deal.mode === 'decoy' ? 'Show my word' : 'Show my hint'}</button><div class="note">Keep this secret. Don’t let them know.</div></div>`;
   if (a.role === 'impostor') return `<div class="scr secret"><h2 class="ptitle">Your Secret</h2><div class="orn"><i></i></div>
   <div class="scroll grow">${holdBox(`<div class="parch"><div class="mk">${mask('#1d140a', ['#2e2112', '#1a1209'])}</div><div class="y">You are ${plural ? 'an' : 'the'}<b>IMPOSTOR</b></div><div class="rule"></div>
   ${a.word ? `<div class="yw">Your word is:</div><div class="ww">${esc(a.word.toUpperCase())}</div>` : `<div class="yw">${a.hint ? 'Your hint:' : 'No word, no hint.'}</div><div class="ww" style="font-size:${a.hint ? 22 : 18}px">${a.hint ? esc(a.hint.toUpperCase()) : 'LISTEN AND BLEND IN'}</div>`}</div>`)}</div>
@@ -3868,7 +3866,7 @@ function nwMain(v) {
     case 'roles': return `<h3 class="ph">Your secret role</h3><p class="sub">Press and hold to look. Let go to hide it again. You can look again any time with the ? button at the top.</p>
    ${tarotBox(v)}<button class="btn pri" data-act="nwack" ${needSeen()} ${v.players.find(p => p.me).acked ? 'disabled' : ''}>${v.players.find(p => p.me).acked ? 'Waiting for the others…' : 'I’ve seen it'}</button><p class="sub" style="text-align:center;margin-top:8px"><span data-rd>${v.rolesDone}</span> of ${v.players.length} ready</p>`;
     case 'night': return nightHTML(v);
-    case 'day': return `${annHTML(v)}${dayEventsHTML(v)}${dayPowerHTML(v)}${noteHTML(v)}${me.alive ? `<p class="sub" style="margin-top:12px">Talk it over in the <b>Chat</b> tab. When most of you are ready, the vote begins.</p>
+    case 'day': return `${annHTML(v)}${dayEventsHTML(v)}${dayPowerHTML(v)}${noteHTML(v)}${me.alive ? `<p class="sub" style="margin-top:12px">Talk it over in the <b>Chat</b> tab. The vote begins when everyone is ready, or when the timer ends.</p>
    <button class="btn sec" data-act="nwready" aria-pressed="${!!v.players.find(p => p.me).ready}">${v.players.find(p => p.me).ready ? 'Ready to vote ✓ (tap to undo)' : 'I’m ready to vote'}</button><p class="sub" style="text-align:center;margin:6px 0">${v.readyCount} of ${v.players.filter(p => p.alive).length} ready</p>` : '<div class="banner dead">You have fallen. Watch, and whisper with the other fallen in Chat.</div>'}
    ${v.isHost && v.joshuaReady ? '<div class="evcard"><small>Joshua</small><h4>The Sun Stands Still</h4><p>Host: you may undo last night. It will be played again, and everyone keeps what they learned.</p><button class="btn sec" data-act="nwjoshua">Let the sun stand still</button></div>' : ''}${v.isHost ? '<button class="btn sec" style="margin-top:6px" data-act="nwstartvote">Start the vote now</button>' : ''}`;
     case 'vote': return voteHTML(v);
