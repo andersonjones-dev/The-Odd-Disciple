@@ -4498,7 +4498,7 @@ function plMain(v) {
       if (v.win && winLive(v, now)) return plWindow(v, now);
       if (!MDW() && !isMod(v)) { /* windows off: powers are used on the phone at any time during the night */ }
       if (v.cfg.windows === false && me.alive && me.dusk && !me.dusk.spent) return `<h3 class="ph">The night</h3><p class="sub">The moderator will call the night roles. Choose your power below when you are ready.</p>${duskForm(v, true)}`;
-      return `<div class="eyes"><div class="eyeico">${MOON}</div><b>Eyes closed</b><span>Night ${v.round}. Listen for the moderator.</span></div>`;
+      return `<div class="eyes"><div class="eyeico">${MOON}</div><b>Eyes closed</b><span>Night ${v.round}. Listen to the moderator.</span></div>`;
     }
     case 'day': {
       if (v.win && winLive(v, now)) return plWindow(v, now);
