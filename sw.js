@@ -8,7 +8,7 @@
  *
  * The app always opens from the saved copy, so it works with no internet.
  */
-const VERSION = 'odd-disciple-night-2';
+const VERSION = 'odd-disciple-words-1';
 const PREFIX = 'odd-disciple-';   // only caches starting with this are ever deleted: other apps share this storage
 const LIB = 'odd-disciple-lib';         // fonts and libraries from other sites, kept between versions
 const KEEP = [];
