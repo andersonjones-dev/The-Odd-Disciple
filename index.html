@@ -521,6 +521,7 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
 .rcard .fine{margin-top:10px}
 .chip b{color:inherit}
 .script{border:1px solid rgba(232,199,128,.5);background:linear-gradient(180deg,rgba(232,199,128,.1),rgba(232,199,128,.02));border-radius:14px;padding:12px 16px;margin:6px 0 12px;font:500 18px/1.4 var(--disp);color:#f4e8cc}
+.mdov{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}.mdp{display:inline-flex;flex-direction:column;border:1px solid var(--ln);border-radius:10px;padding:4px 9px;font-size:13px;line-height:1.2;background:rgba(10,26,48,.5);color:var(--mu)}.mdp small{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;opacity:.85}.mdp.on small{color:#7fe3b0}.mdp.off{opacity:.55}.mdp.cur{border-color:var(--hi);color:#fff;box-shadow:0 0 0 1px var(--hi)}
 .script small{display:block;font:600 11.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
 .scr.md .foot{flex:none}
 
@@ -3806,7 +3807,6 @@ function fxHTML(v) {
 function dayEventsHTML(v) { return pubHTML(v); }
 const mdSeg = (label, k, opts, cur, hint) => `<p class="lbl" style="margin:12px 0 4px">${label}</p><div class="seg" role="group" aria-label="${label}">${opts.map(([val, l]) => `<button data-act="mdcfg" data-k="${k}" data-v="${val}" aria-pressed="${String(cur) === String(val)}">${l}</button>`).join('')}</div>${hint ? `<p class="hint">${hint}</p>` : ''}`;
 const modToggles = c => mdSeg('Phone windows', 'windows', [[true, 'On'], [false, 'Off']], c.windows !== false, c.windows !== false ? 'At dusk, dawn and the last call everyone taps their phone for a few seconds (players with a power use it; everyone else answers a Bible quiz), so nobody can tell who has a power.' : 'Players use their powers on their phone whenever they like. Simpler, but a player looking at their phone can be a tell.')
-  + mdSeg('Night length', 'nightLen', [['quick', 'Quick'], ['full', 'Full']], c.nightLen || 'full', (c.nightLen || 'full') === 'full' ? 'You call every night role, present or not, so the night is always long.' : 'You call the roles in the game, plus a couple of decoys.')
   + mdSeg('Bible quiz', 'quiz', [['easy', 'Easy'], ['mixed', 'Mixed'], ['hard', 'Hard']], c.quiz || 'mixed', '')
   + evToggle(c);
 const evToggle = c => `<p class="lbl" style="margin:12px 0 4px">Dawn events</p><div class="seg" role="group" aria-label="Dawn events">${[['eventful', 'Eventful'], ['calm', 'Calm'], ['off', 'Off']].map(([k, l]) => `<button data-act="nwev" data-v="${k}" aria-pressed="${(c.events || 'eventful') === k}">${l}</button>`).join('')}</div><p class="hint">${({ eventful: 'Most mornings bring a surprise card: manna, a burning bush, a tower of babel and more.', calm: 'Now and then a morning brings a surprise card.', off: 'No surprise cards. Just the classic game.' })[c.events || 'eventful']}</p>`;
@@ -4555,9 +4555,8 @@ const mdBtn = (act, label, extra, cls) => `<button class="btn ${cls || 'pri'}" d
 function mdNight(v) {
   const S = MDS(), key = v.round + (v.replay ? 'R' : '');
   if (S.key !== key) {
-    const full = v.cfg.nightLen !== 'quick', has = r => r === 'traitor' || v.players.some(p => p.role === r);
-    let list = MD_ORDER.filter(r => has(r) || full);
-    if (!full) { const absent = MD_ORDER.filter(r => !has(r)).sort(() => Math.random() - .5).slice(0, 2); list = MD_ORDER.filter(r => has(r) || absent.indexOf(r) >= 0); }
+    const has = r => r === 'traitor' || v.players.some(p => p.role === r);
+    const list = MD_ORDER.filter(has);   // only the roles dealt in this game; a fallen holder is still called so the silence gives nothing away
     Object.assign(S, { key, began: !MDW(), step: 0, list, real: S.real || [], nStart: Date.now(), sStart: Date.now() });
   }
   return S;
@@ -4584,12 +4583,16 @@ function modNight(v) {
   }
   if (!S.began) {
     const miss = v.win && v.win.missed && v.win.missed.length ? `<div class="banner dead">Missed their choice: ${v.win.missed.map(esc).join(', ')}. A missed once-per-game power is kept.</div>` : '';
-    return `<div class="script"><small>Say aloud</small>Phones away. Everyone, close your eyes.</div>${miss}<p class="hint">Wait a few seconds, then start the night. The screen dims and the script begins.</p>${mdBtn('mdbegin', 'Begin the night')}`;
+    const roster = S.list.map(r => `${r === 'traitor' ? 'Judas' : MD_LINES[r][0]}${(r === 'traitor' ? v.players.filter(p => p.faction === 'traitor') : v.players.filter(p => p.role === r)).some(p => p.alive) ? '' : ' (fallen)'}`).join(', ');
+    return `<div class="script"><small>Say aloud</small>Phones away. Everyone, close your eyes.</div>${miss}<p class="hint"><b>Tonight you call ${S.list.length} role${S.list.length > 1 ? 's' : ''}:</b> ${esc(roster)}.</p><p class="hint">Wait a few seconds, then start the night. The screen dims and the script begins.</p>${mdBtn('mdbegin', 'Begin the night')}`;
   }
   const k = S.list[S.step];
   if (!k) return `<div class="script"><small>Say aloud</small>Everyone, keep your eyes closed.</div><p class="hint">Wait a few seconds so nobody can tell the night is over.</p>${mdBtn('mdendnight', 'End the night')}${mdBtn('mdprev', 'Back', '', 'sec')}`;
   const L = MD_LINES[k], d = stepData(v, k), live = d.live, pace = S.real.length ? Math.round(S.real.slice(-3).reduce((a, b) => a + b, 0) / Math.min(3, S.real.length)) : 12;
   const omen = MD_OMENS[(v.round * 7 + S.step * 5) % MD_OMENS.length];
+  const act = r => { const h = r === 'traitor' ? v.players.filter(p => p.faction === 'traitor') : v.players.filter(p => p.role === r); return h.some(p => p.alive); };
+  const roleLbl = r => r === 'traitor' ? 'Judas' : MD_LINES[r][0];
+  const overview = `<div class="mdov" aria-label="Roles in this game">${S.list.map((r, i) => `<span class="mdp ${act(r) ? 'on' : 'off'} ${i === S.step ? 'cur' : ''}">${esc(roleLbl(r))}<small>${act(r) ? 'active' : 'fallen'}</small></span>`).join('')}</div>`;
   let body = '';
   if (d.real && live) {
     const mk = live.marked;
@@ -4599,7 +4602,7 @@ function modNight(v) {
   } else {
     body = `<div class="banner dead"><b>Moderator only:</b> ${d.who}.<br>${MD_LIVE[k] && !d.real ? 'Nothing to mark' : 'Their choice is already in'}. Wait about <b>${pace} seconds</b>, as if they were acting. <span class="muted">(Real calls have been taking about ${pace} s.)</span></div>`;
   }
-  return `<div class="nwbar"><span>Step ${S.step + 1} of ${S.list.length}</span><b data-mdsteck>0:00</b></div>
+  return `<div class="nwbar"><span>Step ${S.step + 1} of ${S.list.length}</span><b data-mdsteck>0:00</b></div>${overview}
  <div class="script"><small>Say aloud · ${esc(L[0])}</small>${esc(L[1])}</div>${body}
  <p class="hint omen"><i>Optional, read between calls:</i> ${esc(omen)}</p>
  <div class="two">${S.step ? mdBtn('mdprev', 'Back', '', 'sec') : ''}${mdBtn('mdnext', 'Next')}</div>`;
@@ -4746,13 +4749,13 @@ const HOW_IMP = [['Pass the phone', 'Everyone gets a turn alone with the phone. 
 const HOW_JD = [['Gather in one room', 'One player creates a room and shares the code. Everyone joins on their own phone, 4 to 12 players, sitting together.'], ['Answer at the same time', 'Everyone sees a question. One player, Judas, secretly gets a different one that sounds similar, and knows it. Type a short answer or pick a player, then lock it in.'], ['The moderator reads it aloud', 'One player is the moderator (it changes each round). Their phone shows a read-aloud card with the group’s real question. Judas now learns what everyone else was asked, and has a moment to think how to blend in.'], ['Turn your slate around', 'Everyone taps their phone to flip their answer onto a chalk slate, then holds it up so the whole room can read it. Look at every answer.'], ['Discuss', 'Ask each other to explain and defend what they wrote. One answer belongs to a different question.'], ['Vote and reveal', 'Everyone votes on their own phone for who they think is Judas. Then the reveal! If the group finds Judas, the group wins. If Judas slips away, Judas wins.']];
 function howMafia() {
   const R = NightWatch.ROLES;
-  const grp = f => Object.keys(R).filter(k => R[k].faction === f && k !== 'townsperson').map(k => `<li><b>${esc(R[k].name)} · ${esc(R[k].title)}</b>${esc(R[k].text)}</li>`).join('');
+  const grp = f => Object.keys(R).filter(k => R[k].faction === f && k !== 'townsperson' && k !== 'traitor').map(k => `<li><b>${esc(R[k].name)} · ${esc(R[k].title)}</b>${esc(R[k].text)}</li>`).join('');
   return `<h5>Two ways to play</h5><p><b>Online</b>: everyone plays on their own phone, with a chat, and the game runs by itself. <b>Moderator mode</b>: one friend creates the room as the moderator and sits out. Everyone else joins on their own phone, closes their eyes at night, and the moderator reads the night script aloud, like the classic party game, while the phones keep every secret.</p>
 <h5>Online play</h5><p>Everyone plays on their own phone. One player creates a room and shares the 4-letter code; the others join with it. Chat lets people talk, even from separate homes.</p>
 <h5>Goal</h5><p><b>Town</b> wins by finding every traitor. The <b>Traitors</b> win when they equal or outnumber everyone else. Jonah, if in play, wins alone by being voted out early.</p>
 <h5>Each round</h5><ol><li><b>Night.</b> Everyone gets the same night screen at the same time. Characters with an ability use it; everyone else just rests, so nobody can tell who has a role. Traitors can whisper in Chat.</li>
 <li><b>Dawn.</b> The town hears what happened. Protected players and secret findings stay private.</li>
-<li><b>Day.</b> Talk in the Chat tab. The vote starts when most players are ready, when the timer ends, or when the host starts it.</li>
+<li><b>Day.</b> Talk in the Chat tab. The vote starts when everyone is ready, when the timer ends, or when the host starts it.</li>
 <li><b>Vote.</b> Everyone votes at once. Only totals are shown. A tie means no one is out. An eliminated player’s side (Town or Traitor) is revealed.</li></ol>
 <h5>Dawn events</h5><p>On most mornings a surprise card shakes up the day: Manna from Heaven, the Burning Bush, the Tower of Babel, Sabbath Rest, Pillar of Fire, Year of Jubilee, Famine, Lots Are Cast, the Messenger (a sealed letter arrives for someone, true two times in three) or Joshua (the night is undone and played again). A Sabbath night is played in full, but the traitors, Peter, Delilah, Jezebel’s frame, Haman and Herod rest, while good works still go through. The host (or moderator) can set them to Eventful, Calm or Off. They are game twists, not Bible claims.</p>
 <h5>Powers before the vote</h5><p>Thomas tests whether two players share a side, Barnabas gives someone an extra vote, Nathan sends a sealed letter that states a player’s true side, and Jezebel sends a letter that may be forged. Every letter is signed only “A Friend”, so no one knows who wrote it. Esther names one player in advance: if the town votes that player out, she pleads and they are spared. Each power can be used once.</p><h5>Moderator mode</h5><p>The night is a ceremony. The moderator calls every night role in order, including roles that are not in the game, so a long pause tells you nothing. Phones come out only in short windows that everyone shares: <b>dusk</b> (players with a night power choose it; everyone else answers a Bible quiz), <b>dawn</b> (everyone holds their screen to read their private notes) and the <b>last call</b> before the vote (daytime powers, Esther’s plea and the letters). You have ten seconds to choose, and your last tap counts. A power you miss is not lost. The vote is by pointing; the moderator marks it and the phone counts, including Deborah’s double vote.</p>
@@ -4773,7 +4776,7 @@ function SHEET(kind) {
     let t = A.U.hint || (has ? 'card' : 'rules'); if (t === 'card' && !has) t = 'rules';
     title = 'Hints';
     const tab = (k, n) => `<button role="tab" data-act="nwhtab" data-v="${k}" aria-pressed="${t === k}">${n}</button>`;
-    const R = NightWatch.ROLES, inGame = nv && nv.cfg && nv.cfg.roles ? ['traitor', 'townsperson'].concat(nv.cfg.roles) : Object.keys(R);
+    const R = NightWatch.ROLES, inGame = nv && nv.cfg && nv.cfg.roles ? Array.from(new Set(['traitor', 'townsperson'].concat(nv.cfg.roles))) : Object.keys(R);
     const roleLi = k => { const r = R[k]; return `<li><b>${esc(r.name)} · ${esc(r.title)}</b>${esc(r.text)}${r.ref ? `<br><i>${esc(r.para)}</i> <small>– ${esc(r.ref)} (paraphrase)</small>` : ''}</li>`; };
     const grp = (f, n) => { const ks = inGame.filter(k => R[k] && R[k].faction === f); return ks.length ? `<h5>${n}</h5><ul class="rl">${ks.map(roleLi).join('')}</ul>` : ''; };
     body = `<div class="seg" role="tablist">${has ? tab('card', 'My card') : ''}${tab('rules', 'Rules')}${tab('roles', 'Roles')}</div>` +
