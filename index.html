@@ -1007,6 +1007,7 @@ h4.sec{font:600 14px var(--sans);letter-spacing:.06em;text-transform:uppercase;c
 #lock .lplan b{display:block;font-weight:600}#lock .lplan small{color:#a79fc2;font-size:12px}#lock .lplan .lp{margin-left:auto;font:700 16px var(--sans);white-space:nowrap}
 #lock input{width:100%;height:48px;border-radius:12px;border:1px solid #38305a;background:#1d1830;color:#f1ead8;padding:0 14px;font-size:16px;box-sizing:border-box;margin-bottom:10px}
 #lock .lkey{font:700 20px ui-monospace,Menlo,monospace;letter-spacing:.06em;background:#1d1830;border:1px solid #e0b45a;border-radius:12px;padding:14px;user-select:all;word-break:break-all}
+#lock .lkn{font-size:13px;color:#a79fbd;text-align:left;margin:4px 2px}
 #lock .lerr{color:#ea8a84;font-size:14px;min-height:18px}
 </style>
 </head>
@@ -4857,7 +4858,7 @@ function SHEET(kind) {
   else if (kind === 'how-jd') { title = 'How to Play · Judas'; body = `<ol>${HOW_JD.map(r => `<li><b>${r[0]}</b>${r[1]}</li>`).join('')}</ol>`; }
   else if (kind === 'settings') { title = 'Settings'; const sw = (k, n, d) => `<div class="setrow"><div><b>${n}</b><small>${d}</small></div><button class="sw" role="switch" data-act="tog" data-k="${k}" aria-checked="${!!ST[k]}" aria-label="${n}"><i></i></button></div>`;
     body = sw('haptics', 'Haptics', 'Short buzzes (iPhone needs iOS 17.4 or newer).') + sw('sound', 'Sound', 'Soft tones. An iPhone’s silent switch also mutes them.') + sw('hold', 'Hold to reveal', 'Secrets show only while you press and hold, and hide when you let go.') + sw('reduce', 'Reduce animations', 'Calms the moving pictures on role cards.') + '<p class="fine">Settings are saved on this device.</p>'; }
-  else if (kind === 'about') { title = 'About'; body = `<h5>The Odd Disciple</h5><p>A Bible-themed party game for youth groups and friends, with The Odd Disciple (find the impostor) and ${MFN} (a game of hidden traitors).</p><h5>Designed by</h5><p><b>Anderson Jones</b></p><p>© 2026 Anderson Jones. All rights reserved.</p><h5>Feedback</h5><p>Would love to hear your feedback and suggestions. Thank you!</p><p><a href="mailto:andy.andersonjones@gmail.com">andy.andersonjones@gmail.com</a></p><p class="fine">Scripture quotations are from the King James Version (public domain). Character abilities are fictional game mechanics inspired by Bible stories, and character scripture lines are labelled paraphrases.</p>`; }
+  else if (kind === 'about') { title = 'About'; body = `<h5>The Odd Disciple</h5><p>A Bible-themed party game for youth groups and friends, with The Odd Disciple (find the impostor) and ${MFN} (a game of hidden traitors).</p><h5>Your licence</h5><p>You enter your licence key once per device. App updates never ask for it again. You will need it again if you reinstall the app, clear browser data or move to a new phone, and each key works on a limited number of devices. The game checks your licence online now and then and works offline for up to 7 days between checks. Keep your key somewhere safe.</p><h5>Designed by</h5><p><b>Anderson Jones</b></p><p>© 2026 Anderson Jones. All rights reserved.</p><h5>Feedback</h5><p>Would love to hear your feedback and suggestions. Thank you!</p><p><a href="mailto:andy.andersonjones@gmail.com">andy.andersonjones@gmail.com</a></p><p class="fine">Scripture quotations are from the King James Version (public domain). Character abilities are fictional game mechanics inspired by Bible stories, and character scripture lines are labelled paraphrases.</p>`; }
   else if (kind === 'nwhint') {
     const nv = nwView(), has = !!(nv && nv.me && nv.me.role && nv.phase && nv.phase !== 'lobby');
     let t = A.U.hint || (has ? 'card' : 'rules'); if (t === 'card' && !has) t = 'rules';
@@ -5078,6 +5079,7 @@ if (location.hash.indexOf('#test') === 0) window.__odd = { get state() { return 
     store(PEND, null); msg.textContent = 'Payment received. Thank you!'; view.textContent = '';
     view.appendChild(el('p', 'Your licence key. Keep it safe: you can use it again if you reinstall.'));
     view.appendChild(el('div', key, 'lkey'));
+    view.appendChild(el('p', 'Good to know: you enter this key once per device. App updates never ask for it again. You will need it again if you reinstall the app, clear the browser data or move to a new phone, and each key works on a limited number of devices. The game checks your licence online now and then, and keeps working offline for up to 7 days between checks.', 'lkn'));
     var cp = el('button', 'Copy key', 'btn sec'), go = el('button', 'Start playing', 'btn pri'), er = el('div', '', 'lerr');
     cp.onclick = function () { try { navigator.clipboard.writeText(key).then(function () { cp.textContent = 'Copied'; }, function () {}); } catch (e) {} };
     go.onclick = function () { go.disabled = true; go.textContent = 'Unlocking…'; L.activate(key).then(function (r) { if (r.ok) { check(); } else { er.textContent = r.message; go.disabled = false; go.textContent = 'Start playing'; } }); };
